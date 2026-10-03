@@ -5,15 +5,15 @@ function renderCatMgr(){
  cats.forEach(function(c,idx){
   var row=document.createElement("div");row.className="mgr-row";
   var ph=catPhoto(c);
-  var thumb = ph ? '<img class="thumb" src="'+ph+'">' : '<div class="thumb thumb-ph">\u0E23\u0E39\u0E1B</div>';
-  row.innerHTML='<div class="thumb-wrap">'+thumb+'<button class="thumb-edit" title="\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E23\u0E39\u0E1B">\uD83D\uDCF7</button></div>'+
+  var thumb = '<button class="thumb-btn" title="\u0E43\u0E2A\u0E48/\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E23\u0E39\u0E1B">'+(ph?'<img class="thumb-img" src="'+ph+'">':'<span class="thumb-ph-ic">\ud83d\udc31</span>')+'<span class="thumb-cam">\ud83d\udcf7</span></button>';
+  row.innerHTML=thumb+
    '<div class="nm"><input value="'+esc(c.name)+'" placeholder="\u0E0A\u0E37\u0E48\u0E2D\u0E41\u0E21\u0E27">'+
    '<label class="defrow"><input type="checkbox" class="defchk"'+(c.def?" checked":"")+'> \u0E15\u0E31\u0E49\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19</label></div>'+
    '<button class="del">\u00D7</button>';
   var inp=row.querySelector('.nm input');
   inp.oninput=function(){c.name=this.value;save(LS_CATS,cats);};
   inp.onblur=function(){renderCats();renderSummary();};
-  row.querySelector(".thumb-edit").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
+  row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
   row.querySelector(".defchk").onchange=function(){var on=this.checked;cats.forEach(function(x){x.def=false;});c.def=on;if(on){selCat=c.id;persistSel();}save(LS_CATS,cats);renderCatMgr();renderCats();renderSelSummary();};
   row.querySelector(".del").onclick=function(){
    if(cats.length<=1){toast("\u0E15\u0E49\u0E2D\u0E07\u0E21\u0E35\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E19\u0E49\u0E2D\u0E22 1 \u0E15\u0E31\u0E27");return;}
@@ -52,8 +52,8 @@ function renderCageMgr(){
  cages.forEach(function(c,idx){
   var src=imgSrc(c);
   var row=document.createElement("div");row.className="mgr-row";
-  var thumb = src ? '<img class="thumb" src="'+src+'">' : '<div class="thumb thumb-ph">\u0E23\u0E39\u0E1B</div>';
-  row.innerHTML='<div class="thumb-wrap">'+thumb+'<button class="thumb-edit" title="\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E23\u0E39\u0E1B">\uD83D\uDCF7</button></div>'+
+  var thumb = '<button class="thumb-btn" title="\u0E43\u0E2A\u0E48/\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E23\u0E39\u0E1B">'+(src?'<img class="thumb-img" src="'+src+'">':'<span class="thumb-ph-ic">\ud83c\udfe0</span>')+'<span class="thumb-cam">\ud83d\udcf7</span></button>';
+  row.innerHTML=thumb+
    '<div class="nm"><input value="'+esc(c.name)+'" placeholder="\u0E0A\u0E37\u0E48\u0E2D\u0E01\u0E23\u0E07">'+
    '<label class="defrow"><input type="checkbox" class="defchk"'+(c.def?" checked":"")+'> \u0E15\u0E31\u0E49\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19</label></div>'+
    '<div class="tw"><input inputmode="decimal" value="'+fmtKg(c.tare)+'"></div>'+
@@ -65,7 +65,7 @@ function renderCageMgr(){
   nameInp.onblur=function(){renderCages();};
   tareInp.oninput=function(){var v=parseFloat((this.value||"").replace(",","."));c.tare=isNaN(v)?0:v;save(LS_CAGES,cages);};
   tareInp.onblur=function(){renderCages();calc();};
-  row.querySelector(".thumb-edit").onclick=function(){pickImage(function(dataUrl){c.customImg=dataUrl;save(LS_CAGES,cages);renderCageMgr();renderCages();});};
+  row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.customImg=dataUrl;save(LS_CAGES,cages);renderCageMgr();renderCages();});};
   row.querySelector(".defchk").onchange=function(){var on=this.checked;cages.forEach(function(x){x.def=false;});c.def=on;if(on){selCage=c.id;persistSel();}save(LS_CAGES,cages);renderCageMgr();renderCages();renderSelSummary();};
   row.querySelector(".del").onclick=function(){
    if(cages.length<=1){toast("\u0E15\u0E49\u0E2D\u0E07\u0E21\u0E35\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E19\u0E49\u0E2D\u0E22 1 \u0E01\u0E23\u0E07");return;}

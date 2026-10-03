@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9f1c"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <!-- rounded square background -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- scale dial (white circle) -->
+  <circle cx="256" cy="300" r="150" fill="#fff"/>
+  <!-- dial ticks -->
+  <g stroke="#f97316" stroke-width="10" stroke-linecap="round">
+    <line x1="256" y1="170" x2="256" y2="192"/>
+    <line x1="146" y1="300" x2="168" y2="300"/>
+    <line x1="366" y1="300" x2="344" y2="300"/>
+    <line x1="179" y1="223" x2="194" y2="238"/>
+    <line x1="333" y1="223" x2="318" y2="238"/>
+  </g>
+  <!-- needle pointing up-right -->
+  <line x1="256" y1="300" x2="320" y2="228" stroke="#1f2733" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="256" cy="300" r="18" fill="#1f2733"/>
+  <!-- cat ears on top of dial -->
+  <path d="M150 196 L150 108 L232 170 Z" fill="#1f2733"/>
+  <path d="M362 196 L362 108 L280 170 Z" fill="#1f2733"/>
+  <path d="M168 180 L168 140 L212 174 Z" fill="#ff9f1c"/>
+  <path d="M344 180 L344 140 L300 174 Z" fill="#ff9f1c"/>
+  <!-- whiskers -->
+  <g stroke="#1f2733" stroke-width="9" stroke-linecap="round">
+    <line x1="206" y1="300" x2="150" y2="292"/>
+    <line x1="206" y1="316" x2="152" y2="326"/>
+    <line x1="306" y1="300" x2="362" y2="292"/>
+    <line x1="306" y1="316" x2="360" y2="326"/>
+  </g>
+</svg>

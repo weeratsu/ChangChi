@@ -6,12 +6,18 @@
 <meta name="theme-color" content="#0f766e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>ChangChi</title>
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v13">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v13">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v13">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg?v13">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v13">
+<link rel="manifest" href="manifest.webmanifest?v13">
 <link rel="stylesheet" href="css/style.css?v13">
 </head>
 <body>
 
 <header>
-  <h1>⚖️ ChangChi</h1>
+  <h1>⚖️ ChangChi · ชั่งจิ</h1>
   <p class="sub">ชั่งน้อน ชั่งแมว ชั่งจิ ชั่งเล้ย</p>
 </header>
 <main>
@@ -45,12 +51,12 @@
   <div class="card"><h2>📈 สรุปน้ำหนักล่าสุดต่อตัว</h2><div id="summaryBox"></div></div>
 </section>
 <section class="view" id="view-manage">
+  <div class="card"><h2>🐱 จัดการแมว</h2><div id="catMgr"></div><button class="addbtn" id="addCat" style="margin-top:10px">+ เพิ่มแมว</button><p class="hint">แตะรูปวงกลมเพื่อใส่รูปโปรไฟล์แมว · ติ๊กดาว ★ ตั้งเป็นค่าเริ่มต้น</p></div>
+  <div class="card"><h2>⚙️ จัดการกรง (น้ำหนักกรงเปล่า)</h2><div id="cageMgr"></div><button class="btn sec" id="addCage" style="margin-top:12px">+ เพิ่มกรง</button><p class="hint">น้ำหนักกรงเปล่า (tare) หน่วยกิโลกรัม — แก้ไขได้ บันทึกอัตโนมัติ</p></div>
+  <div class="card"><h2>🏥 จัดการโรงพยาบาล/คลินิก</h2><div id="hospMgr"></div><button class="addbtn" id="addHosp" style="margin-top:10px">+ เพิ่มโรงพยาบาล</button><p class="hint">ติ๊กดาว ★ เพื่อตั้งเป็นค่าเริ่มต้น (จะถูกเลือกอัตโนมัติตอนชั่ง)</p></div>
+  <div class="card"><h2>💾 สำรอง / กู้คืนข้อมูลทั้งหมด</h2><p class="hint" style="margin-top:0">ส่งออกข้อมูลทั้งหมด (แมว รูป กรง โรงพยาบาล ประวัติ ค่าตั้งต้น) เป็นไฟล์เดียว เอาไปเปิดเครื่องอื่นได้</p><button class="btn sec" id="exportAllBtn" style="margin-top:10px">⬆️ สำรองข้อมูล (ดาวน์โหลด .json)</button><button class="btn ghost" id="importAllBtn" style="margin-top:8px">⬇️ กู้คืนจากไฟล์สำรอง</button></div>
   <div class="card"><h2>🎨 ธีมสี</h2><div id="themePicker" class="theme-row"></div><p class="hint">เลือกธีมที่ชอบ สลับได้ทุกเมื่อ</p></div>
   <div class="card"><h2>↕️ จัดลำดับหน้าชั่ง</h2><div id="orderMgr"></div><p class="hint">กดลูกศรขึ้น/ลงเพื่อสลับลำดับการ์ดในหน้าชั่ง (ปุ่มบันทึกอยู่ล่างสุดเสมอ)</p></div>
-  <div class="card"><h2>🐱 จัดการแมว</h2><div id="catMgr"></div><button class="addbtn" id="addCat" style="margin-top:10px">+ เพิ่มแมว</button><p class="hint">แตะรูปวงกลมเพื่อใส่รูปโปรไฟล์แมว · ติ๊กดาว ★ ตั้งเป็นค่าเริ่มต้น</p></div>
-  <div class="card"><h2>🏥 จัดการโรงพยาบาล/คลินิก</h2><div id="hospMgr"></div><button class="addbtn" id="addHosp" style="margin-top:10px">+ เพิ่มโรงพยาบาล</button><p class="hint">ติ๊กดาว ★ เพื่อตั้งเป็นค่าเริ่มต้น (จะถูกเลือกอัตโนมัติตอนชั่ง)</p></div>
-  <div class="card"><h2>⚙️ จัดการกรง (น้ำหนักกรงเปล่า)</h2><div id="cageMgr"></div><button class="btn sec" id="addCage" style="margin-top:12px">+ เพิ่มกรง</button><p class="hint">น้ำหนักกรงเปล่า (tare) หน่วยกิโลกรัม — แก้ไขได้ บันทึกอัตโนมัติ</p></div>
-  <div class="card"><h2>💾 สำรอง / กู้คืนข้อมูลทั้งหมด</h2><p class="hint" style="margin-top:0">ส่งออกข้อมูลทั้งหมด (แมว รูป กรง โรงพยาบาล ประวัติ ค่าตั้งต้น) เป็นไฟล์เดียว เอาไปเปิดเครื่องอื่นได้</p><button class="btn sec" id="exportAllBtn" style="margin-top:10px">⬆️ สำรองข้อมูล (ดาวน์โหลด .json)</button><button class="btn ghost" id="importAllBtn" style="margin-top:8px">⬇️ กู้คืนจากไฟล์สำรอง</button></div>
   <div class="card"><h2>ℹ️ เกี่ยวกับ</h2><p class="hint" style="margin-top:0">ข้อมูลเก็บในเครื่องนี้ (เบราว์เซอร์) — ย้ายเครื่องได้ด้วยปุ่มสำรอง/กู้คืนด้านบน</p></div>
 </section>
 </main>
