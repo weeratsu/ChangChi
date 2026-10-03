@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v16">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v18">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v16">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v16">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v16">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v16">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v16">
-<link rel="manifest" href="manifest.webmanifest?v16">
-<link rel="stylesheet" href="css/style.css?v16">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v18">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v18">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v18">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v18">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v18">
+<link rel="manifest" href="manifest.webmanifest?v18">
+<link rel="stylesheet" href="css/style.css?v18">
 </head>
 <body>
 
@@ -39,12 +39,17 @@
   <div class="tip-card" id="tipCard"><button class="tip-x" id="tipClose" title="ปิด">×</button><div class="tip-h">💡 วิธีชั่งง่าย ๆ</div><div class="tip-b">เวลาพาแมวไปหาหมอ ไม่ต้องจับแมวออกมาชั่ง — <b>ชั่งทั้งกรงไปเลย</b> (แมว+กรง) แล้วคีย์น้ำหนักรวมลงไป แอปจะหักน้ำหนักกรงออกให้เอง ได้น้ำหนักแมวทันที</div></div>
   
   <div class="card weigh-card" data-wkey="weigh">
-    <h2>⚖️ คีย์น้ำหนักรวม (แมว + กรง)</h2>
-    <input id="totalW" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off">
+    <h2>⚖️ คีย์น้ำหนัก</h2>
+    <div class="wmode">
+      <button class="wmode-btn on" id="modeCat" type="button">น้ำหนักแมว</button>
+      <button class="wmode-btn" id="modeTotal" type="button">น้ำหนักรวม (แมว+กรง)</button>
+    </div>
+    <input id="catWInput" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off">
+    <input id="totalW" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off" style="display:none">
     <div class="result empty" id="result">
-      <div class="lbl">น้ำหนักแมว</div>
+      <div class="lbl" id="resLbl">น้ำหนักรวม (แมว + กรง)</div>
       <div class="big"><span id="catW">—</span> <span class="unit">กก.</span></div>
-      <div class="calc" id="calcLine">คีย์น้ำหนักรวมด้านบน</div>
+      <div class="calc" id="calcLine">คีย์น้ำหนักแมวด้านบน</div>
     </div>
     <div class="sel-summary" id="selSummary"></div>
     <button class="btn big-save weigh-save-top" id="saveBtnTop">💾 บันทึกผล</button>
@@ -74,7 +79,8 @@
   <div class="card"><h2>🎨 ธีมสี</h2><div id="themePicker" class="theme-row"></div><p class="hint">เลือกธีมที่ชอบ สลับได้ทุกเมื่อ</p></div>
   <div class="card"><h2>↕️ จัดลำดับหน้าชั่ง</h2><div id="orderMgr"></div><p class="hint">กดลูกศรขึ้น/ลงเพื่อสลับลำดับการ์ดในหน้าชั่ง (ปุ่มบันทึกอยู่ล่างสุดเสมอ)</p></div>
   <div class="card"><h2>💾 สำรอง / กู้คืนข้อมูลทั้งหมด</h2><p class="hint" style="margin-top:0">ส่งออกข้อมูลทั้งหมด (แมว รูป กรง โรงพยาบาล ประวัติ ค่าตั้งต้น) เป็นไฟล์เดียว เอาไปเปิดเครื่องอื่นได้</p><button class="btn sec" id="exportAllBtn" style="margin-top:10px">⬆️ สำรองข้อมูล (ดาวน์โหลด .json)</button><button class="btn ghost" id="importAllBtn" style="margin-top:8px">⬇️ กู้คืนจากไฟล์สำรอง</button></div>
-  <div class="card"><h2>ℹ️ เกี่ยวกับ</h2><p class="hint" style="margin-top:0">ข้อมูลเก็บในเครื่องนี้ (เบราว์เซอร์) — ย้ายเครื่องได้ด้วยปุ่มสำรอง/กู้คืนด้านบน</p><button class="addbtn" id="reloadBtn" style="margin-top:10px">🔄 โหลดเวอร์ชันใหม่จากเว็บ</button><p class="hint" id="verLine" style="margin-top:8px;text-align:center;opacity:.7"></p></div>
+  <div class="card"><h2>ℹ️ เกี่ยวกับ</h2><p class="hint" style="margin-top:0">ข้อมูลเก็บในเครื่องนี้ (เบราว์เซอร์) — ย้ายเครื่องได้ด้วยปุ่มสำรอง/กู้คืนด้านบน</p><button class="addbtn" id="reloadBtn" style="margin-top:10px">🔄 โหลดเวอร์ชันใหม่จากเว็บ</button>
+<button class="addbtn" id="fixImportBtn" style="margin-top:10px">🔧 แก้น้ำหนักที่นำเข้าผิด (CSV)</button><p class="hint" id="verLine" style="margin-top:8px;text-align:center;opacity:.7"></p></div>
 </section>
 </main>
 <nav class="tabbar">
@@ -101,18 +107,18 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v16"></script>
-<script src="data/cages.js?v16"></script>
-<script src="js/storage.js?v16"></script>
-<script src="js/crop.js?v16"></script>
-<script src="js/weigh.js?v16"></script>
-<script src="js/history.js?v16"></script>
-<script src="js/summary.js?v16"></script>
-<script src="js/settings.js?v16"></script>
-<script src="js/backup.js?v16"></script>
-<script src="js/order.js?v16"></script>
-<script src="js/pullrefresh.js?v16"></script>
-<script src="js/install.js?v16"></script>
-<script src="js/app.js?v16"></script>
+<script src="js/theme.js?v18"></script>
+<script src="data/cages.js?v18"></script>
+<script src="js/storage.js?v18"></script>
+<script src="js/crop.js?v18"></script>
+<script src="js/weigh.js?v18"></script>
+<script src="js/history.js?v18"></script>
+<script src="js/summary.js?v18"></script>
+<script src="js/settings.js?v18"></script>
+<script src="js/backup.js?v18"></script>
+<script src="js/order.js?v18"></script>
+<script src="js/pullrefresh.js?v18"></script>
+<script src="js/install.js?v18"></script>
+<script src="js/app.js?v18"></script>
 </body>
 </html>

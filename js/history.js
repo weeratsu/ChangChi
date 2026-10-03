@@ -136,7 +136,7 @@ function saveManual(){
 }
 function downloadTemplate(){
  var rows=[
-  ["\u0E27\u0E31\u0E19\u0E40\u0E27\u0E25\u0E32 (dd/mm/yyyy HH:MM)","\u0E41\u0E21\u0E27","\u0E01\u0E23\u0E07","\u0E19\u0E49\u0E33\u0E2B\u0E19\u0E31\u0E01\u0E23\u0E27\u0E21(\u0E01\u0E01.)","\u0E2B\u0E21\u0E32\u0E22\u0E40\u0E2B\u0E15\u0E38","\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25","\u0E17\u0E33\u0E2B\u0E21\u0E31\u0E19\u0E41\u0E25\u0E49\u0E27 (\u0E43\u0E0A\u0E48/\u0E44\u0E21\u0E48)"],
+  ["\u0E27\u0E31\u0E19\u0E40\u0E27\u0E25\u0E32 (dd/mm/yyyy HH:MM)","\u0E41\u0E21\u0E27","\u0E01\u0E23\u0E07","\u0E19\u0E49\u0E33\u0E2B\u0E19\u0E31\u0E01\u0E41\u0E21\u0E27(\u0E01\u0E01.)","\u0E2B\u0E21\u0E32\u0E22\u0E40\u0E2B\u0E15\u0E38","\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25","\u0E17\u0E33\u0E2B\u0E21\u0E31\u0E19\u0E41\u0E25\u0E49\u0E27 (\u0E43\u0E0A\u0E48/\u0E44\u0E21\u0E48)"],
   ["01/09/2026 09:30","\u0E19\u0E49\u0E2D\u0E07 1","\u0E01\u0E23\u0E07 1","6.3","\u0E15\u0E31\u0E27\u0E2D\u0E22\u0E48\u0E32\u0E07 - \u0E25\u0E1A\u0E41\u0E16\u0E27\u0E19\u0E35\u0E49\u0E44\u0E14\u0E49","\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25\u0E2A\u0E31\u0E15\u0E27\u0E4C \u0E15\u0E31\u0E27\u0E2D\u0E22\u0E48\u0E32\u0E07 1","\u0E44\u0E21\u0E48"]
  ];
  var csv=rows.map(function(r){return r.map(function(c){return '"'+(""+c).replace(/"/g,'""')+'"';}).join(",");}).join("\r\n");
@@ -181,13 +181,15 @@ function importCSV(file){
    for(var i=1;i<rows.length;i++){
     var r=rows[i];if(!r||r.join("").trim()==="")continue;
     var dstr=r[0],catName=(r[1]||"").trim(),cageName=(r[2]||"").trim();
-    var tot=parseFloat((""+(r[3]||"")).replace(",","."));
     var neuStr=(r[4]||"").trim(),note=(r[5]||"").trim(),hosp=(r[6]||"").trim();
     var dt=parseThaiDate(dstr);
-    if(!dt||isNaN(tot)){skipped++;continue;}
+    var catVal=parseFloat((""+(r[3]||"")).replace(",","."));
+    if(!dt||isNaN(catVal)){skipped++;continue;}
     var tare=0;cages.forEach(function(c){if(c.name===cageName)tare=c.tare;});
-    var cat=Math.round((tot-tare)*100)/100;
+    // CSV weight column is the CAT net weight directly; reconstruct total = cat + tare.
+    var cat=Math.round(catVal*100)/100;
     if(cat<=0){skipped++;continue;}
+    var tot=Math.round((cat+tare)*100)/100;
     var rec={id:"h"+Date.now()+"_"+i+"_"+Math.floor(Math.random()*1000),ts:dt.toISOString(),catName:catName,cageName:cageName,tare:tare,total:tot,cat:cat,note:note,hosp:hosp};
     if(neuStr){ var yes=/^(\u0E43\u0E0A\u0E48|yes|y|true|1|\u0E17\u0E33\u0E41\u0E25\u0E49\u0E27)$/i.test(neuStr); rec.neutered=yes; }
     hist.push(rec);
@@ -205,4 +207,23 @@ function pickCSV(){
  var inp=document.createElement("input");inp.type="file";inp.accept=".csv,text/csv";
  inp.onchange=function(){var f=inp.files&&inp.files[0];if(f)importCSV(f);};
  inp.click();
+}
+
+// ===== One-time fix: reinterpret CSV-imported weights as CAT net weight =====
+function fixImportedWeights(){
+ var LS_FIXFLAG="woc_import_wt_fixed_v1";
+ var n=0;
+ for(var i=0;i<hist.length;i++){
+  var r=hist[i];
+  if(typeof r.id==="string" && /^h\d+_\d+_\d+$/.test(r.id)){
+   var tare=(typeof r.tare==="number")?r.tare:0;
+   var newCat=Math.round((r.total)*100)/100;
+   var newTot=Math.round((r.total+tare)*100)/100;
+   r.cat=newCat; r.total=newTot;
+   n++;
+  }
+ }
+ if(n>0){ save(LS_HIST,hist); renderHist(); renderSummary(); }
+ try{localStorage.setItem(LS_FIXFLAG,"1");}catch(e){}
+ toast(n>0?("\u0e41\u0e01\u0e49\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e35\u0e48\u0e19\u0e33\u0e40\u0e02\u0e49\u0e32\u0e41\u0e25\u0e49\u0e27 "+n+" \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23"):"\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e17\u0e35\u0e48\u0e15\u0e49\u0e2d\u0e07\u0e41\u0e01\u0e49");
 }

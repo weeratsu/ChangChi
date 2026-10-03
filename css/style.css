@@ -203,3 +203,8 @@ header{display:flex;align-items:flex-start;justify-content:space-between;gap:12p
 .ptr-ind .ptr-spin{font-size:18px;display:inline-block}
 .ptr-ind.ptr-loading .ptr-spin{animation:ptrspin .7s linear infinite}
 @keyframes ptrspin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* Weigh input mode toggle */
+.wmode{display:flex;gap:8px;margin-bottom:12px}
+.wmode-btn{flex:1;padding:9px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--card2);color:var(--sub);font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--font)}
+.wmode-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
