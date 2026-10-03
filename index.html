@@ -6,13 +6,22 @@
 <meta name="theme-color" content="#0f766e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>ChangChi</title>
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v13">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v13">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v13">
-<link rel="icon" type="image/svg+xml" href="assets/icon.svg?v13">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v13">
-<link rel="manifest" href="manifest.webmanifest?v13">
-<link rel="stylesheet" href="css/style.css?v13">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ChangChi · ชั่งจิ">
+<meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v14">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ChangChi · ชั่งจิ">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v14">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v14">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v14">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v14">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v14">
+<link rel="manifest" href="manifest.webmanifest?v14">
+<link rel="stylesheet" href="css/style.css?v14">
 </head>
 <body>
 
@@ -65,7 +74,7 @@
   <div class="card"><h2>🎨 ธีมสี</h2><div id="themePicker" class="theme-row"></div><p class="hint">เลือกธีมที่ชอบ สลับได้ทุกเมื่อ</p></div>
   <div class="card"><h2>↕️ จัดลำดับหน้าชั่ง</h2><div id="orderMgr"></div><p class="hint">กดลูกศรขึ้น/ลงเพื่อสลับลำดับการ์ดในหน้าชั่ง (ปุ่มบันทึกอยู่ล่างสุดเสมอ)</p></div>
   <div class="card"><h2>💾 สำรอง / กู้คืนข้อมูลทั้งหมด</h2><p class="hint" style="margin-top:0">ส่งออกข้อมูลทั้งหมด (แมว รูป กรง โรงพยาบาล ประวัติ ค่าตั้งต้น) เป็นไฟล์เดียว เอาไปเปิดเครื่องอื่นได้</p><button class="btn sec" id="exportAllBtn" style="margin-top:10px">⬆️ สำรองข้อมูล (ดาวน์โหลด .json)</button><button class="btn ghost" id="importAllBtn" style="margin-top:8px">⬇️ กู้คืนจากไฟล์สำรอง</button></div>
-  <div class="card"><h2>ℹ️ เกี่ยวกับ</h2><p class="hint" style="margin-top:0">ข้อมูลเก็บในเครื่องนี้ (เบราว์เซอร์) — ย้ายเครื่องได้ด้วยปุ่มสำรอง/กู้คืนด้านบน</p></div>
+  <div class="card"><h2>ℹ️ เกี่ยวกับ</h2><p class="hint" style="margin-top:0">ข้อมูลเก็บในเครื่องนี้ (เบราว์เซอร์) — ย้ายเครื่องได้ด้วยปุ่มสำรอง/กู้คืนด้านบน</p><button class="addbtn" id="reloadBtn" style="margin-top:10px">🔄 โหลดเวอร์ชันใหม่จากเว็บ</button><p class="hint" id="verLine" style="margin-top:8px;text-align:center;opacity:.7"></p></div>
 </section>
 </main>
 <nav class="tabbar">
@@ -92,17 +101,17 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v13"></script>
-<script src="data/cages.js?v13"></script>
-<script src="js/storage.js?v13"></script>
-<script src="js/crop.js?v13"></script>
-<script src="js/weigh.js?v13"></script>
-<script src="js/history.js?v13"></script>
-<script src="js/summary.js?v13"></script>
-<script src="js/settings.js?v13"></script>
-<script src="js/backup.js?v13"></script>
-<script src="js/order.js?v13"></script>
-<script src="js/install.js?v13"></script>
-<script src="js/app.js?v13"></script>
+<script src="js/theme.js?v14"></script>
+<script src="data/cages.js?v14"></script>
+<script src="js/storage.js?v14"></script>
+<script src="js/crop.js?v14"></script>
+<script src="js/weigh.js?v14"></script>
+<script src="js/history.js?v14"></script>
+<script src="js/summary.js?v14"></script>
+<script src="js/settings.js?v14"></script>
+<script src="js/backup.js?v14"></script>
+<script src="js/order.js?v14"></script>
+<script src="js/install.js?v14"></script>
+<script src="js/app.js?v14"></script>
 </body>
 </html>
