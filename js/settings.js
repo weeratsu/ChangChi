@@ -21,12 +21,18 @@ function renderCatMgr(){
   var inp=row.querySelector('.c-name');
   inp.oninput=function(){c.name=this.value;save(LS_CATS,cats);};
   inp.onblur=function(){renderCats();renderSummary();};
-  (function(){var dobInp=row.querySelector('.c-dob');function applyDob(){c.dob=dobInp.value;save(LS_CATS,cats);var ageEl=row.querySelector('.cf-age');if(ageEl){var a=c.dob?catAge(c.dob):'';ageEl.textContent=a?('\u0e2d\u0e32\u0e22\u0e38 '+a):'';}renderSummary();}
-  // Only store the raw value during interaction (no DOM/summary work that could dismiss the mobile picker);
-  // apply age-label + summary refresh after the picker closes (blur / change-after-close).
-  dobInp.oninput=function(){c.dob=dobInp.value;save(LS_CATS,cats);};
-  dobInp.onchange=function(){c.dob=dobInp.value;save(LS_CATS,cats);};
-  dobInp.onblur=applyDob;})();
+  (function(){var dobInp=row.querySelector('.c-dob');
+  // MOBILE FIX: do ZERO work while the native date picker is open — no save, no DOM touch,
+  // no re-render. Writing cats (which contain base64 photos) to localStorage on every
+  // spin tick caused a heavy synchronous write that dismissed the picker mid-selection.
+  // Only commit the value AFTER the picker fully closes (blur).
+  dobInp.onblur=function(){
+    if(dobInp.value===(c.dob||''))return;      // nothing changed
+    c.dob=dobInp.value;save(LS_CATS,cats);
+    var ageEl=row.querySelector('.cf-age');
+    if(ageEl){var a=c.dob?catAge(c.dob):'';ageEl.textContent=a?('\u0e2d\u0e32\u0e22\u0e38 '+a):'';}
+    renderSummary();
+  };})();
   row.querySelector('.c-neuter').onchange=function(){c.neutered=this.checked;save(LS_CATS,cats);};
   row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
   row.querySelector(".del").onclick=function(){
@@ -59,7 +65,7 @@ function renderHospMgr(){
  });
 }
 function addHosp(){hosps.push({id:"hp"+Date.now(),name:""});save(LS_HOSP,hosps);renderHospMgr();renderHospSel();}
-function addCat(){var c={id:"cat"+Date.now(),name:"\u0E41\u0E21\u0E27\u0E43\u0E2B\u0E21\u0E48"};cats.push(c);save(LS_CATS,cats);renderCatMgr();renderCats();}
+function addCat(){var c={id:"cat"+Date.now(),name:""};cats.push(c);save(LS_CATS,cats);renderCatMgr();renderCats();}
 function renderCageMgr(){
  var el=document.getElementById("cageMgr");el.innerHTML="";
  if(!cages.length){el.innerHTML='<p class="empty-note">\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E01\u0E23\u0E07</p>';}
@@ -70,7 +76,7 @@ function renderCageMgr(){
   row.innerHTML=thumb+
    '<div class="nm"><input value="'+esc(c.name)+'" placeholder="\u0E0A\u0E37\u0E48\u0E2D\u0E01\u0E23\u0E07">'+
    '<label class="defrow"><input type="checkbox" class="defchk"'+(c.def?" checked":"")+'> \u0E15\u0E31\u0E49\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19</label></div>'+
-   '<div class="tw"><input inputmode="decimal" value="'+fmtKg(c.tare)+'"></div>'+
+   '<div class="tw"><input inputmode="decimal" placeholder="0.0" value="'+(c.tare?fmtKg(c.tare):"")+'"></div>'+
    '<button class="del">\u00D7</button>';
   var ins=row.querySelectorAll('input[type="text"],input[inputmode="decimal"],.nm input');
   var nameInp=row.querySelector('.nm input');
@@ -90,4 +96,4 @@ function renderCageMgr(){
   el.appendChild(row);
  });
 }
-function addCage(){var c={id:"c"+Date.now(),name:"\u0E01\u0E23\u0E07\u0E43\u0E2B\u0E21\u0E48",tare:0};cages.push(c);save(LS_CAGES,cages);renderCageMgr();renderCages();}
+function addCage(){var c={id:"c"+Date.now(),name:"",tare:0};cages.push(c);save(LS_CAGES,cages);renderCageMgr();renderCages();}

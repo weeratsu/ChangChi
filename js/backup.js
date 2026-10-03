@@ -7,7 +7,12 @@ function exportAll(){
    cages: load(LS_CAGES,[]),
    hosps: load(LS_HOSP,[]),
    hist: load(LS_HIST,[]),
-   sel: load(LS_SEL,{})
+   sel: load(LS_SEL,{}),
+   settings: {
+     theme: localStorage.getItem("woc_theme_v1"),
+     order: load("woc_order_v1", null),
+     tipHidden: localStorage.getItem("woc_tip_hidden")
+   }
   };
   var json=JSON.stringify(data,null,2);
   var blob=new Blob([json],{type:"application/json;charset=utf-8;"});
@@ -33,6 +38,11 @@ function importAll(file){
    if(Array.isArray(data.hosps)) save(LS_HOSP,data.hosps);
    if(Array.isArray(data.hist)) save(LS_HIST,data.hist);
    if(data.sel&&typeof data.sel==="object") save(LS_SEL,data.sel);
+   if(data.settings&&typeof data.settings==="object"){
+     if(data.settings.theme!=null) localStorage.setItem("woc_theme_v1",data.settings.theme);
+     if(data.settings.order!=null) save("woc_order_v1",data.settings.order);
+     if(data.settings.tipHidden!=null) localStorage.setItem("woc_tip_hidden",data.settings.tipHidden);
+   }
    toast("\u0e01\u0e39\u0e49\u0e04\u0e37\u0e19\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e41\u0e25\u0e49\u0e27 \u0e01\u0e33\u0e25\u0e31\u0e07\u0e23\u0e35\u0e42\u0e2b\u0e25\u0e14...");
    setTimeout(function(){location.reload();},800);
   }catch(err){toast("\u0e01\u0e39\u0e49\u0e04\u0e37\u0e19\u0e44\u0e21\u0e48\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08: "+err.message);}

@@ -7,11 +7,14 @@ function renderHist(){
  items.forEach(function(h){
   var row=document.createElement("div");row.className="log-card";
   var initial=((h.catName||"?").trim().charAt(0))||"?";
+  var _photo="";
+  for(var _i=0;_i<cats.length;_i++){ if(cats[_i].name===h.catName){ _photo=catPhoto(cats[_i])||""; break; } }
+  var avaHtml=_photo?'<img class="log-ava" src="'+_photo+'">':'<span class="log-badge">'+esc(initial)+'</span>';
   var noteHtml=h.note?'<span>\uD83D\uDCDD '+esc(h.note)+'</span>':'';
   var hospHtml=h.hosp?'<span>\uD83C\uDFE5 '+esc(h.hosp)+'</span>':'';
   var neuterHtml=("neutered" in h)?(h.neutered?'<span class="tag-neu on">\u2702\ufe0f \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27</span>':'<span class="tag-neu">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19</span>'):'';
   row.innerHTML=
-   '<div class="log-top"><div class="log-cat"><span class="log-badge">'+esc(initial)+'</span>'+esc(h.catName||"(\u0E44\u0E21\u0E48\u0E23\u0E30\u0E1A\u0E38\u0E41\u0E21\u0E27)")+'</div><div class="log-kg">'+fmtKg(h.cat)+' \u0E01\u0E01.</div></div>'+
+   '<div class="log-top"><div class="log-cat">'+avaHtml+esc(h.catName||"(\u0E44\u0E21\u0E48\u0E23\u0E30\u0E1A\u0E38\u0E41\u0E21\u0E27)")+'</div><div class="log-kg">'+fmtKg(h.cat)+' \u0E01\u0E01.</div></div>'+
    '<div class="log-meta">'+
      '<span>\uD83D\uDD52 '+fmtDateTime(h.ts)+'</span>'+
      '<span>\uD83D\uDCE6 '+esc(h.cageName)+'</span>'+
