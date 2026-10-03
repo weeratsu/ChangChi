@@ -3,16 +3,26 @@ function renderCatMgr(){
  var el=document.getElementById("catMgr");el.innerHTML="";
  if(!cats.length){el.innerHTML='<p class="empty-note">\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E41\u0E21\u0E27</p>';}
  cats.forEach(function(c,idx){
-  var row=document.createElement("div");row.className="mgr-row";
+  var row=document.createElement("div");row.className="mgr-row cat-mgr-row";
   var ph=catPhoto(c);
   var thumb = '<button class="thumb-btn" title="\u0E43\u0E2A\u0E48/\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E23\u0E39\u0E1B">'+(ph?'<img class="thumb-img" src="'+ph+'">':'<span class="thumb-ph-ic">\ud83d\udc31</span>')+'<span class="thumb-cam">\ud83d\udcf7</span></button>';
+  var ageTxt=c.dob?catAge(c.dob):"";
   row.innerHTML=thumb+
-   '<div class="nm"><input value="'+esc(c.name)+'" placeholder="\u0E0A\u0E37\u0E48\u0E2D\u0E41\u0E21\u0E27">'+
-   '<label class="defrow"><input type="checkbox" class="defchk"'+(c.def?" checked":"")+'> \u0E15\u0E31\u0E49\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19</label></div>'+
+   '<div class="nm">'+
+     '<input class="c-name" value="'+esc(c.name)+'" placeholder="\u0E0A\u0E37\u0E48\u0E2D\u0E41\u0E21\u0E27">'+
+     '<div class="cat-fields">'+
+       '<label class="cf">\u0e27\u0e31\u0e19\u0e40\u0e01\u0e34\u0e14 <input type="date" class="c-dob" value="'+(c.dob||"")+'"></label>'+
+       '<span class="cf-age">'+(ageTxt?("\u0e2d\u0e32\u0e22\u0e38 "+ageTxt):"")+'</span>'+
+     '</div>'+
+     '<label class="defrow"><input type="checkbox" class="c-neuter"'+(c.neutered?" checked":"")+'> \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27</label>'+
+     '<label class="defrow"><input type="checkbox" class="defchk"'+(c.def?" checked":"")+'> \u0E15\u0E31\u0E49\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19</label>'+
+   '</div>'+
    '<button class="del">\u00D7</button>';
-  var inp=row.querySelector('.nm input');
+  var inp=row.querySelector('.c-name');
   inp.oninput=function(){c.name=this.value;save(LS_CATS,cats);};
   inp.onblur=function(){renderCats();renderSummary();};
+  row.querySelector('.c-dob').onchange=function(){c.dob=this.value;save(LS_CATS,cats);renderCatMgr();renderSummary();};
+  row.querySelector('.c-neuter').onchange=function(){c.neutered=this.checked;save(LS_CATS,cats);};
   row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
   row.querySelector(".defchk").onchange=function(){var on=this.checked;cats.forEach(function(x){x.def=false;});c.def=on;if(on){selCat=c.id;persistSel();}save(LS_CATS,cats);renderCatMgr();renderCats();renderSelSummary();};
   row.querySelector(".del").onclick=function(){

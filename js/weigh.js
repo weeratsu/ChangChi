@@ -58,7 +58,7 @@ function saveWeighing(){
  var catObj=getCat(selCat);
  var noteEl=document.getElementById("noteW");var note=noteEl?noteEl.value.trim():"";
  var hospObj=getHosp(selHosp);
- hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:""});
+ hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",neutered:(catObj&&catObj.neutered)?true:false});
  hist.sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});
  save(LS_HIST,hist);
  totEl.value="";if(noteEl)noteEl.value="";calc();renderHist();renderSummary();
