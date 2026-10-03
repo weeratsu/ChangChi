@@ -196,3 +196,10 @@ header{display:flex;align-items:flex-start;justify-content:space-between;gap:12p
 
 /* Top save button inside the weigh card */
 .weigh-save-top{margin-top:12px;margin-bottom:0}
+
+/* Pull-to-refresh indicator */
+.ptr-ind{position:fixed;top:0;left:0;right:0;height:0;overflow:hidden;z-index:60;display:flex;align-items:center;justify-content:center;gap:8px;
+ background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-size:13px;font-weight:700;opacity:0;transition:opacity .15s}
+.ptr-ind .ptr-spin{font-size:18px;display:inline-block}
+.ptr-ind.ptr-loading .ptr-spin{animation:ptrspin .7s linear infinite}
+@keyframes ptrspin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
