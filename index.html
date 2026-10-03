@@ -75,7 +75,9 @@
     <label>กรง</label><select id="mCage" class="sel"></select>
     <label>โรงพยาบาล / คลินิก</label><select id="mHosp" class="sel"></select>
     <label>วันและเวลา</label><input type="datetime-local" id="mDate" class="sel">
-    <label>น้ำหนักรวม (แมว + กรง) กก.</label><input id="mTotal" inputmode="decimal" placeholder="เช่น 6.3" autocomplete="off">
+    <label>น้ำหนักแมว (กก.)</label><input id="mCatKg" inputmode="decimal" placeholder="ใส่เฉพาะน้ำหนักแมว" autocomplete="off">
+    <label>น้ำหนักรวม (แมว + กรง) กก.</label><input id="mTotal" inputmode="decimal" placeholder="หรือใส่น้ำหนักรวม" autocomplete="off">
+    <p class="field-hint">ใส่ช่องใดช่องหนึ่งก็ได้ — อีกช่องจะคำนวณให้อัตโนมัติจากน้ำหนักกรงที่เลือก</p>
     <label>หมายเหตุ (ไม่บังคับ)</label><input id="mNote" placeholder="เช่น ชั่งที่บ้าน" autocomplete="off">
     <div class="modal-btns">
       <button class="btn ghost" id="mCancel">ยกเลิก</button>

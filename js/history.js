@@ -61,7 +61,9 @@ function nowLocalInput(){
 }
 function openManual(id){
  var m=document.getElementById("manualModal");if(!m)return;
- editingId=id||null;
+ // Guard: when wired as a button onclick (onclick=openManual), the first arg is a MouseEvent,
+ // not a record id. Only treat a STRING id as an edit; anything else is a new entry.
+ editingId=(typeof id==="string" && id)?id:null;
  var rec=null;if(editingId){for(var i=0;i<hist.length;i++)if(hist[i].id===editingId){rec=hist[i];break;}}
  var title=document.getElementById("manualTitle");if(title)title.textContent=rec?"\u270f\ufe0f \u0e41\u0e01\u0e49\u0e44\u0e02\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23":"\u2795 \u0e40\u0e1e\u0e34\u0e48\u0e21\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e22\u0e49\u0e2d\u0e19\u0e2b\u0e25\u0e31\u0e07";
  var catId=selCat,cageId=selCage,hospId=selHosp;
@@ -74,8 +76,21 @@ function openManual(id){
  fillSelect(document.getElementById("mCage"),cages,cageId);
  fillSelect(document.getElementById("mHosp"),hosps,hospId);
  document.getElementById("mDate").value=rec?isoToLocalInput(rec.ts):nowLocalInput();
- document.getElementById("mTotal").value=rec?rec.total:"";
+ var mTotalEl=document.getElementById("mTotal");
+ var mCatEl=document.getElementById("mCatKg");
+ mTotalEl.value=rec?rec.total:"";
+ if(mCatEl)mCatEl.value=rec?rec.cat:"";
  document.getElementById("mNote").value=rec?(rec.note||""):"";
+ // Bidirectional auto-calc between cat weight and total weight using the selected cage tare.
+ var mCageEl=document.getElementById("mCage");
+ function _curTare(){var cg=getCage(mCageEl.value);return cg?(cg.tare||0):0;}
+ function _num(v){v=parseFloat((v||"").replace(",",".").trim());return isNaN(v)?null:v;}
+ var _lock=false;
+ function _fromCat(){ if(_lock||!mCatEl)return; var c=_num(mCatEl.value); if(c==null){return;} _lock=true; mTotalEl.value=fmtKg(Math.round((c+_curTare())*100)/100); _lock=false; }
+ function _fromTotal(){ if(_lock)return; var t=_num(mTotalEl.value); if(t==null){return;} _lock=true; if(mCatEl)mCatEl.value=fmtKg(Math.round((t-_curTare())*100)/100); _lock=false; }
+ if(mCatEl)mCatEl.oninput=_fromCat;
+ mTotalEl.oninput=_fromTotal;
+ mCageEl.onchange=function(){ if(mCatEl&&_num(mCatEl.value)!=null){_fromCat();} else if(_num(mTotalEl.value)!=null){_fromTotal();} };
  m.classList.add("show");
 }
 function isoToLocalInput(iso){var d=new Date(iso);return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());}
@@ -85,13 +100,26 @@ function saveManual(){
  var cageObj=getCage(document.getElementById("mCage").value);
  var hospObj=getHosp(document.getElementById("mHosp").value);
  var dtv=document.getElementById("mDate").value;
- var raw=(document.getElementById("mTotal").value||"").replace(",",".").trim();
  var note=document.getElementById("mNote").value.trim();
- var tot=parseFloat(raw);
  if(!cageObj){toast("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e01\u0e23\u0e07\u0e01\u0e48\u0e2d\u0e19");return;}
  if(!dtv){toast("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e27\u0e31\u0e19\u0e40\u0e27\u0e25\u0e32\u0e01\u0e48\u0e2d\u0e19");return;}
- if(isNaN(tot)||raw===""){toast("\u0e43\u0e2a\u0e48\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21\u0e01\u0e48\u0e2d\u0e19");return;}
- var cat=Math.round((tot-cageObj.tare)*100)/100;
+ var rawTot=(document.getElementById("mTotal").value||"").replace(",",".").trim();
+ var catEl=document.getElementById("mCatKg");
+ var rawCat=catEl?(catEl.value||"").replace(",",".").trim():"";
+ var tare=cageObj.tare||0;
+ var tot, cat;
+ if(rawTot!==""){
+   tot=parseFloat(rawTot);
+   if(isNaN(tot)){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
+   cat=Math.round((tot-tare)*100)/100;
+ } else if(rawCat!==""){
+   cat=parseFloat(rawCat);
+   if(isNaN(cat)){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
+   cat=Math.round(cat*100)/100;
+   tot=Math.round((cat+tare)*100)/100;
+ } else {
+   toast("\u0e43\u0e2a\u0e48\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27 \u0e2b\u0e23\u0e37\u0e2d\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21 \u0e2d\u0e22\u0e48\u0e32\u0e07\u0e43\u0e14\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e2b\u0e19\u0e36\u0e48\u0e07");return;
+ }
  if(cat<=0){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
  var ts=new Date(dtv.replace("T"," ").replace(/-/g,"/")).toISOString();
  if(editingId){

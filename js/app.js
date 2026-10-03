@@ -19,7 +19,7 @@ var _ex=document.getElementById("exportCSV"); if(_ex)_ex.onclick=exportCSV;
 var _ah=document.getElementById("addHosp"); if(_ah)_ah.onclick=addHosp;
 var _ea=document.getElementById("exportAllBtn"); if(_ea)_ea.onclick=exportAll;
 var _ia=document.getElementById("importAllBtn"); if(_ia)_ia.onclick=pickBackup;
-var _mo=document.getElementById("manualBtn"); if(_mo)_mo.onclick=openManual;
+manualBtn"); if(_mo)_mo.onclick=function(){openManual();};
 var _mc=document.getElementById("mCancel"); if(_mc)_mc.onclick=closeManual;
 var _ms=document.getElementById("mSave"); if(_ms)_ms.onclick=saveManual;
 var _dt=document.getElementById("tmplBtn"); if(_dt)_dt.onclick=downloadTemplate;

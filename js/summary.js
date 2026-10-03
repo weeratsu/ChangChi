@@ -25,6 +25,8 @@ function renderSummary(){
   if(cobj&&cobj.dob){var ag=catAge(cobj.dob); if(ag)metaBits.push("\ud83c\udf82 "+ag);}
   if(cobj){metaBits.push(cobj.neutered?"\u2702\ufe0f \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27":"\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19");}
   var metaHtml=metaBits.length?'<div class="sum-meta">'+metaBits.join(" \u00b7 ")+'</div>':'';
+  var _sphoto=cobj?(catPhoto(cobj)||""):"";
+  var sAva=_sphoto?'<img class="log-ava" src="'+_sphoto+'">':'<span class="log-badge">'+esc(initial)+'</span>';
   // before/after neuter comparison (from per-log snapshot)
   var before=arr.filter(function(x){return x.neutered===false;});
   var after=arr.filter(function(x){return x.neutered===true;});
@@ -35,7 +37,7 @@ function renderSummary(){
    cmpHtml='<div class="sum-cmp">\u0e01\u0e48\u0e2d\u0e19\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19 \u0e40\u0e09\u0e25\u0e35\u0e48\u0e22 <b>'+fmtKg(ab)+'</b> \u2192 \u0e2b\u0e25\u0e31\u0e07\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19 <b>'+fmtKg(aa)+'</b> ('+sign+fmtKg(dd)+' \u0e01\u0e01.)</div>';
   }
   html+='<div class="sum-card">'+
-   '<div class="sum-head"><span class="log-badge">'+esc(initial)+'</span><span class="sum-name">'+esc(n)+'</span></div>'+
+   '<div class="sum-head">'+sAva+'<span class="sum-name">'+esc(n)+'</span></div>'+
    metaHtml+
    '<div class="sum-kg">'+fmtKg(latest.cat)+' <small>\u0E01\u0E01.</small></div>'+
    deltaHtml+
