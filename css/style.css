@@ -241,3 +241,21 @@ header{display:flex;align-items:flex-start;justify-content:space-between;gap:12p
 .bday-msg{font-size:13.5px;color:var(--txt);line-height:1.5;margin:8px 4px 16px}
 .bday-ok{width:100%}
 .bday-art{width:100%;height:auto;max-width:260px;aspect-ratio:1/1;border-radius:16px;border:none;object-fit:cover}
+
+/* Birthday: cat photo + party hat overlay */
+.bday-avatar-wrap{position:relative;width:150px;height:150px;margin:20px auto 14px}
+.bday-avatar-wrap .bday-photo{width:150px;height:150px;margin:0;border:4px solid var(--accent)}
+.bday-hat{position:absolute;top:-20px;left:50%;transform:translateX(-50%) rotate(-12deg);width:0;height:0;
+ border-left:26px solid transparent;border-right:26px solid transparent;border-bottom:46px solid #ff5a8a;
+ filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));z-index:2}
+.bday-hat::before{content:"";position:absolute;left:-26px;top:44px;width:52px;height:9px;background:#ffd23f;border-radius:50%}
+.bday-hat::after{content:"";position:absolute;left:-7px;top:-50px;width:14px;height:14px;background:#ffd23f;border-radius:50%;box-shadow:0 0 0 2px #fff}
+/* stripes on hat via repeating gradient layered as a thin element */
+.bday-avatar-wrap .bday-hat{background:transparent}
+
+/* Birthday decorative emoji around the cat photo */
+.bdeco{position:absolute;font-size:24px;z-index:3;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));pointer-events:none;animation:bdecoPop .4s ease-out both}
+.bdeco-cake{bottom:-14px;left:-20px;animation-delay:.05s}
+.bdeco-gift{bottom:-14px;right:-20px;animation-delay:.14s}
+.bdeco-balloon{top:-18px;right:-18px;animation-delay:.22s}
+@keyframes bdecoPop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}to{transform:scale(1) rotate(0);opacity:1}}
