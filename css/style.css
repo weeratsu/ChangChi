@@ -216,3 +216,28 @@ header{display:flex;align-items:flex-start;justify-content:space-between;gap:12p
 .catw-row label{font-size:12.5px;color:var(--sub);font-weight:600}
 .small-input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card2);color:var(--txt);font-size:16px;font-family:var(--font);text-align:center}
 .small-input:focus{outline:none;border-color:var(--accent)}
+
+/* History grouped-by-cat collapsible */
+.cat-group-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;cursor:pointer;font-family:var(--font);font-size:15px;font-weight:700;color:var(--txt)}
+.cat-group-head.open{border-color:var(--accent)}
+.cat-group-head .cgh-left{display:flex;align-items:center;gap:9px;min-width:0}
+.cat-group-head .cgh-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cat-group-head .cgh-count{background:var(--accent);color:#fff;font-size:12px;font-weight:800;border-radius:999px;padding:1px 9px;flex:0 0 auto}
+.cat-group-head .cgh-chev{color:var(--sub);font-size:14px;flex:0 0 auto}
+.cat-group-body{margin:0 0 12px;padding-left:2px}
+
+/* Birthday overlay */
+.bday-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .2s}
+.bday-overlay.show{opacity:1}
+.bday-box{background:var(--card);border-radius:20px;max-width:340px;width:100%;padding:24px 22px 20px;text-align:center;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.4);transform:scale(.9);transition:transform .2s}
+.bday-overlay.show .bday-box{transform:scale(1)}
+.bday-x{position:absolute;top:10px;right:12px;background:none;border:none;font-size:24px;color:var(--sub);cursor:pointer;line-height:1}
+.bday-conf{font-size:30px;letter-spacing:4px}
+.bday-photo{width:140px;height:140px;border-radius:50%;object-fit:cover;margin:10px auto 6px;display:block;border:4px solid var(--accent)}
+.bday-photo.bday-ph{display:flex;align-items:center;justify-content:center;font-size:64px;background:var(--card2)}
+.bday-title{font-size:15px;color:var(--sub);font-weight:700;margin-top:6px}
+.bday-name{font-size:26px;font-weight:800;color:var(--accent);margin:2px 0}
+.bday-age{font-size:14px;color:var(--txt);font-weight:700;margin-bottom:6px}
+.bday-msg{font-size:13.5px;color:var(--txt);line-height:1.5;margin:8px 4px 16px}
+.bday-ok{width:100%}
+.bday-art{width:100%;height:auto;max-width:260px;aspect-ratio:1/1;border-radius:16px;border:none;object-fit:cover}
