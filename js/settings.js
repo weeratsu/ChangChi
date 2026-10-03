@@ -21,7 +21,12 @@ function renderCatMgr(){
   var inp=row.querySelector('.c-name');
   inp.oninput=function(){c.name=this.value;save(LS_CATS,cats);};
   inp.onblur=function(){renderCats();renderSummary();};
-  row.querySelector('.c-dob').onchange=function(){c.dob=this.value;save(LS_CATS,cats);var ageEl=row.querySelector('.cf-age');if(ageEl){var a=c.dob?catAge(c.dob):'';ageEl.textContent=a?('\u0e2d\u0e32\u0e22\u0e38 '+a):'';}renderSummary();};
+  (function(){var dobInp=row.querySelector('.c-dob');function applyDob(){c.dob=dobInp.value;save(LS_CATS,cats);var ageEl=row.querySelector('.cf-age');if(ageEl){var a=c.dob?catAge(c.dob):'';ageEl.textContent=a?('\u0e2d\u0e32\u0e22\u0e38 '+a):'';}renderSummary();}
+  // Only store the raw value during interaction (no DOM/summary work that could dismiss the mobile picker);
+  // apply age-label + summary refresh after the picker closes (blur / change-after-close).
+  dobInp.oninput=function(){c.dob=dobInp.value;save(LS_CATS,cats);};
+  dobInp.onchange=function(){c.dob=dobInp.value;save(LS_CATS,cats);};
+  dobInp.onblur=applyDob;})();
   row.querySelector('.c-neuter').onchange=function(){c.neutered=this.checked;save(LS_CATS,cats);};
   row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
   row.querySelector(".del").onclick=function(){
