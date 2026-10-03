@@ -58,7 +58,7 @@ function renderHospMgr(){
   el.appendChild(row);
  });
 }
-function addHosp(){hosps.push({id:"hp"+Date.now(),name:"\u0E42\u0E23\u0E07\u0E1E\u0E22\u0E32\u0E1A\u0E32\u0E25\u0E43\u0E2B\u0E21\u0E48"});save(LS_HOSP,hosps);renderHospMgr();renderHospSel();}
+function addHosp(){hosps.push({id:"hp"+Date.now(),name:""});save(LS_HOSP,hosps);renderHospMgr();renderHospSel();}
 function addCat(){var c={id:"cat"+Date.now(),name:"\u0E41\u0E21\u0E27\u0E43\u0E2B\u0E21\u0E48"};cats.push(c);save(LS_CATS,cats);renderCatMgr();renderCats();}
 function renderCageMgr(){
  var el=document.getElementById("cageMgr");el.innerHTML="";
