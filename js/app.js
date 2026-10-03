@@ -13,6 +13,7 @@ function __wocInit(){
 document.querySelectorAll(".tabbar button").forEach(function(b){b.onclick=function(){switchView(b.dataset.view);};});
 document.getElementById("totalW").addEventListener("input",calc);
 document.getElementById("saveBtn").onclick=saveWeighing;
+var _sbt=document.getElementById("saveBtnTop"); if(_sbt)_sbt.onclick=saveWeighing;
 document.getElementById("addCage").onclick=addCage;
 document.getElementById("addCat").onclick=addCat;
 var _ex=document.getElementById("exportCSV"); if(_ex)_ex.onclick=exportCSV;
