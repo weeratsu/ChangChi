@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v18">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v20">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v18">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v18">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v18">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v18">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v18">
-<link rel="manifest" href="manifest.webmanifest?v18">
-<link rel="stylesheet" href="css/style.css?v18">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v20">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v20">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v20">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v20">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v20">
+<link rel="manifest" href="manifest.webmanifest?v20">
+<link rel="stylesheet" href="css/style.css?v20">
 </head>
 <body>
 
@@ -39,17 +39,16 @@
   <div class="tip-card" id="tipCard"><button class="tip-x" id="tipClose" title="ปิด">×</button><div class="tip-h">💡 วิธีชั่งง่าย ๆ</div><div class="tip-b">เวลาพาแมวไปหาหมอ ไม่ต้องจับแมวออกมาชั่ง — <b>ชั่งทั้งกรงไปเลย</b> (แมว+กรง) แล้วคีย์น้ำหนักรวมลงไป แอปจะหักน้ำหนักกรงออกให้เอง ได้น้ำหนักแมวทันที</div></div>
   
   <div class="card weigh-card" data-wkey="weigh">
-    <h2>⚖️ คีย์น้ำหนัก</h2>
-    <div class="wmode">
-      <button class="wmode-btn on" id="modeCat" type="button">น้ำหนักแมว</button>
-      <button class="wmode-btn" id="modeTotal" type="button">น้ำหนักรวม (แมว+กรง)</button>
-    </div>
-    <input id="catWInput" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off">
-    <input id="totalW" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off" style="display:none">
+    <h2>⚖️ คีย์น้ำหนักรวม (แมว + กรง)</h2>
+    <input id="totalW" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off">
     <div class="result empty" id="result">
-      <div class="lbl" id="resLbl">น้ำหนักรวม (แมว + กรง)</div>
+      <div class="lbl" id="resLbl">น้ำหนักแมว</div>
       <div class="big"><span id="catW">—</span> <span class="unit">กก.</span></div>
-      <div class="calc" id="calcLine">คีย์น้ำหนักแมวด้านบน</div>
+      <div class="calc" id="calcLine">คีย์น้ำหนักรวมด้านบน</div>
+    </div>
+    <div class="catw-row">
+      <label for="catWInput">หรือใส่น้ำหนักแมวตรง ๆ (กก.)</label>
+      <input id="catWInput" class="small-input" inputmode="decimal" placeholder="เช่น 4.5" autocomplete="off">
     </div>
     <div class="sel-summary" id="selSummary"></div>
     <button class="btn big-save weigh-save-top" id="saveBtnTop">💾 บันทึกผล</button>
@@ -62,12 +61,16 @@
     <label style="margin-top:12px">หมายเหตุ (ไม่บังคับ)</label>
     <input id="noteW" placeholder="เช่น หลังฉีดวัคซีน, ก่อนอาหาร" autocomplete="off">
   </div>
-  <button class="btn big-save" id="saveBtn" style="margin-bottom:14px">💾 บันทึกผล</button>
+  
 </section>
 <section class="view" id="view-hist">
-  <div class="card"><h2>📜 ประวัติการชั่ง</h2><div class="hist-tools"><button class="btn sec" id="manualBtn">➕ เพิ่มย้อนหลัง</button><button class="btn sec" id="importBtn">📥 นำเข้า CSV</button><button class="btn ghost" id="tmplBtn">📄 โหลด Template</button></div><div class="fchip-row" id="histFilter"></div><div id="histList"></div></div>
-  <button class="btn sec" id="exportCSV" style="margin-bottom:10px">⬇️ ส่งออกเป็น CSV (Excel)</button>
-  <button class="btn ghost" id="clearHist" style="margin-bottom:14px">ล้างประวัติทั้งหมด</button>
+  <div class="card"><h2>📜 ประวัติการชั่ง</h2>
+    <div class="hist-tools"><button class="btn sec" id="manualBtn">➕ เพิ่มย้อนหลัง</button><button class="btn sec" id="importBtn">📥 นำเข้า CSV</button><button class="btn ghost" id="tmplBtn">📄 โหลด Template</button><button class="btn sec" id="exportCSV">⬇️ ส่งออก CSV</button></div>
+    <div class="fchip-row" id="histFilter"></div>
+    <div class="hist-count" id="histCount"></div>
+    <div id="histList"></div>
+    <button class="btn ghost" id="clearHist" style="margin-top:12px">ล้างประวัติทั้งหมด</button>
+  </div>
 </section>
 <section class="view" id="view-summary">
   <div class="card"><h2>📈 สรุปน้ำหนักล่าสุดต่อตัว</h2><div id="summaryBox"></div></div>
@@ -107,18 +110,18 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v18"></script>
-<script src="data/cages.js?v18"></script>
-<script src="js/storage.js?v18"></script>
-<script src="js/crop.js?v18"></script>
-<script src="js/weigh.js?v18"></script>
-<script src="js/history.js?v18"></script>
-<script src="js/summary.js?v18"></script>
-<script src="js/settings.js?v18"></script>
-<script src="js/backup.js?v18"></script>
-<script src="js/order.js?v18"></script>
-<script src="js/pullrefresh.js?v18"></script>
-<script src="js/install.js?v18"></script>
-<script src="js/app.js?v18"></script>
+<script src="js/theme.js?v20"></script>
+<script src="data/cages.js?v20"></script>
+<script src="js/storage.js?v20"></script>
+<script src="js/crop.js?v20"></script>
+<script src="js/weigh.js?v20"></script>
+<script src="js/history.js?v20"></script>
+<script src="js/summary.js?v20"></script>
+<script src="js/settings.js?v20"></script>
+<script src="js/backup.js?v20"></script>
+<script src="js/order.js?v20"></script>
+<script src="js/pullrefresh.js?v20"></script>
+<script src="js/install.js?v20"></script>
+<script src="js/app.js?v20"></script>
 </body>
 </html>

@@ -208,3 +208,11 @@ header{display:flex;align-items:flex-start;justify-content:space-between;gap:12p
 .wmode{display:flex;gap:8px;margin-bottom:12px}
 .wmode-btn{flex:1;padding:9px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--card2);color:var(--sub);font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--font)}
 .wmode-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.hist-count{font-size:12.5px;color:var(--sub);margin:4px 2px 8px;font-weight:600}
+
+/* Show-more + secondary cat-weight input */
+.hist-more{width:100%;margin-top:10px}
+.catw-row{margin-top:12px;display:flex;flex-direction:column;gap:5px}
+.catw-row label{font-size:12.5px;color:var(--sub);font-weight:600}
+.small-input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card2);color:var(--txt);font-size:16px;font-family:var(--font);text-align:center}
+.small-input:focus{outline:none;border-color:var(--accent)}

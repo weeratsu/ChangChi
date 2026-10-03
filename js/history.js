@@ -3,8 +3,10 @@ function renderHist(){
  var el=document.getElementById("histList");el.innerHTML="";
  renderHistFilter();
  var items=hist.filter(function(h){return !histFilter || h.catName===histFilter;});
+ var _hc=document.getElementById("histCount"); if(_hc){ _hc.textContent=items.length?("\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14 "+items.length+" \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23"):""; }
+ var PAGE=30; if(typeof window.__histShown!=="number")window.__histShown=PAGE; var _shown=Math.min(window.__histShown, items.length); var _slice=items.slice(0,_shown);
  if(!items.length){el.innerHTML='<p class="empty-note">'+(hist.length?"\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E02\u0E2D\u0E07\u0E41\u0E21\u0E27\u0E15\u0E31\u0E27\u0E19\u0E35\u0E49":"\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E0A\u0E31\u0E48\u0E07")+'</p>';return;}
- items.forEach(function(h){
+ _slice.forEach(function(h){
   var row=document.createElement("div");row.className="log-card";
   var initial=((h.catName||"?").trim().charAt(0))||"?";
   var _photo="";
@@ -28,6 +30,13 @@ function renderHist(){
   row.querySelector(".log-del").onclick=function(){if(!confirm("\u0e25\u0e1a\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e19\u0e35\u0e49?"))return;hist=hist.filter(function(x){return x.id!==h.id;});save(LS_HIST,hist);renderHist();renderSummary();};
   el.appendChild(row);
  });
+ if(items.length>_shown){
+  var more=document.createElement("button");
+  more.className="btn ghost hist-more";
+  more.textContent="\u0e14\u0e39\u0e40\u0e1e\u0e34\u0e48\u0e21 ("+(items.length-_shown)+" \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23)";
+  more.onclick=function(){ window.__histShown=_shown+PAGE; renderHist(); };
+  el.appendChild(more);
+ }
 }
 function renderHistFilter(){
  var el=document.getElementById("histFilter");if(!el)return;
@@ -36,7 +45,7 @@ function renderHistFilter(){
  var html='<button class="fchip'+(histFilter===""?" on":"")+'" data-f="">\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14</button>';
  names.forEach(function(n){html+='<button class="fchip'+(histFilter===n?" on":"")+'" data-f="'+esc(n)+'">'+esc(n)+'</button>';});
  el.innerHTML=html;
- el.querySelectorAll(".fchip").forEach(function(b){b.onclick=function(){histFilter=b.getAttribute("data-f");renderHist();};});
+ el.querySelectorAll(".fchip").forEach(function(b){b.onclick=function(){histFilter=b.getAttribute("data-f");window.__histShown=30;renderHist();};});
 }
 function exportCSV(){
  if(!hist.length){toast("\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25");return;}

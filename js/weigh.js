@@ -33,75 +33,49 @@ function renderHospSel(){
  el.innerHTML=hosps.map(function(hp){return '<option value="'+hp.id+'"'+(hp.id===selHosp?" selected":"")+'>'+esc(hp.name)+'</option>';}).join("");
  el.onchange=function(){selHosp=el.value;persistSel();try{renderHdrCtx();}catch(e){}};
 }
-function weighMode(){ return (typeof window!=="undefined"&&window.__weighMode)||"cat"; }
-function setWeighMode(m){
- window.__weighMode=m;
- var catI=document.getElementById("catWInput"), totI=document.getElementById("totalW");
- var bCat=document.getElementById("modeCat"), bTot=document.getElementById("modeTotal");
- var lbl=document.getElementById("resLbl"), calcL=document.getElementById("calcLine");
- if(m==="total"){
-  if(catI)catI.style.display="none";
-  if(totI)totI.style.display="";
-  if(bCat)bCat.classList.remove("on"); if(bTot)bTot.classList.add("on");
-  if(lbl)lbl.textContent="\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27";
- } else {
-  if(catI)catI.style.display="";
-  if(totI)totI.style.display="none";
-  if(bCat)bCat.classList.add("on"); if(bTot)bTot.classList.remove("on");
-  if(lbl)lbl.textContent="\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21 (\u0e41\u0e21\u0e27 + \u0e01\u0e23\u0e07)";
- }
- calc();
-}
+function _wnum(v){ v=parseFloat((""+(v||"")).replace(",",".").trim()); return isNaN(v)?null:v; }
+// Two inputs: totalW (hero, cat+cage) and catWInput (secondary, cat only). Editing one back-fills the other.
+// calc() reads whichever field is non-empty, preferring totalW, and shows the cat net weight.
 function calc(){
  var cage=getCage(selCage);
- var res=document.getElementById("result"),catEl=document.getElementById("catW"),calcL=document.getElementById("calcLine");
- var lbl=document.getElementById("resLbl");
- var mode=weighMode();
- var catI=document.getElementById("catWInput"), totI=document.getElementById("totalW");
- function clear(msg){ res.classList.add("empty"); catEl.textContent="\u2014"; if(calcL)calcL.textContent=msg; return null; }
+ var totI=document.getElementById("totalW"), catI=document.getElementById("catWInput");
+ var res=document.getElementById("result"), catEl=document.getElementById("catW"), calcL=document.getElementById("calcLine");
+ function clear(msg){ if(res)res.classList.add("empty"); if(catEl)catEl.textContent="\u2014"; if(calcL)calcL.textContent=msg; return null; }
  if(!cage){ return clear("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e01\u0e23\u0e07\u0e01\u0e48\u0e2d\u0e19"); }
- if(mode==="cat"){
-  var rawC=(catI&&catI.value||"").replace(",",".").trim();
-  var catV=parseFloat(rawC);
-  if(isNaN(catV)||rawC===""){ if(lbl)lbl.textContent="\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21 (\u0e41\u0e21\u0e27 + \u0e01\u0e23\u0e07)"; return clear("\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27\u0e14\u0e49\u0e32\u0e19\u0e1a\u0e19"); }
-  var cat=Math.round(catV*100)/100;
-  if(cat<=0){ return clear("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e15\u0e49\u0e2d\u0e07\u0e21\u0e32\u0e01\u0e01\u0e27\u0e48\u0e32 0"); }
-  var tot=Math.round((cat+cage.tare)*100)/100;
-  res.classList.remove("empty");
-  if(lbl)lbl.textContent="\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21 (\u0e41\u0e21\u0e27 + \u0e01\u0e23\u0e07)";
-  catEl.textContent=fmtKg(tot);
-  if(calcL)calcL.textContent=fmtKg(cat)+" + "+fmtKg(cage.tare)+" ("+cage.name+")";
+ var tare=cage.tare||0;
+ var totV=_wnum(totI&&totI.value), catV=_wnum(catI&&catI.value);
+ var cat;
+ if(totV!=null){
+  cat=Math.round((totV-tare)*100)/100;
+  if(res)res.classList.remove("empty");
+  if(cat<=0){ if(catEl)catEl.textContent=fmtKg(cat); if(calcL)calcL.innerHTML="\u26a0\ufe0f \u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21\u0e19\u0e49\u0e2d\u0e22\u0e01\u0e27\u0e48\u0e32\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e01\u0e23\u0e07 ("+fmtKg(tare)+" \u0e01\u0e01.)"; if(res)res.classList.add("empty"); return cat; }
+  if(catEl)catEl.textContent=fmtKg(cat);
+  if(calcL)calcL.textContent=fmtKg(totV)+" \u2212 "+fmtKg(tare)+" ("+cage.name+")";
   return cat;
- } else {
-  var rawT=(totI&&totI.value||"").replace(",",".").trim();
-  var tot2=parseFloat(rawT);
-  if(lbl)lbl.textContent="\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27";
-  if(isNaN(tot2)||rawT===""){ return clear("\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21\u0e14\u0e49\u0e32\u0e19\u0e1a\u0e19"); }
-  var cat2=Math.round((tot2-cage.tare)*100)/100;
-  res.classList.remove("empty");
-  if(cat2<=0){ catEl.textContent=fmtKg(cat2); if(calcL)calcL.innerHTML="\u26a0\ufe0f \u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21\u0e19\u0e49\u0e2d\u0e22\u0e01\u0e27\u0e48\u0e32\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e01\u0e23\u0e07 ("+fmtKg(cage.tare)+" \u0e01\u0e01.)"; res.classList.add("empty"); }
-  else{ catEl.textContent=fmtKg(cat2); if(calcL)calcL.textContent=fmtKg(tot2)+" \u2212 "+fmtKg(cage.tare)+" ("+cage.name+")"; }
-  return cat2;
+ } else if(catV!=null){
+  cat=Math.round(catV*100)/100;
+  var tot=Math.round((cat+tare)*100)/100;
+  if(res)res.classList.remove("empty");
+  if(cat<=0){ return clear("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e15\u0e49\u0e2d\u0e07\u0e21\u0e32\u0e01\u0e01\u0e27\u0e48\u0e32 0"); }
+  if(catEl)catEl.textContent=fmtKg(cat);
+  if(calcL)calcL.textContent="\u0e23\u0e27\u0e21 "+fmtKg(tot)+" = \u0e41\u0e21\u0e27 "+fmtKg(cat)+" + \u0e01\u0e23\u0e07 "+fmtKg(tare)+" ("+cage.name+")";
+  return cat;
  }
+ return clear("\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21\u0e14\u0e49\u0e32\u0e19\u0e1a\u0e19");
 }
+// Keep the two inputs in sync as the user types.
+function _syncFromTotal(){ var cage=getCage(selCage); var totI=document.getElementById("totalW"), catI=document.getElementById("catWInput"); if(!cage||!totI||!catI)return; var t=_wnum(totI.value); if(t!=null){ var c=Math.round((t-(cage.tare||0))*100)/100; catI.value = c>0?fmtKg(c):""; } calc(); }
+function _syncFromCat(){ var cage=getCage(selCage); var totI=document.getElementById("totalW"), catI=document.getElementById("catWInput"); if(!cage||!totI||!catI)return; var c=_wnum(catI.value); if(c!=null){ var t=Math.round((c+(cage.tare||0))*100)/100; totI.value = fmtKg(t); } calc(); }
 function saveWeighing(){
  var cage=getCage(selCage);
  if(!cage){toast("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e01\u0e23\u0e07\u0e01\u0e48\u0e2d\u0e19");return;}
- var mode=weighMode();
- var catI=document.getElementById("catWInput"), totI=document.getElementById("totalW");
+ var totI=document.getElementById("totalW"), catI=document.getElementById("catWInput");
+ var tare=cage.tare||0;
+ var totV=_wnum(totI&&totI.value), catV=_wnum(catI&&catI.value);
  var cat, tot;
- if(mode==="cat"){
-  var rawC=(catI&&catI.value||"").replace(",",".").trim();
-  var catV=parseFloat(rawC);
-  if(isNaN(catV)||rawC===""){toast("\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27\u0e01\u0e48\u0e2d\u0e19");return;}
-  cat=Math.round(catV*100)/100;
-  tot=Math.round((cat+cage.tare)*100)/100;
- } else {
-  var rawT=(totI&&totI.value||"").replace(",",".").trim();
-  var totV=parseFloat(rawT);
-  if(isNaN(totV)||rawT===""){toast("\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21\u0e01\u0e48\u0e2d\u0e19");return;}
-  tot=totV; cat=Math.round((tot-cage.tare)*100)/100;
- }
+ if(totV!=null){ tot=totV; cat=Math.round((tot-tare)*100)/100; }
+ else if(catV!=null){ cat=Math.round(catV*100)/100; tot=Math.round((cat+tare)*100)/100; }
+ else { toast("\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e01\u0e48\u0e2d\u0e19"); return; }
  if(cat<=0){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
  var catObj=getCat(selCat);
  var noteEl=document.getElementById("noteW");var note=noteEl?noteEl.value.trim():"";
@@ -109,7 +83,7 @@ function saveWeighing(){
  hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",neutered:(catObj&&catObj.neutered)?true:false});
  hist.sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});
  save(LS_HIST,hist);
- if(catI)catI.value=""; if(totI)totI.value=""; if(noteEl)noteEl.value="";
+ if(totI)totI.value=""; if(catI)catI.value=""; if(noteEl)noteEl.value="";
  calc();renderHist();renderSummary();
  toast("\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e49\u0e27 \u2022 "+(catObj?catObj.name+" ":"")+fmtKg(cat)+" \u0e01\u0e01.");
 }
