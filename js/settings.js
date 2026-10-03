@@ -15,7 +15,7 @@ function renderCatMgr(){
        '<span class="cf-age">'+(ageTxt?("\u0e2d\u0e32\u0e22\u0e38 "+ageTxt):"")+'</span>'+
      '</div>'+
      '<label class="defrow"><input type="checkbox" class="c-neuter"'+(c.neutered?" checked":"")+'> \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27</label>'+
-     '<label class="defrow"><input type="checkbox" class="defchk"'+(c.def?" checked":"")+'> \u0E15\u0E31\u0E49\u0E07\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19</label>'+
+     
    '</div>'+
    '<button class="del">\u00D7</button>';
   var inp=row.querySelector('.c-name');
@@ -24,7 +24,6 @@ function renderCatMgr(){
   row.querySelector('.c-dob').onchange=function(){c.dob=this.value;save(LS_CATS,cats);renderCatMgr();renderSummary();};
   row.querySelector('.c-neuter').onchange=function(){c.neutered=this.checked;save(LS_CATS,cats);};
   row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
-  row.querySelector(".defchk").onchange=function(){var on=this.checked;cats.forEach(function(x){x.def=false;});c.def=on;if(on){selCat=c.id;persistSel();}save(LS_CATS,cats);renderCatMgr();renderCats();renderSelSummary();};
   row.querySelector(".del").onclick=function(){
    if(cats.length<=1){toast("\u0E15\u0E49\u0E2D\u0E07\u0E21\u0E35\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E19\u0E49\u0E2D\u0E22 1 \u0E15\u0E31\u0E27");return;}
    if(!confirm("\u0E25\u0E1A\u0E41\u0E21\u0E27 "+c.name+" ?"))return;
