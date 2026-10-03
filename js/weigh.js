@@ -31,7 +31,7 @@ function renderHospSel(){
  var el=document.getElementById("hospSelect");if(!el)return;
  if(!hosps.length){el.innerHTML='<option value="">(\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35 \u0E23\u0E1E.)</option>';return;}
  el.innerHTML=hosps.map(function(hp){return '<option value="'+hp.id+'"'+(hp.id===selHosp?" selected":"")+'>'+esc(hp.name)+'</option>';}).join("");
- el.onchange=function(){selHosp=el.value;persistSel();};
+ el.onchange=function(){selHosp=el.value;persistSel();try{renderHdrCtx();}catch(e){}};
 }
 function calc(){
  var totEl=document.getElementById("totalW");
@@ -71,4 +71,24 @@ function renderSelSummary(){
  html+='<span class="pill">\uD83D\uDC31 <b>'+esc(cat?cat.name:"-")+'</b></span>';
  html+='<span class="pill">\uD83C\uDFE0 <b>'+esc(cage?cage.name:"-")+'</b> ('+(cage?fmtKg(cage.tare):"-")+' \u0E01\u0E01.)</span>';
  el.innerHTML=html;
+ try{renderHdrCtx();}catch(e){}
 }
+
+// ===== Header selected-context panel =====
+function _hdrFmtDateTime(d){
+ var dd=pad(d.getDate()), mo=pad(d.getMonth()+1), yy=d.getFullYear();
+ var hh=pad(d.getHours()), mi=pad(d.getMinutes());
+ return dd+"/"+mo+"/"+yy+" "+hh+":"+mi;
+}
+function renderHdrCtx(){
+ var el=document.getElementById("hdrCtx"); if(!el) return;
+ var cat=getCat(selCat), cage=getCage(selCage), hosp=(typeof getHosp==="function")?getHosp(selHosp):null;
+ var now=new Date();
+ var lines=""
+  + '<span class="hc-line hc-time"><span class="hc-ic">\uD83D\uDD52</span>'+_hdrFmtDateTime(now)+'</span>'
+  + '<span class="hc-line"><span class="hc-ic">\uD83D\uDC31</span>'+esc(cat?cat.name:"-")+'</span>'
+  + '<span class="hc-line"><span class="hc-ic">\uD83C\uDFE5</span>'+esc(hosp?hosp.name:"-")+'</span>'
+  + '<span class="hc-line"><span class="hc-ic">\uD83D\uDCE6</span>'+esc(cage?cage.name:"-")+'</span>';
+ el.innerHTML=lines;
+}
+if(typeof window!=="undefined"){ try{ if(window.__hdrClock)clearInterval(window.__hdrClock); window.__hdrClock=setInterval(function(){ try{renderHdrCtx();}catch(e){} }, 30000); }catch(e){} }

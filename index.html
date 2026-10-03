@@ -17,8 +17,11 @@
 <body>
 
 <header>
-  <h1>⚖️ ChangChi · ชั่งจิ</h1>
-  <p class="sub">ชั่งน้อน ชั่งแมว ชั่งจิ ชั่งเล้ย</p>
+  <div class="hdr-left">
+    <h1>⚖️ ChangChi · ชั่งจิ</h1>
+    <p class="sub">ชั่งน้อน ชั่งแมว ชั่งจิ ชั่งเล้ย</p>
+  </div>
+  <div class="hdr-ctx" id="hdrCtx"></div>
 </header>
 <main>
 <section class="view on" id="view-weigh">
@@ -54,7 +57,7 @@
 </section>
 <section class="view" id="view-manage">
   <div class="card"><h2>🐱 จัดการแมว</h2><div id="catMgr"></div><button class="addbtn" id="addCat" style="margin-top:10px">+ เพิ่มแมว</button><p class="hint">แตะรูปเพื่อใส่รูปโปรไฟล์แมว · ใส่วันเกิดเพื่อแสดงอายุ · ติ๊ก “ทำหมันแล้ว” ถ้าทำหมันแล้ว</p></div>
-  <div class="card"><h2>⚙️ จัดการกรง (น้ำหนักกรงเปล่า)</h2><div id="cageMgr"></div><button class="btn sec" id="addCage" style="margin-top:12px">+ เพิ่มกรง</button><p class="hint">น้ำหนักกรงเปล่า (tare) หน่วยกิโลกรัม — แก้ไขได้ บันทึกอัตโนมัติ</p></div>
+  <div class="card"><h2>⚙️ จัดการกรง (น้ำหนักกรงเปล่า)</h2><div id="cageMgr"></div><button class="addbtn" id="addCage" style="margin-top:10px">+ เพิ่มกรง</button><p class="hint">น้ำหนักกรงเปล่า (tare) หน่วยกิโลกรัม — แก้ไขได้ บันทึกอัตโนมัติ</p></div>
   <div class="card"><h2>🏥 จัดการโรงพยาบาล/คลินิก</h2><div id="hospMgr"></div><button class="addbtn" id="addHosp" style="margin-top:10px">+ เพิ่มโรงพยาบาล</button><p class="hint">ติ๊กช่อง “ตั้งเป็นค่าเริ่มต้น” เพื่อ (จะถูกเลือกอัตโนมัติตอนชั่ง)</p></div>
   <div class="card"><h2>🎨 ธีมสี</h2><div id="themePicker" class="theme-row"></div><p class="hint">เลือกธีมที่ชอบ สลับได้ทุกเมื่อ</p></div>
   <div class="card"><h2>💾 สำรอง / กู้คืนข้อมูลทั้งหมด</h2><p class="hint" style="margin-top:0">ส่งออกข้อมูลทั้งหมด (แมว รูป กรง โรงพยาบาล ประวัติ ค่าตั้งต้น) เป็นไฟล์เดียว เอาไปเปิดเครื่องอื่นได้</p><button class="btn sec" id="exportAllBtn" style="margin-top:10px">⬆️ สำรองข้อมูล (ดาวน์โหลด .json)</button><button class="btn ghost" id="importAllBtn" style="margin-top:8px">⬇️ กู้คืนจากไฟล์สำรอง</button></div>

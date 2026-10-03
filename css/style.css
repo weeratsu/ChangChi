@@ -176,3 +176,12 @@ input[inputmode]{font-variant-numeric:tabular-nums}
 .tip-h{font-size:14px;font-weight:800;color:var(--accent);margin-bottom:4px}
 .tip-b{font-size:13px;color:var(--txt);line-height:1.55}
 .tip-x{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer;line-height:1}
+
+/* Header selected-context panel */
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.hdr-left{min-width:0;flex:1}
+.hdr-ctx{flex:0 0 auto;max-width:46%;display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;padding-top:2px}
+.hdr-ctx .hc-line{font-size:11.5px;line-height:1.35;color:rgba(255,255,255,.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.hdr-ctx .hc-time{font-size:12.5px;font-weight:800;color:#fff;letter-spacing:.2px}
+.hdr-ctx .hc-ic{opacity:.9;margin-right:3px}
+@media (max-width:360px){ .hdr-ctx .hc-line{font-size:10.5px} .hdr-ctx{max-width:52%} }
