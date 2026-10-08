@@ -82,6 +82,15 @@
   }
   // compare ignoring photo bytes vs ids
   function core(d){ var x=JSON.parse(JSON.stringify(d||{})); Object.keys(PF).forEach(function(c){ var f=PF[c]; (x[c]||[]).forEach(function(r){ if(r){ delete r[f]; delete r[f+'_file']; } }); }); return JSON.stringify([x.cats,x.cages,x.hosps,x.hist]); }
+
+  // Bad session (Oct 8 2026): iPhone Home-Screen apps keep their OWN storage (separate from Safari), so an old
+  // session survives a password change -> 'bad token'. Clear the stale web session and show a Login bar.
+  function __badToken(key){
+    try{ var c=JSON.parse(localStorage.getItem(key)||'null'); if(!c||String(c.writeToken||'').indexOf('ses_')!==0) return; localStorage.removeItem(key); }catch(e){ return; }
+    try{ if(document.getElementById('relogin-bar')) return; var a=document.createElement('a'); a.id='relogin-bar'; a.href='login.html';
+      a.textContent='🔐 Session หมดอายุ — แตะเพื่อ Login ใหม่'; a.style.cssText='position:fixed;left:0;right:0;top:0;z-index:100001;background:#dc2626;color:#fff;text-align:center;padding:12px;padding-top:calc(12px + env(safe-area-inset-top));font:600 14px system-ui,sans-serif;text-decoration:none';
+      document.body.appendChild(a); }catch(e){}
+  }
   function schedule(ms){ clearTimeout(timer); timer=setTimeout(push,ms); }
   function push(){
     if(!pulledOnce) return;
@@ -95,7 +104,7 @@
         learnIds(d,res.photos);
         if(g===gen) dirty(false); else schedule(1500);
         badge('\u2713 synced','#2a7');
-      }).catch(function(e){ console.warn('ChangChi Sheet push failed (kept locally, retry 30s):',e); badge('\u26a0 not saved: '+String((e&&e.message)||e).slice(0,80),'#c33'); schedule(30000); })
+      }).catch(function(e){ console.warn('ChangChi Sheet push failed (kept locally, retry 30s):',e); if(/bad token/.test(String((e&&e.message)||e))) __badToken('cc_sheet_cfg'); badge('\u26a0 not saved: '+String((e&&e.message)||e).slice(0,80),'#c33'); schedule(30000); })
       .then(function(){ pushing=false; });
   }
   // hook ChangChi's save(): every data save marks dirty + schedules a push
@@ -134,7 +143,7 @@
         }
         if((ll && ll>rl) || dirty()){ gen++; dirty(true); schedule(0); }
         badge('\u2713 synced','#2a7');
-      }).catch(function(e){ console.warn('ChangChi Sheet pull failed (using local data):',e); badge('\u26a0 offline: '+String((e&&e.message)||e).slice(0,80),'#c33'); });
+      }).catch(function(e){ console.warn('ChangChi Sheet pull failed (using local data):',e); if(/bad token/.test(String((e&&e.message)||e))) __badToken('cc_sheet_cfg'); badge('\u26a0 offline: '+String((e&&e.message)||e).slice(0,80),'#c33'); });
   }
   window.ccSheetSyncNow=function(){ (pulledOnce&&dirty())?schedule(0):pull(); };
   window.addEventListener('beforeunload',function(e){ if(dirty()&&pulledOnce){ e.preventDefault(); e.returnValue=''; } });
