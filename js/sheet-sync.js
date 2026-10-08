@@ -43,7 +43,7 @@
         if(!res||!res.ok) throw new Error((res&&res.error)||'save failed');
         if(g===gen) dirty(false); else schedule(1500);
         badge('\u2713 synced','#2a7');
-      }).catch(function(e){ console.warn('ChangChi Sheet push failed (kept locally, retry 30s):',e); badge('\u26a0 not saved to Sheet yet - will retry','#c33'); schedule(30000); })
+      }).catch(function(e){ console.warn('ChangChi Sheet push failed (kept locally, retry 30s):',e); badge('\u26a0 not saved: '+String((e&&e.message)||e).slice(0,80),'#c33'); schedule(30000); })
       .then(function(){ pushing=false; });
   }
   // hook ChangChi's save(): every data save marks dirty + schedules a push
@@ -80,7 +80,7 @@
         }
         if((ll && ll>rl) || dirty()){ gen++; dirty(true); schedule(0); }
         badge('\u2713 synced','#2a7');
-      }).catch(function(e){ console.warn('ChangChi Sheet pull failed (using local data):',e); badge('\u26a0 offline (local data)','#c33'); });
+      }).catch(function(e){ console.warn('ChangChi Sheet pull failed (using local data):',e); badge('\u26a0 offline: '+String((e&&e.message)||e).slice(0,80),'#c33'); });
   }
   window.ccSheetSyncNow=function(){ (pulledOnce&&dirty())?schedule(0):pull(); };
   window.addEventListener('beforeunload',function(e){ if(dirty()&&pulledOnce){ e.preventDefault(); e.returnValue=''; } });

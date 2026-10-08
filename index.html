@@ -22,6 +22,21 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v27">
 <link rel="manifest" href="manifest.webmanifest?v27">
 <link rel="stylesheet" href="css/style.css?v27">
+<style id="cc-weigh-compact">
+/* Oct 8 2026: pinned weigh card shrinks to ONE slim row while scrolling (so cats/cages below stay visible & tappable).
+   Shows: total input + cat weight + save. Tap the bar (or scroll back to top) to expand. */
+.weigh-card{transition:padding .15s}
+.weigh-card.compact{padding:8px 10px!important;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.weigh-card.compact h2,.weigh-card.compact .catw-row,.weigh-card.compact .sel-summary,.weigh-card.compact .result .lbl,.weigh-card.compact .result .calc{display:none!important}
+.weigh-card.compact .big-input{flex:1 1 0;min-width:0;font-size:22px!important;padding:8px 10px!important;margin:0!important}
+.weigh-card.compact .result{flex:0 0 auto;margin:0!important;padding:6px 10px!important;border-radius:10px}
+.weigh-card.compact .result .big{font-size:20px!important;line-height:1.1;white-space:nowrap}
+.weigh-card.compact .result .unit{font-size:12px}
+.weigh-card.compact .weigh-save-top{flex:0 0 auto;width:auto!important;margin:0!important;padding:10px 12px!important;font-size:15px!important;white-space:nowrap}
+.weigh-card.compact .weigh-save-top .lbl-long{display:none}
+.weigh-expand-hint{display:none}
+.weigh-card.compact .weigh-expand-hint{display:block;flex:0 0 auto;font-size:16px;opacity:.6;padding:0 2px}
+</style>
 </head>
 <body>
 
@@ -126,7 +141,8 @@
 <script src="js/pullrefresh.js?v27"></script>
 <script src="js/install.js?v27"></script>
 <script src="js/birthday.js?v27"></script>
-<script src="js/sheet-sync.js?v1"></script>
+<script src="js/sheet-sync.js?v2"></script>
+<script src="js/weigh-compact.js?v1"></script>
 <script src="js/app.js?v27"></script>
 </body>
 </html>
