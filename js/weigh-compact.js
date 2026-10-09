@@ -1,22 +1,23 @@
-// weigh-compact.js (Oct 8 2026): shrink the pinned weigh card while the page is scrolled.
+// weigh-compact.js v2 (Oct 9 2026): slim bar while scrolled, but never while typing; no flicker.
 (function(){
  function init(){
   var card=document.querySelector('.weigh-card'); if(!card) return;
   var btn=document.getElementById('saveBtnTop');
-  if(btn && btn.innerHTML.indexOf('lbl-long')<0) btn.innerHTML=btn.innerHTML.replace('บันทึกผล','<span class="lbl-long">บันทึกผล</span>');
+  if(btn) btn.innerHTML=btn.innerHTML.replace(/<span class="lbl-long">([^<]*)<\/span>/,'$1');   // keep "💾 บันทึก" visible
   var hint=document.createElement('span'); hint.className='weigh-expand-hint'; hint.textContent='\u25be'; card.appendChild(hint);
-  var pinned=false, forced=false, T=120;
+  var on=false, forced=false, ON=180, OFF=60;              // hysteresis: compact after 180px, expand only near top
+  function typing(){ var a=document.activeElement; return !!(a && card.contains(a) && /INPUT|TEXTAREA/.test(a.tagName)); }
+  function set(v){ if(v!==on){ on=v; card.classList.toggle('compact',v); } }
   function update(){
    var y=window.scrollY||document.documentElement.scrollTop||0;
-   if(y<=T) forced=false;
-   var on=y>T && !forced;
-   if(on!==pinned){ pinned=on; card.classList.toggle('compact',on); }
+   if(typing()) return;                                   // keyboard open: freeze layout (no jumping under the finger)
+   if(y<=OFF){ forced=false; set(false); return; }
+   if(y>=ON && !forced) set(true);
   }
-  // tap on the compact bar (not on the input / save button) -> expand until scrolled back to top
   card.addEventListener('click',function(e){
    if(!card.classList.contains('compact')) return;
    if(e.target.closest('input,button')) return;
-   forced=true; card.classList.remove('compact'); pinned=false;
+   forced=true; set(false);
   });
   window.addEventListener('scroll',update,{passive:true});
   update();
