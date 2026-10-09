@@ -33,6 +33,14 @@
 #weighMini .wm-cat{flex:0 0 auto;min-height:56px;display:flex;align-items:center;gap:3px;padding:0 10px;border-radius:10px;font-size:20px;font-weight:800;background:linear-gradient(135deg,#0f766e22,#14b8a622);border:1.5px solid var(--accent2,#14b8a6)}
 #weighMini button{flex:0 0 auto;min-width:96px;height:56px;padding:0 14px;border:0;border-radius:10px;font-size:17px;font-weight:800;background:var(--accent,#c47a2c);color:#fff;white-space:nowrap}
 </style>
+<style id="cc-cage-compact">
+/* Oct 9 2026: smaller cage picker - 3 per row, square tiles (was 2 per row, tall 3:4) */
+.cage-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
+.cage-tile{aspect-ratio:1/1!important;border-radius:12px!important}
+.cage-tile .cap{padding:5px 6px!important;font-size:11.5px!important}
+.cage-tile .chk{width:20px!important;height:20px!important;font-size:12px!important;top:5px!important;right:5px!important}
+.cage-tile.noimg .ph{font-size:22px!important}
+</style>
 </head>
 <body>
 
