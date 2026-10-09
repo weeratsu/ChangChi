@@ -23,16 +23,15 @@
 <link rel="manifest" href="manifest.webmanifest?v27">
 <link rel="stylesheet" href="css/style.css?v27">
 <style id="cc-weigh-compact">
-/* Oct 9 2026 v2: compact bar while scrolling — but BIG touch targets (min 52px) and no jumping. */
-.weigh-card.compact{padding:8px!important;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-.weigh-card.compact h2,.weigh-card.compact .catw-row,.weigh-card.compact .sel-summary,.weigh-card.compact .result .lbl,.weigh-card.compact .result .calc{display:none!important}
-.weigh-card.compact .big-input{flex:1 1 0;min-width:0;height:56px;font-size:28px!important;padding:6px 10px!important;margin:0!important}
-.weigh-card.compact .result{flex:0 0 auto;margin:0!important;padding:6px 10px!important;border-radius:10px;min-height:56px;display:flex;align-items:center}
-.weigh-card.compact .result .big{font-size:20px!important;line-height:1.1;white-space:nowrap}
-.weigh-card.compact .result .unit{font-size:12px}
-.weigh-card.compact .weigh-save-top{flex:0 0 auto;width:auto!important;min-width:96px;height:56px;margin:0!important;padding:0 14px!important;font-size:17px!important;font-weight:800;white-space:nowrap}
-.weigh-expand-hint{display:none}
-.weigh-card.compact .weigh-expand-hint{display:block;flex:0 0 auto;font-size:18px;opacity:.6;padding:0 2px}
+/* Oct 9 2026 v4: weigh card is a normal (non-sticky) card; a FIXED mini bar appears when it scrolls away. */
+.weigh-card{position:static!important}
+#weighMini{position:fixed;left:8px;right:8px;z-index:35;display:flex;gap:8px;align-items:center;padding:8px;
+ background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);
+ transform:translateY(-140%);opacity:0;pointer-events:none;transition:transform .18s,opacity .18s}
+#weighMini.on{transform:none;opacity:1;pointer-events:auto}
+#weighMini input{flex:1 1 0;min-width:0;height:56px;font-size:28px;font-weight:800;text-align:center;border-radius:10px;border:1px solid var(--line,#ccc);background:var(--bg,#fff);color:inherit}
+#weighMini .wm-cat{flex:0 0 auto;min-height:56px;display:flex;align-items:center;gap:3px;padding:0 10px;border-radius:10px;font-size:20px;font-weight:800;background:linear-gradient(135deg,#0f766e22,#14b8a622);border:1.5px solid var(--accent2,#14b8a6)}
+#weighMini button{flex:0 0 auto;min-width:96px;height:56px;padding:0 14px;border:0;border-radius:10px;font-size:17px;font-weight:800;background:var(--accent,#c47a2c);color:#fff;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -140,7 +139,7 @@
 <script src="js/install.js?v27"></script>
 <script src="js/birthday.js?v27"></script>
 <script src="js/sheet-sync.js?v4"></script>
-<script src="js/weigh-compact.js?v3"></script>
+<script src="js/weigh-compact.js?v4"></script>
 <script src="js/app.js?v27"></script>
 </body>
 </html>
