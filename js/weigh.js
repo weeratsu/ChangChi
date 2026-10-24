@@ -79,11 +79,12 @@ function saveWeighing(){
  if(cat<=0){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
  var catObj=getCat(selCat);
  var noteEl=document.getElementById("noteW");var note=noteEl?noteEl.value.trim():"";
+ var costEl=document.getElementById("costW"); var _cr=costEl?(costEl.value||"").replace(",",".").trim():""; var cost=_cr===""?null:(isNaN(parseFloat(_cr))?null:Math.round(parseFloat(_cr)*100)/100);
  var hospObj=getHosp(selHosp);
- hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",neutered:(catObj&&catObj.neutered)?true:false});
+ hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catId:catObj?catObj.id:"",cageId:cage.id,hospId:hospObj?hospObj.id:"",catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",cost:cost,neutered:(catObj&&catObj.neutered)?true:false});
  hist.sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});
  save(LS_HIST,hist);
- if(totI)totI.value=""; if(catI)catI.value=""; if(noteEl)noteEl.value="";
+ if(totI)totI.value=""; if(catI)catI.value=""; if(noteEl)noteEl.value=""; if(costEl)costEl.value="";
  calc();renderHist();renderSummary();
  toast("\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e49\u0e27 \u2022 "+(catObj?catObj.name+" ":"")+fmtKg(cat)+" \u0e01\u0e01.");
 }

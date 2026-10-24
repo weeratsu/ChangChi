@@ -6,9 +6,14 @@
   if(!cfg||!cfg.endpoint){ try{ cfg=JSON.parse(localStorage.getItem('cc_sheet_cfg')||'null'); }catch(e){ cfg=null; } if(cfg) window.CC_SHEET_CFG=cfg; }
   if(!cfg||!cfg.endpoint||String(cfg.endpoint).indexOf('http')!==0){
     window.CC_SHEET_ON=false;
-    try{ if(/^https?:$/.test(location.protocol)){ var _b=function(){ if(document.getElementById('cc-login-bar'))return; var a=document.createElement('a'); a.id='cc-login-bar'; a.href='login.html';
-      a.textContent='🔐 Login เพื่อ sync กับ Google Sheet'; a.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99999;background:#2563eb;color:#fff;text-align:center;padding:10px;font:14px system-ui,sans-serif;text-decoration:none';
-      document.body.appendChild(a); }; if(document.body)_b(); else window.addEventListener('DOMContentLoaded',_b); } }catch(e){}
+    try{ if(/^https?:$/.test(location.protocol)){ var _b=function(){ if(document.getElementById('cc-login-bar'))return;
+      if(localStorage.getItem('cc_login_bar_hide')==='1') return;
+      var wrap=document.createElement('div'); wrap.id='cc-login-bar';
+      wrap.style.cssText='position:fixed;left:10px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:99999;display:flex;align-items:center;gap:6px;background:#2563eb;color:#fff;border-radius:999px;padding:7px 10px 7px 12px;font:12px system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25)';
+      var a=document.createElement('a'); a.href='login.html'; a.textContent='🔐 Login sync'; a.style.cssText='color:#fff;text-decoration:none;font-weight:600';
+      var x=document.createElement('button'); x.textContent='×'; x.setAttribute('aria-label','close'); x.style.cssText='background:none;border:0;color:#fff;font-size:16px;line-height:1;cursor:pointer;padding:0 2px';
+      x.onclick=function(){ try{localStorage.setItem('cc_login_bar_hide','1');}catch(e){} wrap.remove(); };
+      wrap.appendChild(a); wrap.appendChild(x); document.body.appendChild(wrap); }; if(document.body)_b(); else window.addEventListener('DOMContentLoaded',_b); } }catch(e){}
     return;
   }
   window.CC_SHEET_ON=true;

@@ -9,38 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v27">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v47">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v27">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v27">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v27">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v27">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v27">
-<link rel="manifest" href="manifest.webmanifest?v27">
-<link rel="stylesheet" href="css/style.css?v27">
-<style id="cc-weigh-compact">
-/* Oct 9 2026 v4: weigh card is a normal (non-sticky) card; a FIXED mini bar appears when it scrolls away. */
-.weigh-card{position:static!important}
-#weighMini{position:fixed;left:8px;right:8px;z-index:35;display:flex;gap:8px;align-items:center;padding:8px;
- background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);
- transform:translateY(-140%);opacity:0;pointer-events:none;transition:transform .18s,opacity .18s}
-#weighMini.on{transform:none;opacity:1;pointer-events:auto}
-#weighMini input{flex:1 1 0;min-width:0;height:56px;font-size:28px;font-weight:800;text-align:center;border-radius:10px;border:1px solid var(--line,#ccc);background:var(--bg,#fff);color:inherit}
-#weighMini .wm-cat{flex:0 0 auto;min-height:56px;display:flex;align-items:center;gap:3px;padding:0 10px;border-radius:10px;font-size:20px;font-weight:800;background:linear-gradient(135deg,#0f766e22,#14b8a622);border:1.5px solid var(--accent2,#14b8a6)}
-#weighMini button{flex:0 0 auto;min-width:96px;height:56px;padding:0 14px;border:0;border-radius:10px;font-size:17px;font-weight:800;background:var(--accent,#c47a2c);color:#fff;white-space:nowrap}
-</style>
-<style id="cc-cage-compact">
-/* Oct 9 2026: smaller cage picker - 3 per row, square tiles (was 2 per row, tall 3:4) */
-.cage-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
-.cage-tile{aspect-ratio:1/1!important;border-radius:12px!important}
-.cage-tile .cap{padding:5px 6px!important;font-size:11.5px!important}
-.cage-tile .chk{width:20px!important;height:20px!important;font-size:12px!important;top:5px!important;right:5px!important}
-.cage-tile.noimg .ph{font-size:22px!important}
-</style>
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v47">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v47">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v47">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v47">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v47">
+<link rel="manifest" href="manifest.webmanifest?v47">
+<link rel="stylesheet" href="css/style.css?v47">
 </head>
 <body>
 
@@ -80,6 +61,8 @@
     <select id="hospSelect" class="sel"></select>
     <label style="margin-top:12px">หมายเหตุ (ไม่บังคับ)</label>
     <input id="noteW" placeholder="เช่น หลังฉีดวัคซีน, ก่อนอาหาร" autocomplete="off">
+    <label style="margin-top:12px">ค่าใช้จ่ายหาหมอ (บาท, ไม่บังคับ)</label>
+    <input id="costW" inputmode="decimal" placeholder="เช่น 850" autocomplete="off">
   </div>
   
 </section>
@@ -94,6 +77,20 @@
 </section>
 <section class="view" id="view-summary">
   <div class="card"><h2>📈 สรุปน้ำหนักล่าสุดต่อตัว</h2><div id="summaryBox"></div></div>
+</section>
+<section class="view" id="view-report">
+  <div class="card">
+    <h2>🩺 รายงานการหาหมอ</h2>
+    <div class="fchip-row" id="repFilter"></div>
+    <input id="repSearch" class="rep-search" placeholder="🔍 ค้นหา (เช่น หยดหลังคอ, วัคซีน)" autocomplete="off">
+    <div class="rep-daterow">
+      <label>ตั้งแต่ <input type="date" id="repFrom" class="sel"></label>
+      <label>ถึง <input type="date" id="repTo" class="sel"></label>
+    </div>
+    <p class="rep-hint">แตะหัวคอลัมน์เพื่อเรียงลำดับ</p>
+    <div class="rep-count" id="repCount"></div>
+    <div id="repList"></div>
+  </div>
 </section>
 <section class="view" id="view-manage">
   <div class="card"><h2>🐱 จัดการแมว</h2><div id="catMgr"></div><button class="addbtn" id="addCat" style="margin-top:10px">+ เพิ่มแมว</button><p class="hint">แตะรูปเพื่อใส่รูปโปรไฟล์แมว · ใส่วันเกิดเพื่อแสดงอายุ · ติ๊ก “ทำหมันแล้ว” ถ้าทำหมันแล้ว</p></div>
@@ -110,6 +107,7 @@
   <button class="on" data-view="weigh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v2M5 7h14l2 13H3L5 7z"/><path d="M9 11a3 3 0 0 0 6 0"/></svg>ชั่ง</button>
   <button data-view="hist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>ประวัติ</button>
   <button data-view="summary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>สรุป</button>
+  <button data-view="report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/></svg>รายงาน</button>
   <button data-view="manage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></svg>จัดการ</button>
 </nav>
 <div class="modal" id="manualModal">
@@ -122,6 +120,7 @@
     <label>น้ำหนักแมว (กก.)</label><input id="mCatKg" inputmode="decimal" placeholder="ใส่เฉพาะน้ำหนักแมว" autocomplete="off">
     <label>น้ำหนักรวม (แมว + กรง) กก.</label><input id="mTotal" inputmode="decimal" placeholder="หรือใส่น้ำหนักรวม" autocomplete="off">
     <p class="field-hint">ใส่ช่องใดช่องหนึ่งก็ได้ — อีกช่องจะคำนวณให้อัตโนมัติจากน้ำหนักกรงที่เลือก</p>
+    <label>ค่าใช้จ่ายหาหมอ (บาท, ไม่บังคับ)</label><input id="mCost" inputmode="decimal" placeholder="เช่น 850" autocomplete="off">
     <label>หมายเหตุ (ไม่บังคับ)</label><input id="mNote" placeholder="เช่น ชั่งที่บ้าน" autocomplete="off">
     <div class="modal-btns">
       <button class="btn ghost" id="mCancel">ยกเลิก</button>
@@ -130,24 +129,23 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v27"></script>
-<script src="data/cages.js?v27"></script>
-<script src="js/storage.js?v27"></script>
-<!-- Google Sheet sync: config-sheet.js is local-only (.gitignore); web/phone uses login.html -->
-<script src="js/config-sheet.js" onerror="window.CC_SHEET_CFG=null"></script>
-<script src="js/crop.js?v27"></script>
-<script src="js/weigh.js?v27"></script>
-<script src="js/history.js?v27"></script>
-<script src="js/summary.js?v27"></script>
-<script src="js/settings.js?v27"></script>
-<script src="js/backup.js?v27"></script>
-<script src="js/order.js?v27"></script>
-<script src="../WRHub/shared/pull-refresh.js?v=2" onerror="var s=document.createElement('script');s.src='js/pull-refresh.js?v=2';document.body.appendChild(s);"></script>
-<script src="../WRHub/shared/table-fit.js?v=3" onerror="var s=document.createElement('script');s.src='js/table-fit.js?v=3';document.body.appendChild(s);"></script>
-<script src="js/install.js?v27"></script>
-<script src="js/birthday.js?v27"></script>
-<script src="js/sheet-sync.js?v4"></script>
-<script src="js/weigh-compact.js?v4"></script>
-<script src="js/app.js?v27"></script>
+<script src="js/theme.js?v47"></script>
+<script src="js/config-sheet.js?v47"></script>
+<script src="data/cages.js?v47"></script>
+<script src="js/storage.js?v47"></script>
+<script src="js/crop.js?v47"></script>
+<script src="js/weigh.js?v47"></script>
+<script src="js/history.js?v47"></script>
+<script src="js/summary.js?v47"></script>
+<script src="js/report.js?v47"></script>
+<script src="js/settings.js?v47"></script>
+<script src="js/backup.js?v47"></script>
+<script src="js/order.js?v47"></script>
+<script src="js/pullrefresh.js?v47"></script>
+<script src="js/table-fit.js?v47"></script>
+<script src="js/install.js?v47"></script>
+<script src="js/birthday.js?v47"></script>
+<script src="js/sheet-sync.js?v47"></script>
+<script src="js/app.js?v47"></script>
 </body>
 </html>

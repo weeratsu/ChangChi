@@ -8,6 +8,27 @@ var cats=load(LS_CATS,null);  if(!cats||!cats.length){cats=DEFAULT_CATS.slice();
 var DEFAULT_HOSP=[{id:"h1",name:"\u0E23\u0E1E.\u0E2A\u0E31\u0E15\u0E27\u0E4C \u0E1B\u0E23\u0E30\u0E08\u0E33"}];
 var hosps=load(LS_HOSP,null); if(!hosps||!hosps.length){hosps=DEFAULT_HOSP.slice();save(LS_HOSP,hosps);}
 var hist=load(LS_HIST,[]);
+
+// ===== Master-link resolvers (link by id, display by current name) - Oct 24 2026 =====
+// History records link to masters by catId/cageId/hospId (immutable ids).
+// Display name is always resolved from the current master so renames never break links.
+// Stored *Name fields are kept only as a fallback snapshot (e.g. if a master was deleted).
+function _byName(arr,nm){ for(var i=0;i<arr.length;i++){ if(arr[i].name===nm) return arr[i]; } return null; }
+function recCatName(h){ var o=h.catId?getCat(h.catId):null; return o?o.name:(h.catName||""); }
+function recCageName(h){ var o=h.cageId?getCage(h.cageId):null; return o?o.name:(h.cageName||""); }
+function recHospName(h){ var o=h.hospId?getHosp(h.hospId):null; return o?o.name:(h.hosp||""); }
+function recCatObj(h){ return h.catId?getCat(h.catId):_byName(cats,h.catName); }
+// One-time migration: backfill ids on old records that only stored names.
+(function migrateHistIds(){
+ var changed=false;
+ for(var i=0;i<hist.length;i++){ var h=hist[i];
+  if(!h.catId && h.catName){ var c=_byName(cats,h.catName); if(c){h.catId=c.id;changed=true;} }
+  if(!h.cageId && h.cageName){ var g=_byName(cages,h.cageName); if(g){h.cageId=g.id;changed=true;} }
+  if(!h.hospId && h.hosp){ var p=_byName(hosps,h.hosp); if(p){h.hospId=p.id;changed=true;} }
+ }
+ if(changed){ try{save(LS_HIST,hist);}catch(e){} }
+})();
+
 var sel=load(LS_SEL,{});
 function defId(arr){for(var i=0;i<arr.length;i++)if(arr[i].def)return arr[i].id;return arr[0]&&arr[0].id;}
 var selCage=sel.cage||defId(cages)||null;
