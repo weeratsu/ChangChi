@@ -140,25 +140,95 @@ function _fmtYMD(s){ if(!s) return ""; var a=String(s).split("T"), p=a[0].split(
 function _apptDate(v){ if(!v) return null; v=String(v); var t=v.indexOf("T")>0?v.split("T")[1].slice(0,5):""; var d=new Date((t&&t!=="00:00")?v:(v.split("T")[0]+"T23:59")); return isNaN(d)?null:d; }
 function renderAppts(){
  var now=new Date(), today=new Date(); today.setHours(0,0,0,0);
- var latest={};
- hist.forEach(function(h){ if(!h.nextAppt) return; var k=(typeof recCatName==="function")?recCatName(h):h.catName;
-  if(!latest[k]||new Date(h.ts)>new Date(latest[k].ts)) latest[k]=h; });
  var rows=[];
- Object.keys(latest).forEach(function(k){ var h=latest[k]; var d=_apptDate(h.nextAppt); if(!d||d<now) return;
+ hist.forEach(function(h){ if(!h.nextAppt) return; var d=_apptDate(h.nextAppt); if(!d||d<now) return;
+  var k=(typeof recCatName==="function")?recCatName(h):h.catName;
   var dd=new Date(d); dd.setHours(0,0,0,0); rows.push({k:k,h:h,d:d,days:Math.round((dd-today)/86400000)}); });
  rows.sort(function(a,b){return a.d-b.d;});
- var html="";
- if(rows.length){
-  html='<h2>\uD83D\uDCC5 \u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22\u0e17\u0e35\u0e48\u0e08\u0e30\u0e16\u0e36\u0e07</h2>';
-  rows.forEach(function(r){
-   var when=r.days===0?"\u0e27\u0e31\u0e19\u0e19\u0e35\u0e49":(r.days===1?"\u0e1e\u0e23\u0e38\u0e48\u0e07\u0e19\u0e35\u0e49":("\u0e2d\u0e35\u0e01 "+r.days+" \u0e27\u0e31\u0e19"));
-   var hn=(typeof recHospName==="function")?recHospName(r.h):(r.h.hosp||"");
-   var why=(r.h.note||"").split("\n")[0]; if(why.length>80) why=why.slice(0,80)+"\u2026";
-   html+='<div class="appt-row'+(r.days<=1?' soon':'')+'"><b>'+esc(r.k)+'</b><span>'+_fmtYMD(r.h.nextAppt)+' \u00b7 '+when+'</span>'
-     +(hn?('<small>\uD83C\uDFE5 '+esc(hn)+'</small>'):'')
-     +(why?('<small>\uD83D\uDCDD '+esc(why)+'</small>'):'')+'</div>';
-  });
- }
+ var html='<div class="appt-hd"><h2>\uD83D\uDCC5 '+(rows.length?'<s class="strike-old">\u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22</s> <span class="cute-new">\u0e19\u0e31\u0e14\u0e41\u0e21\u0e27</span>\u0e17\u0e35\u0e48\u0e08\u0e30\u0e16\u0e36\u0e07':'\u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22')+'</h2><button class="btn sec appt-add" onclick="openApptModal()">+ \u0e40\u0e1e\u0e34\u0e48\u0e21\u0e19\u0e31\u0e14</button></div>';
+ rows.forEach(function(r){
+  var when=r.days===0?"\u0e27\u0e31\u0e19\u0e19\u0e35\u0e49":(r.days===1?"\u0e1e\u0e23\u0e38\u0e48\u0e07\u0e19\u0e35\u0e49":("\u0e2d\u0e35\u0e01 "+r.days+" \u0e27\u0e31\u0e19"));
+  var hn=(typeof recHospName==="function")?recHospName(r.h):(r.h.hosp||"");
+  var why=(r.h.note||"").split("\n")[0]; if(why.length>80) why=why.slice(0,80)+"\u2026";
+  html+='<div class="appt-row'+(r.days<=1?' soon':'')+'"><b>'+esc(r.k)+'</b><span>'+_fmtYMD(r.h.nextAppt)+' \u00b7 '+when+'</span>'
+    +'<button class="appt-edit" title="\u0e41\u0e01\u0e49\u0e44\u0e02\u0e19\u0e31\u0e14" onclick="openApptModal(\'\',\''+r.h.id+'\')">\u270f\ufe0f</button>'
+    +'<button class="appt-del" title="\u0e25\u0e1a\u0e19\u0e31\u0e14" onclick="delAppt(\''+r.h.id+'\')">\u00d7</button>'
+    +(hn?('<small>\uD83C\uDFE5 '+esc(hn)+'</small>'):'')
+    +(why?('<small>\uD83D\uDCDD '+esc(why)+'</small>'):'')+'</div>';
+ });
+ var _op=localStorage.getItem("cc_appt_open")==="1";
+ var _ix2=html.indexOf('</h2>');
+ html='<div class="appt-tg" onclick="apptToggle(event)">'+html.slice(0,_ix2).replace('<div class="appt-hd"><h2>','<div class="appt-hd"><h2><span class="appt-chev">'+(_op?'\u25BC':'\u25B6')+'</span> ')
+  +(rows.length?' <span class="appt-cnt">'+rows.length+'</span>':'')+html.slice(_ix2).replace('</div>','</div></div><div class="appt-body"'+(_op?'':' style="display:none"')+'>')+'</div>';
+ if(!rows.length) html=html.replace('<div class="appt-body"','<p class="empty-note appt-none">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e19\u0e31\u0e14</p><div class="appt-body"');
  ["apptBox","apptBoxSum"].forEach(function(id){ var el=document.getElementById(id); if(!el) return;
-  el.innerHTML=html; el.style.display=html?"":"none"; });
+  if(id==="apptBoxSum"){ el.innerHTML=""; el.style.display="none"; return; }
+  el.innerHTML=html; el.style.display=""; el.classList.toggle("appt-empty",!rows.length); });
+ var cb=document.getElementById("apptCalBox"); if(cb){ cb.innerHTML='<h2>\uD83D\uDCC6 \u0e1b\u0e0f\u0e34\u0e17\u0e34\u0e19\u0e19\u0e31\u0e14\u0e41\u0e21\u0e27</h2>'+_apptCalHtml(); }
+}
+function delAppt(id){
+ for(var i=0;i<hist.length;i++){ if(hist[i].id===id){
+  var _ix=i; askConfirm("\u0e25\u0e1a\u0e19\u0e31\u0e14\u0e19\u0e35\u0e49?",function(){
+   if(hist[_ix].kind==="appt") hist.splice(_ix,1); else hist[_ix].nextAppt="";
+   save(LS_HIST,hist); renderAppts(); try{renderHist();}catch(e){} },{danger:true}); return; } }
+}
+function openApptModal(iso,eid){
+ var ed=null; if(eid){ for(var q=0;q<hist.length;q++){ if(hist[q].id===eid){ ed=hist[q]; break; } } }
+ var isAppt=!ed||ed.kind==="appt";
+ var m=document.getElementById("apptModal");
+ if(!m){ m=document.createElement("div"); m.id="apptModal"; m.className="modal"; document.body.appendChild(m);
+  m.onmousedown=function(e){ m._downOnBg=(e.target===m); }; m.onclick=function(e){ if(e.target===m && m._downOnBg) m.classList.remove("show"); m._downOnBg=false; }; }
+ var co=cats.map(function(c){return '<option value="'+c.id+'"'+(c.id===(ed?ed.catId:selCat)?' selected':'')+'>'+esc(c.name)+'</option>';}).join("");
+ var ho=hosps.map(function(h){return '<option value="'+h.id+'"'+(h.id===(ed?ed.hospId:selHosp)?' selected':'')+'>'+esc(h.name)+'</option>';}).join("");
+ m.innerHTML='<div class="modal-box"><h3>\uD83D\uDCC5 '+(ed?'\u0e41\u0e01\u0e49\u0e44\u0e02\u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22':'\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22')+'</h3>'
+  +'<label>\u0e41\u0e21\u0e27</label><select id="aCat" class="sel"'+(isAppt?'':' disabled')+'>'+co+'</select>'
+  +'<label>\u0e42\u0e23\u0e07\u0e1e\u0e22\u0e32\u0e1a\u0e32\u0e25 / \u0e04\u0e25\u0e34\u0e19\u0e34\u0e01</label><select id="aHosp" class="sel">'+ho+'</select>'
+  +'<label>\u0e27\u0e31\u0e19\u0e41\u0e25\u0e30\u0e40\u0e27\u0e25\u0e32\u0e19\u0e31\u0e14</label><input type="datetime-local" id="aWhen" class="sel">'
+  +(isAppt?(''+'<label>\u0e19\u0e31\u0e14\u0e17\u0e33\u0e2d\u0e30\u0e44\u0e23 (\u0e44\u0e21\u0e48\u0e1a\u0e31\u0e07\u0e04\u0e31\u0e1a)</label><textarea id="aNote" class="note-ta" rows="3" placeholder="\u0e40\u0e0a\u0e48\u0e19 \u0e09\u0e35\u0e14\u0e27\u0e31\u0e04\u0e0b\u0e35\u0e19, \u0e15\u0e23\u0e27\u0e08\u0e40\u0e0a\u0e37\u0e49\u0e2d\u0e23\u0e32"></textarea>'):'')+''
+  +'<div class="modal-btns"><button class="btn ghost" id="aCancel">\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01</button><button class="btn" id="aSave">\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01</button></div></div>';
+ m.classList.add("show");
+ if(typeof iso==="string"&&iso){ document.getElementById("aWhen").value=iso+"T09:00"; }
+ if(ed){ var _v=String(ed.nextAppt||""); if(_v&&_v.indexOf("T")<0)_v+="T09:00"; document.getElementById("aWhen").value=_v.slice(0,16); var _n=document.getElementById("aNote"); if(_n)_n.value=ed.note||""; }
+ document.getElementById("aCancel").onclick=function(){ m.classList.remove("show"); };
+ document.getElementById("aSave").onclick=function(){
+  var when=document.getElementById("aWhen").value; if(!when){ toast("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e27\u0e31\u0e19\u0e40\u0e27\u0e25\u0e32\u0e19\u0e31\u0e14\u0e01\u0e48\u0e2d\u0e19"); return; }
+  var c=getCat(document.getElementById("aCat").value), hp=getHosp(document.getElementById("aHosp").value);
+  if(ed){ ed.nextAppt=when; if(hp){ed.hospId=hp.id;ed.hosp=hp.name;}
+   if(isAppt){ if(c){ed.catId=c.id;ed.catName=c.name;} var _n2=document.getElementById("aNote"); ed.note=_n2?_n2.value.trim():ed.note; }
+   save(LS_HIST,hist); m.classList.remove("show"); renderAppts(); try{renderHist();}catch(e){} toast("\u0e41\u0e01\u0e49\u0e44\u0e02\u0e19\u0e31\u0e14\u0e41\u0e25\u0e49\u0e27"); return; }
+  hist.push({id:"a"+Date.now(),kind:"appt",ts:new Date().toISOString(),catId:c?c.id:"",catName:c?c.name:"",hospId:hp?hp.id:"",hosp:hp?hp.name:"",
+   cageId:"",cageName:"",tare:0,cat:null,total:null,note:document.getElementById("aNote").value.trim(),nextAppt:when});
+  save(LS_HIST,hist); m.classList.remove("show"); renderAppts(); toast("\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e19\u0e31\u0e14\u0e41\u0e25\u0e49\u0e27");
+ };
+}
+window.openApptModal=openApptModal; window.delAppt=delAppt;
+// Auto-filled weight: tap selects all, so typing replaces it; not typing keeps it (Nov 7 2026)
+document.addEventListener("focusin",function(e){ var t=e.target; if(!t||t.tagName!=="INPUT"||t.dataset.auto!=="1") return;
+ setTimeout(function(){ try{ t.select(); t.setSelectionRange(0,String(t.value).length); }catch(x){} },0); });
+
+// ===== Appointment month calendar: tap a day to add (Nov 7 2026) =====
+function _apptPad(n){return (n<10?"0":"")+n;}
+function apptCalNav(d){ var b=window.__apptMon||new Date(); b=new Date(b.getFullYear(),b.getMonth()+d,1); window.__apptMon=b; renderAppts(); }
+window.apptCalNav=apptCalNav;
+function apptToggle(e){ if(e&&e.target&&e.target.closest&&e.target.closest('button')) return; var o=localStorage.getItem("cc_appt_open")==="1"; localStorage.setItem("cc_appt_open",o?"0":"1"); renderAppts(); }
+window.apptToggle=apptToggle;
+function apptCalToday(){ window.__apptMon=new Date(); renderAppts(); }
+window.apptCalToday=apptCalToday;
+function _apptCalHtml(){
+ var b=window.__apptMon||new Date(); var y=b.getFullYear(), mo=b.getMonth();
+ var TH=["\u0e2d\u0e32","\u0e08","\u0e2d","\u0e1e","\u0e1e\u0e24","\u0e28","\u0e2a"], MO=["\u0e21.\u0e04.","\u0e01.\u0e1e.","\u0e21\u0e35.\u0e04.","\u0e40\u0e21.\u0e22.","\u0e1e.\u0e04.","\u0e21\u0e34.\u0e22.","\u0e01.\u0e04.","\u0e2a.\u0e04.","\u0e01.\u0e22.","\u0e15.\u0e04.","\u0e1e.\u0e22.","\u0e18.\u0e04."];
+ var byDay={};
+ hist.forEach(function(h){ if(!h.nextAppt) return; var k=String(h.nextAppt).split("T")[0]; var t=String(h.nextAppt).split("T")[1]||"";
+  var n=(typeof recCatName==="function")?recCatName(h):h.catName; (byDay[k]=byDay[k]||[]).push({id:h.id,n:n,t:(t&&t.slice(0,5)!=="00:00")?t.slice(0,5):""}); });
+ var t0=new Date(); var todayK=t0.getFullYear()+"-"+_apptPad(t0.getMonth()+1)+"-"+_apptPad(t0.getDate());
+ var first=new Date(y,mo,1).getDay(), days=new Date(y,mo+1,0).getDate();
+ var h='<div class="acal"><div class="acal-hd"><button class="btn ghost acal-nv" onclick="apptCalNav(-1)">\u2039</button><b>'+MO[mo]+' '+y+'</b><span class="acal-r">'+'<button class="btn ghost acal-td" onclick="apptCalToday()">\u0e27\u0e31\u0e19\u0e19\u0e35\u0e49</button>'+'<button class="btn ghost acal-nv" onclick="apptCalNav(1)">\u203a</button></span></div><div class="acal-g">';
+ TH.forEach(function(x){ h+='<div class="acal-w">'+x+'</div>'; });
+ for(var i=0;i<first;i++) h+='<div class="acal-c acal-x"></div>';
+ for(var d=1;d<=days;d++){ var k=y+"-"+_apptPad(mo+1)+"-"+_apptPad(d), L=byDay[k]||[];
+  h+='<div class="acal-c'+(k===todayK?' acal-t':'')+(L.length?' acal-has':'')+'" onclick="openApptModal(\''+k+'\')"><span class="acal-d">'+d+'</span>';
+  L.slice(0,2).forEach(function(a){ h+='<span class="acal-e" onclick="event.stopPropagation();openApptModal(\'\',\''+a.id+'\')">'+esc((a.t?a.t+' ':'')+a.n)+'</span>'; });
+  if(L.length>2) h+='<span class="acal-e">+'+(L.length-2)+'</span>';
+  h+='</div>'; }
+ return h+'</div></div>';
 }

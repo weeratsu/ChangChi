@@ -37,9 +37,9 @@ function renderCatMgr(){
   row.querySelector(".thumb-btn").onclick=function(){pickImage(function(dataUrl){c.photo=dataUrl;save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();});};
   row.querySelector(".del").onclick=function(){
    if(cats.length<=1){toast("\u0E15\u0E49\u0E2D\u0E07\u0E21\u0E35\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E19\u0E49\u0E2D\u0E22 1 \u0E15\u0E31\u0E27");return;}
-   if(!confirm("\u0E25\u0E1A\u0E41\u0E21\u0E27 "+c.name+" ?"))return;
+   askConfirm("\u0E25\u0E1A\u0E41\u0E21\u0E27 "+c.name+" ?",function(){
    cats.splice(idx,1); if(selCat===c.id){selCat=cats[0].id;persistSel();}
-   save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();
+   save(LS_CATS,cats);renderCatMgr();renderCats();renderSummary();},{danger:true});
   };
   el.appendChild(row);
  });
@@ -57,9 +57,9 @@ function renderHospMgr(){
   inp.onblur=function(){renderHospSel();};
   row.querySelector(".defchk").onchange=function(){var on=this.checked;hosps.forEach(function(x){x.def=false;});hp.def=on;if(on){selHosp=hp.id;persistSel();}save(LS_HOSP,hosps);renderHospMgr();renderHospSel();};
   row.querySelector(".del").onclick=function(){
-   if(!confirm("\u0E25\u0E1A "+hp.name+" ?"))return;
+   askConfirm("\u0E25\u0E1A "+hp.name+" ?",function(){
    hosps.splice(idx,1); if(selHosp===hp.id){selHosp=hosps[0]&&hosps[0].id;persistSel();}
-   save(LS_HOSP,hosps);renderHospMgr();renderHospSel();
+   save(LS_HOSP,hosps);renderHospMgr();renderHospSel();},{danger:true});
   };
   el.appendChild(row);
  });
@@ -89,9 +89,9 @@ function renderCageMgr(){
   row.querySelector(".defchk").onchange=function(){var on=this.checked;cages.forEach(function(x){x.def=false;});c.def=on;if(on){selCage=c.id;persistSel();}save(LS_CAGES,cages);renderCageMgr();renderCages();renderSelSummary();};
   row.querySelector(".del").onclick=function(){
    if(cages.length<=1){toast("\u0E15\u0E49\u0E2D\u0E07\u0E21\u0E35\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E19\u0E49\u0E2D\u0E22 1 \u0E01\u0E23\u0E07");return;}
-   if(!confirm("\u0E25\u0E1A\u0E01\u0E23\u0E07 "+c.name+" ?"))return;
+   askConfirm("\u0E25\u0E1A\u0E01\u0E23\u0E07 "+c.name+" ?",function(){
    cages.splice(idx,1); if(selCage===c.id){selCage=cages[0].id;persistSel();}
-   save(LS_CAGES,cages);renderCageMgr();renderCages();calc();
+   save(LS_CAGES,cages);renderCageMgr();renderCages();calc();},{danger:true});
   };
   el.appendChild(row);
  });

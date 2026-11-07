@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v53">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v66">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v53">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v53">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v53">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v53">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v53">
-<link rel="manifest" href="manifest.webmanifest?v53">
-<link rel="stylesheet" href="css/style.css?v53">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v66">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v66">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v66">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v66">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v66">
+<link rel="manifest" href="manifest.webmanifest?v66">
+<link rel="stylesheet" href="css/style.css?v66">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -71,12 +71,13 @@
   
 </section>
 <section class="view" id="view-hist">
+  <div class="card appt-card" id="apptCalBox"></div>
   <div class="card"><h2>📜 ประวัติการชั่ง</h2>
-    <div class="hist-tools"><button class="btn sec" id="manualBtn">➕ เพิ่มย้อนหลัง</button><button class="btn sec" id="importBtn">📥 นำเข้า CSV</button><button class="btn ghost" id="tmplBtn">📄 โหลด Template</button><button class="btn sec" id="exportCSV">⬇️ ส่งออก CSV</button></div>
+    <div class="hist-tools2"><button class="btn sec" id="manualBtn">➕ เพิ่มย้อนหลัง</button><details class="csv-dd"><summary class="btn ghost">📁 CSV ▾</summary><div class="csv-menu"><button class="btn ghost" id="exportCSV">⬇️ ส่งออก CSV</button><button class="btn ghost" id="importBtn">📥 นำเข้า CSV</button><button class="btn ghost" id="tmplBtn">📄 โหลด Template</button></div></details></div>
     <div class="fchip-row" id="histFilter"></div>
     <div class="hist-count" id="histCount"></div>
     <div id="histList"></div>
-    <button class="btn ghost" id="clearHist" style="margin-top:12px">ล้างประวัติทั้งหมด</button>
+    <button class="btn ghost" id="clearHist" style="display:none">ล้างประวัติทั้งหมด</button>
   </div>
 </section>
 <section class="view" id="view-summary">
@@ -92,8 +93,8 @@
       <label>ตั้งแต่ <input type="date" id="repFrom" class="sel"></label>
       <label>ถึง <input type="date" id="repTo" class="sel"></label>
     </div>
-    <p class="rep-hint">แตะหัวคอลัมน์เพื่อเรียงลำดับ</p>
-    <div class="rep-count" id="repCount"></div>
+    <p class="rep-hint">แตะหัวคอลัมน์เพื่อเรียงลำดับ · แตะแถวเพื่อแก้ไข</p>
+    <div class="rep-bar"><div class="rep-count" id="repCount"></div><button class="btn sec rep-exp" onclick="exportReportCSV()">⬇️ ส่งออก CSV</button></div>
     <div id="repList"></div>
   </div>
 </section>
@@ -135,23 +136,23 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v53"></script>
-<script src="js/config-sheet.js?v53"></script>
-<script src="data/cages.js?v53"></script>
-<script src="js/storage.js?v53"></script>
-<script src="js/crop.js?v53"></script>
-<script src="js/weigh.js?v53"></script>
-<script src="js/history.js?v53"></script>
-<script src="js/summary.js?v53"></script>
-<script src="js/report.js?v53"></script>
-<script src="js/settings.js?v53"></script>
-<script src="js/backup.js?v53"></script>
-<script src="js/order.js?v53"></script>
-<script src="js/pullrefresh.js?v53"></script>
-<script src="js/table-fit.js?v53"></script>
-<script src="js/install.js?v53"></script>
-<script src="js/birthday.js?v53"></script>
-<script src="js/sheet-sync.js?v53"></script>
-<script src="js/app.js?v53"></script>
+<script src="js/theme.js?v66"></script>
+<script src="js/config-sheet.js?v66"></script>
+<script src="data/cages.js?v66"></script>
+<script src="js/storage.js?v66"></script>
+<script src="js/crop.js?v66"></script>
+<script src="js/weigh.js?v66"></script>
+<script src="js/history.js?v66"></script>
+<script src="js/summary.js?v66"></script>
+<script src="js/report.js?v66"></script>
+<script src="js/settings.js?v66"></script>
+<script src="js/backup.js?v66"></script>
+<script src="js/order.js?v66"></script>
+<script src="js/pullrefresh.js?v66"></script>
+<script src="js/table-fit.js?v66"></script>
+<script src="js/install.js?v66"></script>
+<script src="js/birthday.js?v66"></script>
+<script src="js/sheet-sync.js?v66"></script>
+<script src="js/app.js?v66"></script>
 </body>
 </html>

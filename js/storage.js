@@ -93,3 +93,26 @@ var selCat=sel.cat||defId(cats)||null;
 var selHosp=sel.hosp||defId(hosps)||null;
 var histFilter="";
 var editingId=null;
+// ===== Styled confirm popup (replaces browser confirm) - Nov 7 2026 =====
+// askConfirm(msg, onYes, {danger:true, ok:"label", title:"..."})
+function askConfirm(msg,onYes,opt){
+ opt=opt||{};
+ var m=document.getElementById("askModal");
+ if(!m){ m=document.createElement("div"); m.id="askModal"; m.className="modal"; document.body.appendChild(m); }
+ var ic=opt.danger?"\uD83D\uDDD1\uFE0F":"\u2753";
+ m.innerHTML='<div class="modal-box ask-box"><div class="ask-ic'+(opt.danger?' danger':'')+'">'+ic+'</div>'
+  +(opt.title?('<h3 class="ask-t">'+esc(opt.title)+'</h3>'):'')
+  +'<p class="ask-msg">'+esc(msg)+'</p>'
+  +'<div class="modal-btns"><button class="btn ghost" id="askNo">'+(opt.cancel||"\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01")+'</button>'
+  +'<button class="btn'+(opt.danger?' danger':'')+'" id="askYes">'+(opt.ok||(opt.danger?"\u0e25\u0e1a":"\u0e22\u0e37\u0e19\u0e22\u0e31\u0e19"))+'</button></div></div>';
+ function close(){ m.classList.remove("show"); document.removeEventListener("keydown",key); }
+ function key(e){ if(e.key==="Escape") close(); else if(e.key==="Enter"){ e.preventDefault(); close(); if(onYes) onYes(); } }
+ m.onmousedown=function(e){ m._d=(e.target===m); };
+ m.onclick=function(e){ if(e.target===m&&m._d) close(); m._d=false; };
+ document.getElementById("askNo").onclick=close;
+ document.getElementById("askYes").onclick=function(){ close(); if(onYes) onYes(); };
+ document.addEventListener("keydown",key);
+ m.classList.add("show");
+ setTimeout(function(){ var y=document.getElementById("askYes"); if(y) y.focus(); },30);
+}
+window.askConfirm=askConfirm;

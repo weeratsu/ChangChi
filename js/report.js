@@ -30,6 +30,7 @@ function renderReport(){
  var fromT=repFrom?new Date(repFrom+"T00:00:00").getTime():null;
  var toT=repTo?new Date(repTo+"T23:59:59").getTime():null;
  var items=hist.filter(function(h){
+   if(h.kind==="appt") return false;
    if(repFilter && _repCatName(h)!==repFilter) return false;
    var t=new Date(h.ts).getTime();
    if(fromT!=null && t<fromT) return false;
@@ -52,6 +53,7 @@ function renderReport(){
    if(v===0) v=new Date(a.ts)-new Date(b.ts);
    return v*dir;
  });
+ window._repItems=items;
  var totCost=0; items.forEach(function(h){ var c=parseFloat(h.cost); if(!isNaN(c))totCost+=c; });
  var cc=document.getElementById("repCount");
  if(cc) cc.textContent=items.length?(items.length+" \u0e04\u0e23\u0e31\u0e49\u0e07 \u00b7 \u0e23\u0e27\u0e21 "+_repMoney(totCost)+" \u0e1a\u0e32\u0e17"):"";
@@ -68,10 +70,14 @@ function renderReport(){
   var d=fmtDateTime(h.ts).split(" ")[0];
   var wTxt=(h.cat!=null&&h.cat!=="")?fmtKg(h.cat):'\u2014';
   var costTxt=(h.cost!=null&&h.cost!=="")?_repMoney(parseFloat(h.cost)):'';
-  body+='<tr class="rep-row">'
+  body+='<tr class="rep-row" onclick="openManual(\''+h.id+'\')" title="\u0e41\u0e15\u0e30\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e41\u0e01\u0e49\u0e44\u0e02">'
     +'<td>'+d+'</td><td>'+esc(_repCatName(h)||"-")+'</td><td>'+esc(_repHospName(h)||"-")+'</td>'
     +'<td class="num">'+wTxt+'</td><td class="num">'+costTxt+'</td></tr>';
-  if(h.note){ body+='<tr class="rep-noterow"><td colspan="5"><span class="rep-note">\uD83D\uDCDD '+esc(h.note)+'</span></td></tr>'; }
+  if(h.note){ body+='<tr class="rep-noterow" onclick="openManual(\''+h.id+'\')"><td colspan="5"><span class="rep-note">\uD83D\uDCDD '+esc(h.note)+'</span></td></tr>'; }
  });
  el.innerHTML='<div class="rep-tblwrap"><table class="rep-tbl">'+th+'<tbody>'+body+'</tbody></table></div>';
 }
+// Edit from report + export filtered (Nov 7 2026)
+function exportReportCSV(){ var L=window._repItems||[]; if(!L.length){toast("\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23");return;} exportCSV(L); }
+window.exportReportCSV=exportReportCSV;
+(function(){ var _rh=window.renderHist; if(typeof _rh==="function"&&!_rh._rep){ var f=function(){ var x=_rh.apply(this,arguments); try{renderReport();}catch(e){} return x; }; f._rep=1; window.renderHist=f; try{ renderHist=f; }catch(e){} } })();
