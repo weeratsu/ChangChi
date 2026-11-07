@@ -561,3 +561,12 @@ input::placeholder,textarea::placeholder{color:var(--subtx);opacity:.7}
 #view-manage .cat-fields .c-dob{-webkit-appearance:none;appearance:none;flex:0 1 170px!important;width:170px!important;max-width:100%;min-width:0;display:block;text-align:left;line-height:38px}
 #view-manage .cat-fields .c-dob::-webkit-date-and-time-value{text-align:left}
 #view-manage .cf-age{flex:1 1 100%;padding-left:2px}
+/* v97: cat row redesign - 2 equal columns, same height boxes */
+#view-manage .cat-fields2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+#view-manage .f2{display:flex;flex-direction:column;gap:3px;margin:0;min-width:0}
+#view-manage .f2>span{font-size:12px!important;color:var(--subtx)}
+#view-manage .f2 .c-dob,#view-manage .f2-ro{width:100%!important;max-width:100%;min-width:0;height:38px!important;box-sizing:border-box;-webkit-appearance:none;appearance:none;display:flex;align-items:center;text-align:left;padding:0 10px!important;font-size:14px!important;border-radius:10px;border:1px solid var(--line);margin:0}
+#view-manage .f2 .c-dob{background:var(--card2);color:var(--txt);line-height:38px}
+#view-manage .f2 .c-dob::-webkit-date-and-time-value{text-align:left;margin:0}
+#view-manage .f2-ro{background:transparent;color:var(--acctx)!important;font-weight:700;border-style:dashed;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-manage .mgr-row .nm input.c-name{height:38px!important}

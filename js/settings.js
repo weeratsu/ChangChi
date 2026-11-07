@@ -10,9 +10,9 @@ function renderCatMgr(){
   row.innerHTML=thumb+
    '<div class="nm">'+
      '<input class="c-name" value="'+esc(c.name)+'" placeholder="\u0E0A\u0E37\u0E48\u0E2D\u0E41\u0E21\u0E27">'+
-     '<div class="cat-fields">'+
-       '<label class="cf">\u0e27\u0e31\u0e19\u0e40\u0e01\u0e34\u0e14 <input type="date" class="c-dob" value="'+(c.dob||"")+'"></label>'+
-       '<span class="cf-age">'+(ageTxt?("\u0e2d\u0e32\u0e22\u0e38 "+ageTxt):"")+'</span>'+
+     '<div class="cat-fields2">'+
+       '<label class="f2"><span>\u0e27\u0e31\u0e19\u0e40\u0e01\u0e34\u0e14</span><input type="date" class="c-dob" value="'+(c.dob||"")+'"></label>'+
+       '<div class="f2"><span>\u0e2d\u0e32\u0e22\u0e38</span><div class="f2-ro cf-age">'+(ageTxt||"\u2014")+'</div></div>'+
      '</div>'+
      '<label class="defrow"><input type="checkbox" class="c-neuter"'+(c.neutered?" checked":"")+'> \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27</label>'+
      
@@ -30,7 +30,7 @@ function renderCatMgr(){
     if(dobInp.value===(c.dob||''))return;      // nothing changed
     c.dob=dobInp.value;save(LS_CATS,cats);
     var ageEl=row.querySelector('.cf-age');
-    if(ageEl){var a=c.dob?catAge(c.dob):'';ageEl.textContent=a?('\u0e2d\u0e32\u0e22\u0e38 '+a):'';}
+    if(ageEl){var a=c.dob?catAge(c.dob):'';ageEl.textContent=a||'\u2014';}
     renderSummary();
   };})();
   row.querySelector('.c-neuter').onchange=function(){c.neutered=this.checked;save(LS_CATS,cats);};
