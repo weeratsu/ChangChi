@@ -555,3 +555,9 @@ input::placeholder,textarea::placeholder{color:var(--subtx);opacity:.7}
 #view-manage .cat-fields .c-dob{width:160px!important;flex:0 0 160px}
 #view-manage .mgr-row .nm>*{align-self:stretch;text-align:left}
 #view-manage .mgr-row .defrow{align-self:flex-start!important;width:auto!important}
+/* v96: iOS date input ignores width -> overlap; put age on its own line */
+#view-manage .cat-fields{flex-wrap:wrap!important;row-gap:4px}
+#view-manage .cat-fields .cf{flex:1 1 100%;min-width:0}
+#view-manage .cat-fields .c-dob{-webkit-appearance:none;appearance:none;flex:0 1 170px!important;width:170px!important;max-width:100%;min-width:0;display:block;text-align:left;line-height:38px}
+#view-manage .cat-fields .c-dob::-webkit-date-and-time-value{text-align:left}
+#view-manage .cf-age{flex:1 1 100%;padding-left:2px}
