@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v49">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v53">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v49">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v49">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v49">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v49">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v49">
-<link rel="manifest" href="manifest.webmanifest?v49">
-<link rel="stylesheet" href="css/style.css?v49">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v53">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v53">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v53">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v53">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v53">
+<link rel="manifest" href="manifest.webmanifest?v53">
+<link rel="stylesheet" href="css/style.css?v53">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -36,6 +36,7 @@
   </div>
   <div class="hdr-ctx" id="hdrCtx"></div>
 </header>
+<div class="card appt-card appt-global" id="apptBox" style="display:none"></div>
 <main>
 <section class="view on" id="view-weigh">
   <div class="tip-card" id="tipCard"><button class="tip-x" id="tipClose" title="ปิด">×</button><div class="tip-h">💡 วิธีชั่งง่าย ๆ</div><div class="tip-b">เวลาพาแมวไปหาหมอ ไม่ต้องจับแมวออกมาชั่ง — <b>ชั่งทั้งกรงไปเลย</b> (แมว+กรง) แล้วคีย์น้ำหนักรวมลงไป แอปจะหักน้ำหนักกรงออกให้เอง ได้น้ำหนักแมวทันที</div></div>
@@ -61,9 +62,11 @@
     <h2>🏥 โรงพยาบาล / คลินิก & หมายเหตุ</h2>
     <select id="hospSelect" class="sel"></select>
     <label style="margin-top:12px">หมายเหตุ (ไม่บังคับ)</label>
-    <input id="noteW" placeholder="เช่น หลังฉีดวัคซีน, ก่อนอาหาร" autocomplete="off">
+    <textarea id="noteW" class="note-ta" rows="4" placeholder="เช่น หลังฉีดวัคซีน, ก่อนอาหาร — พิมพ์ได้หลายบรรทัด"></textarea>
     <label style="margin-top:12px">ค่าใช้จ่ายหาหมอ (บาท, ไม่บังคับ)</label>
     <input id="costW" inputmode="decimal" placeholder="เช่น 850" autocomplete="off">
+    <label style="margin-top:12px">📅 นัดครั้งถัดไป (ไม่บังคับ)</label>
+    <input type="datetime-local" id="apptW" class="sel">
   </div>
   
 </section>
@@ -77,6 +80,7 @@
   </div>
 </section>
 <section class="view" id="view-summary">
+  <div class="card appt-card" id="apptBoxSum" style="display:none"></div>
   <div class="card"><h2>📈 สรุปน้ำหนักล่าสุดต่อตัว</h2><div id="summaryBox"></div></div>
 </section>
 <section class="view" id="view-report">
@@ -122,7 +126,8 @@
     <label>น้ำหนักรวม (แมว + กรง) กก.</label><input id="mTotal" inputmode="decimal" placeholder="หรือใส่น้ำหนักรวม" autocomplete="off">
     <p class="field-hint">ใส่ช่องใดช่องหนึ่งก็ได้ — อีกช่องจะคำนวณให้อัตโนมัติจากน้ำหนักกรงที่เลือก</p>
     <label>ค่าใช้จ่ายหาหมอ (บาท, ไม่บังคับ)</label><input id="mCost" inputmode="decimal" placeholder="เช่น 850" autocomplete="off">
-    <label>หมายเหตุ (ไม่บังคับ)</label><input id="mNote" placeholder="เช่น ชั่งที่บ้าน" autocomplete="off">
+    <label>📅 นัดครั้งถัดไป (ไม่บังคับ)</label><input type="datetime-local" id="mAppt" class="sel">
+    <label>หมายเหตุ (ไม่บังคับ)</label><textarea id="mNote" class="note-ta" rows="4" placeholder="เช่น ชั่งที่บ้าน — พิมพ์ได้หลายบรรทัด"></textarea>
     <div class="modal-btns">
       <button class="btn ghost" id="mCancel">ยกเลิก</button>
       <button class="btn" id="mSave">บันทึก</button>
@@ -130,23 +135,23 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v49"></script>
-<script src="js/config-sheet.js?v49"></script>
-<script src="data/cages.js?v49"></script>
-<script src="js/storage.js?v49"></script>
-<script src="js/crop.js?v49"></script>
-<script src="js/weigh.js?v49"></script>
-<script src="js/history.js?v49"></script>
-<script src="js/summary.js?v49"></script>
-<script src="js/report.js?v49"></script>
-<script src="js/settings.js?v49"></script>
-<script src="js/backup.js?v49"></script>
-<script src="js/order.js?v49"></script>
-<script src="js/pullrefresh.js?v49"></script>
-<script src="js/table-fit.js?v49"></script>
-<script src="js/install.js?v49"></script>
-<script src="js/birthday.js?v49"></script>
-<script src="js/sheet-sync.js?v49"></script>
-<script src="js/app.js?v49"></script>
+<script src="js/theme.js?v53"></script>
+<script src="js/config-sheet.js?v53"></script>
+<script src="data/cages.js?v53"></script>
+<script src="js/storage.js?v53"></script>
+<script src="js/crop.js?v53"></script>
+<script src="js/weigh.js?v53"></script>
+<script src="js/history.js?v53"></script>
+<script src="js/summary.js?v53"></script>
+<script src="js/report.js?v53"></script>
+<script src="js/settings.js?v53"></script>
+<script src="js/backup.js?v53"></script>
+<script src="js/order.js?v53"></script>
+<script src="js/pullrefresh.js?v53"></script>
+<script src="js/table-fit.js?v53"></script>
+<script src="js/install.js?v53"></script>
+<script src="js/birthday.js?v53"></script>
+<script src="js/sheet-sync.js?v53"></script>
+<script src="js/app.js?v53"></script>
 </body>
 </html>

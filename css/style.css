@@ -309,3 +309,17 @@ header{display:flex;align-items:flex-start;justify-content:space-between;gap:12p
 .bdeco-gift{bottom:-14px;right:-20px;animation-delay:.14s}
 .bdeco-balloon{top:-18px;right:-18px;animation-delay:.22s}
 @keyframes bdecoPop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}to{transform:scale(1) rotate(0);opacity:1}}
+/* Multi-line notes + next appointment (Nov 7 2026) */
+.log-note{white-space:pre-wrap}
+.log-appt{color:var(--accent);font-weight:700}
+.appt-card h2{margin-bottom:8px}
+.appt-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.appt-row:first-of-type{border-top:none}
+.appt-row span{color:var(--accent);font-weight:700}
+.appt-row small{color:var(--sub);flex-basis:100%}
+.appt-row.soon span{color:var(--danger)}
+/* textarea = same look as other inputs */
+textarea,textarea.note-ta{display:block;width:100%;box-sizing:border-box;min-height:120px;background:var(--card2);border:1.5px solid var(--line);border-radius:12px;color:var(--txt);font-size:17px;padding:13px 14px;font-family:var(--font);line-height:1.5;outline:none;resize:vertical;-webkit-appearance:none;appearance:none}
+textarea:focus{border-color:var(--accent)}
+textarea::placeholder{color:var(--sub);opacity:.7}
+.appt-global{margin:10px 12px 0;border:1.5px solid var(--accent)}

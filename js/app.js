@@ -2,7 +2,7 @@
 function switchView(v){
  document.querySelectorAll(".view").forEach(function(x){x.classList.remove("on");});
  document.getElementById("view-"+v).classList.add("on");
-if(v==="summary")renderSummary();
+if(v==="summary"){renderSummary();try{renderAppts();}catch(e){}}
  if(v==="report"){try{renderReport();}catch(e){}}
  if(v==="hist")renderHist();
  if(v==="manage"){renderCatMgr();renderCageMgr();renderHospMgr();renderThemePicker();renderOrderMgr();}
@@ -34,6 +34,6 @@ var _fib=document.getElementById("fixImportBtn"); if(_fib)_fib.onclick=function(
 var _rb=document.getElementById("reloadBtn"); if(_rb)_rb.onclick=function(){ try{var base=location.href.split("?")[0].split("#")[0]; location.replace(base+"?r="+Date.now());}catch(e){location.reload();} };
 var _vl=document.getElementById("verLine"); if(_vl){var _d=new Date(); _vl.textContent="\u0e40\u0e27\u0e2d\u0e23\u0e4c\u0e0a\u0e31\u0e19 v29 \u00b7 \u0e42\u0e2b\u0e25\u0e14\u0e40\u0e21\u0e37\u0e48\u0e2d "+_d.getHours().toString().padStart(2,"0")+":"+_d.getMinutes().toString().padStart(2,"0");}
 var _tx=document.getElementById("tipClose"); if(_tx)_tx.onclick=function(){var t=document.getElementById("tipCard"); if(t)t.style.display="none"; localStorage.setItem("woc_tip_hidden","1");};
-renderCats();renderCages();renderHospSel();renderSelSummary();renderHist();renderSummary();renderCatMgr();renderCageMgr();renderHospMgr();renderCatMgr();renderCageMgr();renderThemePicker();renderOrderMgr();applyWeighOrder();calc();
+renderCats();renderCages();renderHospSel();renderSelSummary();try{renderAppts();_prefillLast();}catch(e){}renderHist();renderSummary();renderCatMgr();renderCageMgr();renderHospMgr();renderCatMgr();renderCageMgr();renderThemePicker();renderOrderMgr();applyWeighOrder();calc();
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',__wocInit);}else{__wocInit();}
