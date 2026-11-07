@@ -352,7 +352,7 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .appt-edit{position:absolute;right:28px;top:6px;background:none;border:none;font-size:15px;cursor:pointer}
 .acal-e{cursor:pointer}
 .acal-e:hover{text-decoration:underline}
-.strike-old{color:var(--muted,#999);opacity:.6;font-weight:400;text-decoration-thickness:2px}
+.strike-old{color:var(--sub);opacity:.6;font-weight:400;text-decoration-thickness:2px}
 .cute-new{color:var(--accent);margin-right:2px}
 .acal-r{display:flex;gap:6px;align-items:center}
 .acal-td{width:auto!important;padding:4px 12px!important;font-size:13px}
@@ -380,13 +380,13 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 #cageGrid .cage-tile .cap{position:static!important;background:none!important;color:inherit!important;padding:0!important;text-align:left;font-weight:700;line-height:1.3}
 #cageGrid .cage-tile .chk{top:6px;right:8px;width:20px;height:20px;font-size:12px}
 .appt-tg .appt-hd{cursor:pointer;user-select:none}
-.appt-chev{display:inline-block;width:16px;font-size:11px;color:var(--muted,#a08)}
+.appt-chev{display:inline-block;width:16px;font-size:11px;color:var(--sub)}
 .appt-cnt{display:inline-block;min-width:22px;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;font-size:12px;margin-left:6px;vertical-align:middle}
 .appt-none{margin:6px 0 0}
 #apptCalBox .acal{margin-top:4px;border-top:none;padding-top:0}
 /* Compact weigh card */
 .pick-row{display:flex;align-items:center;gap:10px;margin:0 0 10px}
-.pick-lbl{flex:0 0 34px;font-weight:700;font-size:14px;color:var(--muted,#9a7b55)}
+.pick-lbl{flex:0 0 34px;font-weight:700;font-size:14px;color:var(--sub)}
 .pick-row .cat-row,.pick-row .cage-grid{flex:1;margin:0!important}
 .pick-row .cat-chip{padding:8px 10px!important;min-height:0!important}
 #cageGrid .cage-tile{flex:1 1 130px;padding:6px 10px!important;gap:8px}
@@ -396,7 +396,7 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .more-w>summary{list-style:none;cursor:pointer}
 .more-w>summary::-webkit-details-marker{display:none}
 .more-w>summary h2{margin:0}
-.more-w>summary small{font-weight:400;font-size:12px;color:var(--muted,#9a7b55)}
+.more-w>summary small{font-weight:400;font-size:12px;color:var(--sub)}
 .more-w[open]>summary h2{margin-bottom:10px}
 .more-w[open]>summary h2{}
 /* Compact pill pickers (v68) */
@@ -420,7 +420,7 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 #cageGrid .cage-tile .chk,.pick-row .cat-chip .chk{display:none!important}
 #cageGrid .cage-tile.on .cap,#cageGrid .cage-tile.on .kg{color:var(--accent)!important}
 /* Theme-safe text in pills (v70) */
-#cageGrid .cage-tile .cap .kg{color:var(--muted,#8a6d4a)!important;opacity:.85;font-weight:600}
+#cageGrid .cage-tile .cap .kg{color:var(--sub)!important;opacity:.85;font-weight:600}
 #cageGrid .cage-tile.on .cap .kg{color:var(--accent)!important;opacity:.8}
 .pick-row .cat-chip,#cageGrid .cage-tile,#cageGrid .cage-tile .cap{color:var(--txt)!important}
 .pick-row .cat-chip.on,#cageGrid .cage-tile.on,#cageGrid .cage-tile.on .cap{color:var(--accent)!important}
