@@ -528,3 +528,30 @@ input::placeholder,textarea::placeholder{color:var(--subtx);opacity:.7}
 #view-manage .care-mrow .cm-ic{flex:0 0 42px;padding:0!important;text-align:center}
 #view-manage .cm-ev input{width:56px!important;padding:0 4px!important;text-align:center}
 #view-manage .del,#view-manage .care-mrow .del{flex:0 0 38px;width:38px!important;height:38px!important;padding:0!important;border-radius:10px;font-size:16px!important;border:1px solid var(--line);background:var(--card2);color:var(--danger);cursor:pointer}
+/* ===== v94: Manage rows - tidy grid layout ===== */
+#view-manage .mgr-row{display:grid!important;grid-template-columns:auto 1fr auto auto;grid-template-areas:"th nm tw del";column-gap:10px;row-gap:6px;align-items:start!important;padding:12px 0!important}
+#view-manage .mgr-row>.thumb-btn{grid-area:th;width:52px!important;height:52px!important;padding:0!important;position:relative}
+#view-manage .mgr-row .thumb-cam{width:20px!important;height:20px!important;font-size:11px!important}
+#view-manage .mgr-row .thumb-btn img,#view-manage .mgr-row .thumb-img{width:52px!important;height:52px!important;border-radius:12px;object-fit:cover}
+#view-manage .mgr-row .nm{grid-area:nm;display:flex;flex-direction:column;gap:6px;min-width:0}
+#view-manage .mgr-row .tw{grid-area:tw;width:76px!important}
+#view-manage .mgr-row .tw input{text-align:right}
+#view-manage .mgr-row .del{grid-area:del;align-self:start!important;margin:0!important}
+#view-manage .mgr-row .nm input:not([type=checkbox]),#view-manage .mgr-row .tw input{width:100%!important;height:38px!important;margin:0!important}
+#view-manage .cat-fields{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0!important}
+#view-manage .cat-fields .cf{display:flex;align-items:center;gap:6px;margin:0;color:var(--subtx);white-space:nowrap}
+#view-manage .cat-fields .c-dob{width:150px!important}
+#view-manage .cf-age{font-size:13px;font-weight:700;color:var(--acctx)}
+#view-manage .defrow{display:flex!important;align-items:center;gap:8px;margin:0!important;color:var(--subtx);cursor:pointer}
+#view-manage .defrow input[type=checkbox]{width:18px!important;height:18px!important;margin:0!important;padding:0!important;accent-color:var(--accent);flex:0 0 18px}
+#view-manage .mgr-row .del{width:38px!important;height:38px!important}
+#view-manage .mgr-row:not(:has(.thumb-btn)){grid-template-areas:"nm nm tw del"}
+/* v95: desktop fixes for manage rows */
+#view-manage .mgr-row{grid-template-columns:52px minmax(0,1fr) auto 38px!important;margin:0!important}
+#view-manage .mgr-row:not(:has(.tw)){grid-template-columns:52px minmax(0,1fr) 38px!important;grid-template-areas:"th nm del"!important}
+#view-manage .mgr-row:not(:has(.thumb-btn)){grid-template-columns:minmax(0,1fr) 38px!important;grid-template-areas:"nm del"!important}
+#view-manage .cat-fields{flex-direction:row!important;justify-content:flex-start!important;align-items:center!important;width:100%}
+#view-manage .cat-fields .cf{width:auto!important;justify-content:flex-start!important}
+#view-manage .cat-fields .c-dob{width:160px!important;flex:0 0 160px}
+#view-manage .mgr-row .nm>*{align-self:stretch;text-align:left}
+#view-manage .mgr-row .defrow{align-self:flex-start!important;width:auto!important}
