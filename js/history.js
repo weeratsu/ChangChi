@@ -10,7 +10,7 @@ function _buildLogCard(h){
  var hospHtml=_hn?'<span>\uD83C\uDFE5 '+esc(_hn)+'</span>':'';
  var apptHtml=h.nextAppt?'<span class="log-appt">\uD83D\uDCC5 \u0e19\u0e31\u0e14 '+(typeof _fmtYMD==="function"?_fmtYMD(h.nextAppt):h.nextAppt)+'</span>':'';
  var costHtml=(h.cost!=null&&h.cost!=="")?'<span>\uD83D\uDCB0 '+esc(h.cost)+' \u0e1a\u0e32\u0e17</span>':'';
- var neuterHtml=("neutered" in h)?(h.neutered?'<span class="tag-neu on">\u2702\ufe0f \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27</span>':'<span class="tag-neu">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19</span>'):'';
+ var neuterHtml=("neutered" in h)?(h.neutered?'<span class="tag-neu on">\uD83E\uDE79 \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27</span>':'<span class="tag-neu">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19</span>'):'';
  var _hasW=(h.cat!=null&&h.cat!=="");
  var kgBig=_hasW?(fmtKg(h.cat)+' \u0E01\u0E01.'):'\u2014';
  var weightMeta=_hasW?('<span>\u2696\uFE0F \u0E23\u0E27\u0E21 '+fmtKg(h.total)+' \u2212 \u0E01\u0E23\u0E07 '+fmtKg(h.tare)+'</span>'):'<span>\u2696\uFE0F \u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e0a\u0e31\u0e48\u0e07\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01 (\u0e2b\u0e32\u0e2b\u0e21\u0e2d)</span>';
@@ -30,7 +30,7 @@ function _buildLogCard(h){
 function renderHist(){
  var el=document.getElementById("histList");el.innerHTML="";
  renderHistFilter();
- var items=hist.filter(function(h){return h.kind!=="appt" && (!histFilter || recCatName(h)===histFilter);});
+ var items=hist.filter(function(h){return h.kind!=="appt" && (!histFilter || _hKey(h)===histFilter);});
  var _hc=document.getElementById("histCount"); if(_hc){ _hc.textContent=items.length?("\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14 "+items.length+" \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23"):""; }
  if(!items.length){el.innerHTML='<p class="empty-note">'+(hist.length?"\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E02\u0E2D\u0E07\u0E41\u0E21\u0E27\u0E15\u0E31\u0E27\u0E19\u0E35\u0E49":"\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E1B\u0E23\u0E30\u0E27\u0E31\u0E15\u0E34\u0E01\u0E32\u0E23\u0E0A\u0E31\u0E48\u0E07")+'</p>';return;}
  // When a specific cat filter is active, show a flat paginated list.
@@ -43,16 +43,16 @@ function renderHist(){
  // No filter -> collapsible groups by cat.
  if(!window.__histOpen)window.__histOpen={};
  var order=[]; var byCat={};
- items.forEach(function(h){ var k=recCatName(h)||"(\u0E44\u0E21\u0E48\u0E23\u0E30\u0E1A\u0E38\u0E41\u0E21\u0E27)"; if(!byCat[k]){byCat[k]=[];order.push(k);} byCat[k].push(h); });
+ var _lbl={}; items.forEach(function(h){ var k=_hKey(h); _lbl[k]=recCatName(h)||"(\u0E44\u0E21\u0E48\u0E23\u0E30\u0E1A\u0E38\u0E41\u0E21\u0E27)"; if(!byCat[k]){byCat[k]=[];order.push(k);} byCat[k].push(h); });
  order.forEach(function(k){
   var arr=byCat[k];
   var open=!!window.__histOpen[k];
-  var _photo=_catPhotoByName(k);
-  var initial=(k.trim().charAt(0))||"?";
+  var _co=getCat(k); var _photo=_co?(catPhoto(_co)||""):""; var _nm=_lbl[k];
+  var initial=(_nm.trim().charAt(0))||"?";
   var ava=_photo?'<img class="log-ava" src="'+_photo+'">':'<span class="log-badge">'+esc(initial)+'</span>';
   var head=document.createElement("button");
   head.className="cat-group-head"+(open?" open":"");
-  head.innerHTML='<span class="cgh-left">'+ava+'<span class="cgh-name">'+esc(k)+'</span><span class="cgh-count">'+arr.length+'</span></span><span class="cgh-chev">'+(open?"\u25BE":"\u25B8")+'</span>';
+  head.innerHTML='<span class="cgh-left">'+ava+'<span class="cgh-name">'+esc(_nm)+'</span><span class="cgh-count">'+arr.length+'</span></span><span class="cgh-chev">'+(open?"\u25BE":"\u25B8")+'</span>';
   head.onclick=function(){ window.__histOpen[k]=!window.__histOpen[k]; renderHist(); };
   el.appendChild(head);
   if(open){
@@ -65,12 +65,11 @@ function renderHist(){
   }
  });
 }
+function _hKey(h){ var c=(typeof recCatObj==="function")?recCatObj(h):null; return c?c.id:("?"+(recCatName(h)||"")); }
 function renderHistFilter(){
  var el=document.getElementById("histFilter");if(!el)return;
- var names=[];cats.forEach(function(c){if(names.indexOf(c.name)<0)names.push(c.name);});
- hist.forEach(function(h){var _n=recCatName(h);if(_n&&names.indexOf(_n)<0)names.push(_n);});
  var html='<button class="fchip'+(histFilter===""?" on":"")+'" data-f="">\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14</button>';
- names.forEach(function(n){html+='<button class="fchip'+(histFilter===n?" on":"")+'" data-f="'+esc(n)+'">'+esc(n)+'</button>';});
+ cats.forEach(function(c){html+='<button class="fchip'+(histFilter===c.id?" on":"")+'" data-f="'+esc(c.id)+'">'+esc(c.name)+'</button>';});
  el.innerHTML=html;
  el.querySelectorAll(".fchip").forEach(function(b){b.onclick=function(){histFilter=b.getAttribute("data-f");window.__histShown=30;renderHist();};});
 }
@@ -114,6 +113,7 @@ function openManual(id){
  }
  fillSelect(document.getElementById("mCat"),cats,catId);
  fillSelect(document.getElementById("mCage"),cages,cageId);
+ (function(){ var s=document.getElementById("mCage"); if(!s) return; var op=document.createElement("option"); op.value=""; op.textContent="\u2014 \u0e44\u0e21\u0e48\u0e23\u0e30\u0e1a\u0e38\u0e01\u0e23\u0e07 \u2014"; s.insertBefore(op,s.firstChild); if(rec&&!rec.cageId) s.value=""; })();
  fillSelect(document.getElementById("mHosp"),hosps,hospId);
  document.getElementById("mDate").value=rec?isoToLocalInput(rec.ts):nowLocalInput();
  var mTotalEl=document.getElementById("mTotal");
@@ -152,9 +152,10 @@ function saveManual(){
  var note=document.getElementById("mNote").value.trim();
  var _apEl=document.getElementById("mAppt"); var appt=_apEl?(_apEl.value||""):"";
  var _costEl=document.getElementById("mCost"); var costRaw=_costEl?(_costEl.value||"").replace(",",".").trim():""; var cost=costRaw===""?null:(isNaN(parseFloat(costRaw))?null:Math.round(parseFloat(costRaw)*100)/100);
- if(!cageObj){toast("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e01\u0e23\u0e07\u0e01\u0e48\u0e2d\u0e19");return;}
+ var _noCage=!cageObj; if(!cageObj){cageObj={id:"",name:"",tare:0};}
  if(!dtv){toast("\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e27\u0e31\u0e19\u0e40\u0e27\u0e25\u0e32\u0e01\u0e48\u0e2d\u0e19");return;}
  var rawTot=(document.getElementById("mTotal").value||"").replace(",",".").trim();
+ var catEl0=document.getElementById("mCatKg"); if(_noCage){ if(catEl0&&(catEl0.value||"").trim()!==""){ rawTot=""; } else if(rawTot!==""){ toast("\u0e44\u0e21\u0e48\u0e23\u0e30\u0e1a\u0e38\u0e01\u0e23\u0e07: \u0e43\u0e2a\u0e48\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27\u0e15\u0e23\u0e07 \u0e46 \u0e41\u0e17\u0e19\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21"); return; } }
  var catEl=document.getElementById("mCatKg");
  var rawCat=catEl?(catEl.value||"").replace(",",".").trim():"";
  var tare=cageObj.tare||0;
@@ -169,9 +170,15 @@ function saveManual(){
    cat=Math.round(cat*100)/100;
    tot=Math.round((cat+tare)*100)/100;
  } else {
-   toast("\u0e43\u0e2a\u0e48\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27 \u0e2b\u0e23\u0e37\u0e2d\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21 \u0e2d\u0e22\u0e48\u0e32\u0e07\u0e43\u0e14\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e2b\u0e19\u0e36\u0e48\u0e07");return;
+   // no weight: allowed for vet-visit-only records (note / cost / care / appt)
+   var _cr=(window._careGet?_careGet("careM"):[]);
+   if(!(note||cost!=null||appt||_cr.length)){ toast("\u0e43\u0e2a\u0e48\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e41\u0e21\u0e27 \u0e2b\u0e23\u0e37\u0e2d\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e23\u0e27\u0e21 \u0e2d\u0e22\u0e48\u0e32\u0e07\u0e43\u0e14\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e2b\u0e19\u0e36\u0e48\u0e07");return; }
+   tot=null; cat=null;
  }
- if(cat<=0){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
+ // total that only equals the cage tare (auto-filled, cat empty) = no weight entered
+ if(cat!=null&&cat<=0&&rawCat===""){ var _cr2=(window._careGet?_careGet("careM"):[]); if(note||cost!=null||appt||_cr2.length){ tot=null; cat=null; } }
+ if(_noCage&&cat!=null){ tot=null; }
+ if(cat!=null&&cat<=0){toast("\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07");return;}
  var ts=new Date(dtv.replace("T"," ").replace(/-/g,"/")).toISOString();
  if(editingId){
   for(var i=0;i<hist.length;i++){if(hist[i].id===editingId){

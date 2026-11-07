@@ -2,10 +2,10 @@
 function renderSummary(){
  var el=document.getElementById("summaryBox");if(!el)return;
  var byCat={};
- hist.forEach(function(h){ if(h.cat==null||h.cat==="")return; var k=recCatName(h)||"(\u0E44\u0E21\u0E48\u0E23\u0E30\u0E1A\u0E38)";(byCat[k]=byCat[k]||[]).push(h);});
+ hist.forEach(function(h){ if(h.cat==null||h.cat==="")return; var _co=recCatObj(h); var k=_co?_co.id:("?"+(recCatName(h)||"\u0E44\u0E21\u0E48\u0E23\u0E30\u0E1A\u0E38"));(byCat[k]=byCat[k]||[]).push(h);});
  var names=Object.keys(byCat);
  if(!names.length){el.innerHTML='<p class="empty-note" style="padding:14px">\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25 \u0E0A\u0E31\u0E48\u0E07\u0E19\u0E49\u0E33\u0E2B\u0E19\u0E31\u0E01\u0E2A\u0E31\u0E01\u0E04\u0E23\u0E31\u0E49\u0E07\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E14\u0E39\u0E2A\u0E23\u0E38\u0E1B</p>';return;}
- function catByName(nm){for(var i=0;i<cats.length;i++)if(cats[i].name===nm)return cats[i];return null;}
+ function catByName(k){ return getCat(k)||null; } function _sumName(k){ var c=getCat(k); return c?c.name:String(k).replace(/^\?/,""); }
  function avg(a){if(!a.length)return 0;var s=0;a.forEach(function(x){s+=x.cat;});return s/a.length;}
 var html="";
  // ----- Vet cost summary + analysis -----
@@ -17,7 +17,7 @@ var html="";
    var c=(h.cost!=null&&h.cost!=='')?parseFloat(h.cost):0; if(isNaN(c)||c<=0) return;
    var _cs=window.__cst||{}; var _d0=new Date(h.ts); if(_cs.from&&_d0<new Date(_cs.from+'T00:00')) return; if(_cs.to&&_d0>new Date(_cs.to+'T23:59:59')) return; if(_cs.cat&&(h.catId||'')!==_cs.cat) return;
    total+=c; nWith++; costs.push(c);
-   var k=recCatName(h)||'(\u0e44\u0e21\u0e48\u0e23\u0e30\u0e1a\u0e38)'; byCatCost[k]=(byCatCost[k]||0)+c;
+   var _cc=recCatObj(h); var k=_cc?_cc.id:('?'+(recCatName(h)||'\u0e44\u0e21\u0e48\u0e23\u0e30\u0e1a\u0e38')); byCatCost[k]=(byCatCost[k]||0)+c;
    var d=new Date(h.ts); var _g=(window.__cst||{}).grp||'m'; var mk=_g==='y'?String(d.getFullYear()):(_g==='c'?k:d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)); byMonth[mk]=(byMonth[mk]||0)+c;
    if(d.getFullYear()+'-'+(d.getMonth()+1)===ym){ monthTot+=c; window.__cMonN=(window.__cMonN||0)+1; }
   });
@@ -31,7 +31,7 @@ var html="";
    var bars='';
    mkeys.forEach(function(k){
     var hpct=maxM>0?Math.round(byMonth[k]/maxM*100):0;
-    var _gg=(window.__cst||{}).grp||'m'; var mlabel=_gg==='m'?(k.slice(5)+'/'+dispYear2(k.slice(0,4))):(_gg==='y'?String(dispYear(k)):k);
+    var _gg=(window.__cst||{}).grp||'m'; var mlabel=_gg==='m'?(k.slice(5)+'/'+dispYear2(k.slice(0,4))):(_gg==='y'?String(dispYear(k)):_sumName(k));
     var _ap=maxM>0?Math.min(100,_mAvg/maxM*100):0;
     bars+='<div class="cbar"><div class="cbar-area"><span class="cbar-val" style="bottom:calc('+Math.max(hpct,3)+'% + 2px)">'+money(Math.round(byMonth[k]))+'</span><div class="cbar-fill" style="height:'+Math.max(hpct,3)+'%" title="'+money(byMonth[k])+'"></div>'+((window.__cst||{}).avg!==false?'<i class="cbar-avg" style="bottom:'+_ap.toFixed(1)+'%">'+(k===mkeys[mkeys.length-1]?'<b class="cavg-v">'+money(Math.round(_mAvg))+'</b>':'')+'</i>':'')+'</div><span class="cbar-lb">'+mlabel+'</span></div>';
    });
@@ -45,7 +45,7 @@ var html="";
     +'<button class="btn ghost'+(_st.avg!==false?' on':'')+'" onclick="cstSet(\'avg\','+(_st.avg===false)+')">\u0e04\u0e48\u0e32\u0e40\u0e09\u0e25\u0e35\u0e48\u0e22</button></div></div></div>';
    var chartHtml=ctl+(mkeys.length?'<div class="cost-chart-h">'+({m:'\u0e23\u0e32\u0e22\u0e40\u0e14\u0e37\u0e2d\u0e19',y:'\u0e23\u0e32\u0e22\u0e1b\u0e35',c:'\u0e41\u0e22\u0e01\u0e15\u0e32\u0e21\u0e41\u0e21\u0e27'}[_st.grp||'m'])+((_st.avg!==false)?' <span class="cavg-lg"><i></i>\u0e40\u0e09\u0e25\u0e35\u0e48\u0e22 '+money(Math.round(_mAvg))+' '+({m:'\u0e1a\u0e32\u0e17/\u0e40\u0e14\u0e37\u0e2d\u0e19',y:'\u0e1a\u0e32\u0e17/\u0e1b\u0e35',c:'\u0e1a\u0e32\u0e17/\u0e15\u0e31\u0e27'}[_st.grp||'m'])+'</span>':'')+'</div><div class="cost-chart">'+bars+'</div>':'<p class="empty-note cost-none">\u0e44\u0e21\u0e48\u0e21\u0e35\u0e04\u0e48\u0e32\u0e43\u0e0a\u0e49\u0e08\u0e48\u0e32\u0e22\u0e43\u0e19\u0e0a\u0e48\u0e27\u0e07\u0e19\u0e35\u0e49</p>');
    var rows='';
-   Object.keys(byCatCost).forEach(function(k){ rows+='<div class="cost-row"><span>'+esc(k)+'</span><b>'+money(byCatCost[k])+' \u0e1a\u0e32\u0e17</b></div>'; });
+   Object.keys(byCatCost).forEach(function(k){ rows+='<div class="cost-row"><span>'+esc(_sumName(k))+'</span><b>'+money(byCatCost[k])+' \u0e1a\u0e32\u0e17</b></div>'; });
    html+='<div class="sum-card cost-card">'+
      '<div class="sum-head"><span class="sum-name">\ud83d\udcb0 \u0e04\u0e48\u0e32\u0e43\u0e0a\u0e49\u0e08\u0e48\u0e32\u0e22\u0e2b\u0e32\u0e2b\u0e21\u0e2d</span></div>'+
      '<div class="cost-total">'+money(total)+' <small>\u0e1a\u0e32\u0e17 \u00b7 '+nWith+' \u0e04\u0e23\u0e31\u0e49\u0e07</small></div>'+
@@ -64,7 +64,7 @@ var html="";
  names.forEach(function(n){
   var arr=byCat[n].slice().sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});
   var latest=arr[0], prev=arr[1];
-  var initial=(n.trim().charAt(0))||"?";
+  var _nm=_sumName(n); var initial=(_nm.trim().charAt(0))||"?";
   var cobj=catByName(n);
   var deltaHtml="";
   if(prev){
@@ -76,7 +76,7 @@ var html="";
   // age + neuter status line (from the cat object)
   var metaBits=[];
   if(cobj&&cobj.dob){var ag=catAge(cobj.dob); if(ag)metaBits.push("\ud83c\udf82 "+ag);}
-  if(cobj){metaBits.push(cobj.neutered?"\u2702\ufe0f \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27":"\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19");}
+  if(cobj){metaBits.push(cobj.neutered?"\uD83E\uDE79 \u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19\u0e41\u0e25\u0e49\u0e27":"\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19");}
   var metaHtml=metaBits.length?'<div class="sum-meta">'+metaBits.join(" \u00b7 ")+'</div>':'';
   var _sphoto=cobj?(catPhoto(cobj)||""):"";
   var sAva=_sphoto?'<img class="log-ava" src="'+_sphoto+'">':'<span class="log-badge">'+esc(initial)+'</span>';
@@ -90,7 +90,7 @@ var html="";
    cmpHtml='<div class="sum-cmp">\u0e01\u0e48\u0e2d\u0e19\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19 \u0e40\u0e09\u0e25\u0e35\u0e48\u0e22 <b>'+fmtKg(ab)+'</b> \u2192 \u0e2b\u0e25\u0e31\u0e07\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19 <b>'+fmtKg(aa)+'</b> ('+sign+fmtKg(dd)+' \u0e01\u0e01.)</div>';
   }
   html+='<div class="sum-card">'+
-   '<div class="sum-head">'+sAva+'<span class="sum-name">'+esc(n)+'</span></div>'+
+   '<div class="sum-head">'+sAva+'<span class="sum-name">'+esc(_nm)+'</span></div>'+
    metaHtml+
    '<div class="sum-kg">'+fmtKg(latest.cat)+' <small>\u0E01\u0E01.</small></div>'+
    deltaHtml+

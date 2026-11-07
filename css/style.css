@@ -570,3 +570,11 @@ input::placeholder,textarea::placeholder{color:var(--subtx);opacity:.7}
 #view-manage .f2 .c-dob::-webkit-date-and-time-value{text-align:left;margin:0}
 #view-manage .f2-ro{background:transparent;color:var(--acctx)!important;font-weight:700;border-style:dashed;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #view-manage .mgr-row .nm input.c-name{height:38px!important}
+/* v98: history/modal pills identical to chart pills (higher specificity) */
+body .care-pick .care-chip,body .fchip-row .fchip,body .cf-opts .btn{
+ background:var(--card2)!important;border:1px solid var(--line)!important;color:var(--txt)!important;
+ padding:4px 11px!important;font-size:12px!important;font-weight:700!important;line-height:1.4!important;border-radius:999px!important;box-shadow:none!important;min-height:0!important;height:auto!important}
+body .care-pick .care-chip.on,body .fchip-row .fchip.on,body .cf-opts .btn.on{
+ background:color-mix(in srgb,var(--accent) 16%,var(--card))!important;border-color:var(--accent)!important;color:var(--acctx)!important}
+/* v100: toast must show above popups */
+.toast{z-index:20000!important}

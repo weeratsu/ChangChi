@@ -6,10 +6,8 @@ function _repHospName(h){ return (typeof recHospName==="function")?recHospName(h
 function _repMoney(n){ return (Math.round(n*100)/100).toLocaleString('en-US'); }
 function renderReportFilter(){
  var el=document.getElementById("repFilter"); if(!el)return;
- var names=[]; cats.forEach(function(c){ if(names.indexOf(c.name)<0)names.push(c.name); });
- hist.forEach(function(h){ var n=_repCatName(h); if(n&&names.indexOf(n)<0)names.push(n); });
  var html='<button class="fchip'+(repFilter===""?" on":"")+'" data-f="">\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14</button>';
- names.forEach(function(n){ html+='<button class="fchip'+(repFilter===n?" on":"")+'" data-f="'+esc(n)+'">'+esc(n)+'</button>'; });
+ cats.forEach(function(c){ html+='<button class="fchip'+(repFilter===c.id?" on":"")+'" data-f="'+esc(c.id)+'">'+esc(c.name)+'</button>'; });
  el.innerHTML=html;
  el.querySelectorAll(".fchip").forEach(function(b){ b.onclick=function(){ repFilter=b.getAttribute("data-f"); renderReport(); }; });
 }
@@ -31,14 +29,14 @@ function renderReport(){
  var toT=repTo?new Date(repTo+"T23:59:59").getTime():null;
  var items=hist.filter(function(h){
    if(h.kind==="appt") return false;
-   if(repFilter && _repCatName(h)!==repFilter) return false;
+   if(repFilter){ var _rc=_repCatObj(h); if(!_rc||_rc.id!==repFilter) return false; }
    var t=new Date(h.ts).getTime();
    if(fromT!=null && t<fromT) return false;
    if(toT!=null && t>toT) return false;
    var hasCost=(h.cost!=null&&h.cost!=="");
    var hasCare=!!(h.care&&h.care.length);
    if(!(_repHospName(h)||hasCost||h.note||hasCare)) return false;
-   if(window.__repCare&&!(h.care&&h.care.indexOf(window.__repCare)>=0)) return false;
+   if(window.__repCare==='__none'){ if(h.care&&h.care.length) return false; } else if(window.__repCare&&!(h.care&&h.care.indexOf(window.__repCare)>=0)) return false;
    var q=(repSearch||"").trim().toLowerCase();
    if(q){ var hay=((_repCatName(h)||"")+" "+(_repHospName(h)||"")+" "+(h.note||"")+" "+fmtDateTime(h.ts)).toLowerCase();
      var ws=q.split(/\s+/); for(var qi=0;qi<ws.length;qi++){ if(hay.indexOf(ws[qi])<0) return false; } }

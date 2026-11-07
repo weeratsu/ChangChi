@@ -3,8 +3,10 @@
 var LS_CARE="cc_care_tags";
 var CARE_DEF=[{id:"vac",name:"\u0e27\u0e31\u0e04\u0e0b\u0e35\u0e19\u0e23\u0e27\u0e21",icon:"\uD83D\uDC89",every:365},{id:"rab",name:"\u0e1e\u0e34\u0e29\u0e2a\u0e38\u0e19\u0e31\u0e02\u0e1a\u0e49\u0e32",icon:"\uD83D\uDC89",every:365},
  {id:"flea",name:"\u0e2b\u0e22\u0e14\u0e2b\u0e25\u0e31\u0e07\u0e04\u0e2d",icon:"\uD83D\uDCA7",every:30},{id:"worm",name:"\u0e16\u0e48\u0e32\u0e22\u0e1e\u0e22\u0e32\u0e18\u0e34",icon:"\uD83D\uDC8A",every:90},
- {id:"nail",name:"\u0e15\u0e31\u0e14\u0e40\u0e25\u0e47\u0e1a",icon:"\u2702\uFE0F",every:0},{id:"bath",name:"\u0e2d\u0e32\u0e1a\u0e19\u0e49\u0e33",icon:"\uD83D\uDEC1",every:0}];
+ {id:"nail",name:"\u0e15\u0e31\u0e14\u0e40\u0e25\u0e47\u0e1a",icon:"\u2702\uFE0F",every:0},{id:"neuter",name:"\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19",icon:"\uD83E\uDE79",every:0},{id:"bath",name:"\u0e2d\u0e32\u0e1a\u0e19\u0e49\u0e33",icon:"\uD83D\uDEC1",every:0}];
 function careTags(){ var t; try{t=JSON.parse(localStorage.getItem(LS_CARE));}catch(e){t=null;} return (Array.isArray(t)&&t.length)?t:CARE_DEF.slice(); }
+// one-time: add neuter tag to existing saved lists (v106)
+(function(){ try{ if(localStorage.getItem("cc_care_mig_neuter")) return; var t=JSON.parse(localStorage.getItem(LS_CARE)); if(Array.isArray(t)&&t.length&&!t.some(function(x){return x.id==="neuter";})){ t.push({id:"neuter",name:"\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19",icon:"\uD83E\uDE79",every:0}); localStorage.setItem(LS_CARE,JSON.stringify(t)); } localStorage.setItem("cc_care_mig_neuter","1"); }catch(e){} })();
 function careSave(t){ localStorage.setItem(LS_CARE,JSON.stringify(t)); careRenderAll(); }
 function careTag(id){ var t=careTags(); for(var i=0;i<t.length;i++) if(t[i].id===id) return t[i]; return null; }
 function _careGet(elId){ var el=document.getElementById(elId); if(!el) return []; return [].map.call(el.querySelectorAll(".care-chip.on"),function(b){return b.getAttribute("data-id");}); }
@@ -41,17 +43,17 @@ function careShowHist(cid,tid){ var t=careTag(tid), c=getCat(cid); var L=hist.fi
 window.careShowHist=careShowHist;
 // settings manager
 function careRenderMgr(){ var el=document.getElementById("careMgr"); if(!el) return; var t=careTags();
- el.innerHTML=t.map(function(x,i){ return '<div class="care-mrow"><input class="cm-ic" value="'+esc(x.icon)+'" data-i="'+i+'" data-k="icon"><input class="cm-nm" value="'+esc(x.name)+'" data-i="'+i+'" data-k="name"><label class="cm-ev">\u0e17\u0e38\u0e01 <input inputmode="numeric" value="'+(x.every||"")+'" placeholder="-" data-i="'+i+'" data-k="every"> \u0e27\u0e31\u0e19</label><button class="del" data-del="'+i+'">\u00d7</button></div>'; }).join("");
+ el.innerHTML=t.map(function(x,i){ return '<div class="care-mrow"><input class="cm-ic" value="'+esc(x.icon)+'" data-i="'+i+'" data-k="icon"><input class="cm-nm" placeholder="\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e43\u0e2b\u0e21\u0e48" value="'+esc(x.name)+'" data-i="'+i+'" data-k="name"><label class="cm-ev">\u0e17\u0e38\u0e01 <input inputmode="numeric" value="'+(x.every||"")+'" placeholder="-" data-i="'+i+'" data-k="every"> \u0e27\u0e31\u0e19</label><button class="del" data-del="'+i+'">\u00d7</button></div>'; }).join("");
  el.querySelectorAll("input").forEach(function(inp){ inp.onchange=function(){ var a=careTags(), i=+inp.getAttribute("data-i"), k=inp.getAttribute("data-k"); a[i][k]=k==="every"?(parseInt(inp.value)||0):inp.value.trim(); careSave(a); }; });
  el.querySelectorAll("[data-del]").forEach(function(b){ b.onclick=function(){ var a=careTags(), i=+b.getAttribute("data-del"); askConfirm("\u0e25\u0e1a "+a[i].name+" ?",function(){ a.splice(i,1); careSave(a); },{danger:true}); }; }); }
-function careAdd(){ var a=careTags(); a.push({id:"t"+Date.now(),name:"\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e43\u0e2b\u0e21\u0e48",icon:"\uD83E\uDE7A",every:0}); careSave(a); }
+function careAdd(){ var a=careTags(); a.push({id:"t"+Date.now(),name:"",icon:"\uD83E\uDE7A",every:0}); careSave(a); setTimeout(function(){ var l=document.querySelectorAll("#careMgr .cm-nm"); if(l.length) l[l.length-1].focus(); },30); }
 window.careAdd=careAdd;
 function careRenderAll(){ _careSet("careW",_careGet("careW")); careRenderMgr(); try{renderSummary();}catch(e){} try{renderAppts();}catch(e){} try{renderReport();}catch(e){} }
 // wrap summary to append the book
 (function(){ var o=window.renderSummary; if(typeof o!=="function"||o._care) return; var f=function(){ var r=o.apply(this,arguments); var el=document.getElementById("summaryBox"); if(el) el.insertAdjacentHTML("afterbegin",careBookHtml()); return r; }; f._care=1; window.renderSummary=f; })();
 // report: care filter chips
 window.__repCare="";
-function careRepFilterHtml(){ var t=careTags(); return '<button class="fchip'+(!window.__repCare?' on':'')+'" onclick="window.__repCare=\'\';renderReport()">\u0e17\u0e38\u0e01\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23</button>'+t.map(function(x){ return '<button class="fchip'+(window.__repCare===x.id?' on':'')+'" onclick="window.__repCare=\''+x.id+'\';renderReport()">'+x.icon+' '+esc(x.name)+'</button>'; }).join(""); }
+function careRepFilterHtml(){ var t=careTags(); return '<button class="fchip'+(!window.__repCare?' on':'')+'" onclick="window.__repCare=\'\';renderReport()">\u0e17\u0e38\u0e01\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23</button>'+t.map(function(x){ return '<button class="fchip'+(window.__repCare===x.id?' on':'')+'" onclick="window.__repCare=\''+x.id+'\';renderReport()">'+x.icon+' '+esc(x.name)+'</button>'; }).join("")+'<button class="fchip'+(window.__repCare==="__none"?' on':'')+'" onclick="window.__repCare=\'__none\';renderReport()">\u2754 \u0e44\u0e21\u0e48\u0e23\u0e30\u0e1a\u0e38</button>'; }
 (function(){ var o=window.renderReport; if(typeof o!=="function"||o._care) return; var f=function(){ var r=o.apply(this,arguments); var el=document.getElementById("repCare"); if(el) el.innerHTML=careRepFilterHtml(); return r; }; f._care=1; window.renderReport=f; })();
 document.addEventListener("DOMContentLoaded",function(){ _careSet("careW",[]); careRenderMgr(); });
 setTimeout(function(){ _careSet("careW",_careGet("careW")); careRenderMgr(); try{renderSummary();renderReport();renderAppts();}catch(e){} },50);
