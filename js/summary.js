@@ -12,13 +12,14 @@ var html="";
  (function(){
   function money(n){ return (Math.round(n*100)/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2}); }
   var total=0, nWith=0, byCatCost={}, byMonth={}, costs=[], now=new Date(), ym=now.getFullYear()+'-'+(now.getMonth()+1), monthTot=0;
+  window.__cMonN=0;
   hist.forEach(function(h){
    var c=(h.cost!=null&&h.cost!=='')?parseFloat(h.cost):0; if(isNaN(c)||c<=0) return;
    var _cs=window.__cst||{}; var _d0=new Date(h.ts); if(_cs.from&&_d0<new Date(_cs.from+'T00:00')) return; if(_cs.to&&_d0>new Date(_cs.to+'T23:59:59')) return; if(_cs.cat&&(h.catId||'')!==_cs.cat) return;
    total+=c; nWith++; costs.push(c);
    var k=recCatName(h)||'(\u0e44\u0e21\u0e48\u0e23\u0e30\u0e1a\u0e38)'; byCatCost[k]=(byCatCost[k]||0)+c;
    var d=new Date(h.ts); var _g=(window.__cst||{}).grp||'m'; var mk=_g==='y'?String(d.getFullYear()):(_g==='c'?k:d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)); byMonth[mk]=(byMonth[mk]||0)+c;
-   if(d.getFullYear()+'-'+(d.getMonth()+1)===ym) monthTot+=c;
+   if(d.getFullYear()+'-'+(d.getMonth()+1)===ym){ monthTot+=c; window.__cMonN=(window.__cMonN||0)+1; }
   });
   var _fx=window.__cst||{};
   if(total>0||_fx.from||_fx.to||_fx.cat){
@@ -39,7 +40,7 @@ var html="";
    var ctl='<div class="cf-box">'
     +'<div class="cf-row"><span class="cf-lbl">\uD83D\uDCC5 \u0e0a\u0e48\u0e27\u0e07\u0e40\u0e27\u0e25\u0e32</span><div class="cf-opts"><button class="btn ghost'+(_st.pre===3?' on':'')+'" onclick="cstPreset(3)">3\u0e14.</button><button class="btn ghost'+(_st.pre===6?' on':'')+'" onclick="cstPreset(6)">6\u0e14.</button><button class="btn ghost'+(_st.pre===12?' on':'')+'" onclick="cstPreset(12)">1\u0e1b\u0e35</button><button class="btn ghost'+(_st.pre===0?' on':'')+'" onclick="cstPreset(0)">\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14</button>'
     +'<span class="cf-dates"><input type="date" class="cst-date" value="'+(_st.from||'')+'" onchange="cstSet(\'from\',this.value)"> \u2013 <input type="date" class="cst-date" value="'+(_st.to||'')+'" onchange="cstSet(\'to\',this.value)"></span></div></div>'
-    +'<div class="cf-row"><span class="cf-lbl">\uD83D\uDC31 \u0e41\u0e21\u0e27</span><div class="cf-opts"><button class="btn ghost'+(!_st.cat?' on':'')+'" onclick="cstSet(\'cat\',\'\')">\u0e17\u0e38\u0e01\u0e15\u0e31\u0e27</button>'+_cb+'</div></div>'
+    +'<div class="cf-row"><span class="cf-lbl">\uD83D\uDC31 \u0e41\u0e21\u0e27</span><div class="cf-opts"><button class="btn ghost'+(!_st.cat?' on':'')+'" onclick="cstSet(\'cat\',\'\')">\u0e17\u0e38\u0e01\u0e41\u0e21\u0e27</button>'+_cb+'</div></div>'
     +'<div class="cf-row"><span class="cf-lbl">\uD83D\uDCCA \u0e41\u0e2a\u0e14\u0e07</span><div class="cf-opts"><button class="btn ghost'+((_st.grp||'m')==='m'?' on':'')+'" onclick="cstSet(\'grp\',\'m\')">\u0e40\u0e14\u0e37\u0e2d\u0e19</button><button class="btn ghost'+((_st.grp||'m')==='y'?' on':'')+'" onclick="cstSet(\'grp\',\'y\')">\u0e1b\u0e35</button><button class="btn ghost'+((_st.grp||'m')==='c'?' on':'')+'" onclick="cstSet(\'grp\',\'c\')">\u0e41\u0e21\u0e27</button>'
     +'<button class="btn ghost'+(_st.avg!==false?' on':'')+'" onclick="cstSet(\'avg\','+(_st.avg===false)+')">\u0e04\u0e48\u0e32\u0e40\u0e09\u0e25\u0e35\u0e48\u0e22</button></div></div></div>';
    var chartHtml=ctl+(mkeys.length?'<div class="cost-chart-h">'+({m:'\u0e23\u0e32\u0e22\u0e40\u0e14\u0e37\u0e2d\u0e19',y:'\u0e23\u0e32\u0e22\u0e1b\u0e35',c:'\u0e41\u0e22\u0e01\u0e15\u0e32\u0e21\u0e41\u0e21\u0e27'}[_st.grp||'m'])+((_st.avg!==false)?' <span class="cavg-lg"><i></i>\u0e40\u0e09\u0e25\u0e35\u0e48\u0e22 '+money(Math.round(_mAvg))+' '+({m:'\u0e1a\u0e32\u0e17/\u0e40\u0e14\u0e37\u0e2d\u0e19',y:'\u0e1a\u0e32\u0e17/\u0e1b\u0e35',c:'\u0e1a\u0e32\u0e17/\u0e15\u0e31\u0e27'}[_st.grp||'m'])+'</span>':'')+'</div><div class="cost-chart">'+bars+'</div>':'<p class="empty-note cost-none">\u0e44\u0e21\u0e48\u0e21\u0e35\u0e04\u0e48\u0e32\u0e43\u0e0a\u0e49\u0e08\u0e48\u0e32\u0e22\u0e43\u0e19\u0e0a\u0e48\u0e27\u0e07\u0e19\u0e35\u0e49</p>');
@@ -47,8 +48,8 @@ var html="";
    Object.keys(byCatCost).forEach(function(k){ rows+='<div class="cost-row"><span>'+esc(k)+'</span><b>'+money(byCatCost[k])+' \u0e1a\u0e32\u0e17</b></div>'; });
    html+='<div class="sum-card cost-card">'+
      '<div class="sum-head"><span class="sum-name">\ud83d\udcb0 \u0e04\u0e48\u0e32\u0e43\u0e0a\u0e49\u0e08\u0e48\u0e32\u0e22\u0e2b\u0e32\u0e2b\u0e21\u0e2d</span></div>'+
-     '<div class="cost-total">'+money(total)+' <small>\u0e1a\u0e32\u0e17</small></div>'+
-     '<div class="cost-sub">\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49 '+money(monthTot)+' \u0e1a\u0e32\u0e17 \u00b7 '+nWith+' \u0e04\u0e23\u0e31\u0e49\u0e07</div>'+
+     '<div class="cost-total">'+money(total)+' <small>\u0e1a\u0e32\u0e17 \u00b7 '+nWith+' \u0e04\u0e23\u0e31\u0e49\u0e07</small></div>'+
+     '<div class="cost-sub">\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49 '+money(monthTot)+' \u0e1a\u0e32\u0e17 \u00b7 '+(window.__cMonN||0)+' \u0e04\u0e23\u0e31\u0e49\u0e07</div>'+
      '<div class="cost-stats">'+
        '<div class="cstat"><span>\u0e40\u0e09\u0e25\u0e35\u0e48\u0e22/\u0e04\u0e23\u0e31\u0e49\u0e07</span><b>'+money(avg)+'</b></div>'+
        '<div class="cstat"><span>\u0e2a\u0e39\u0e07\u0e2a\u0e38\u0e14</span><b>'+money(mx)+'</b></div>'+
