@@ -399,3 +399,23 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .more-w>summary small{font-weight:400;font-size:12px;color:var(--muted,#9a7b55)}
 .more-w[open]>summary h2{margin-bottom:10px}
 .more-w[open]>summary h2{}
+/* Compact pill pickers (v68) */
+.pick-row{align-items:flex-start;margin-bottom:8px}
+.pick-lbl{padding-top:7px;flex-basis:30px;font-size:13px}
+.pick-row .cat-row,.pick-row .cage-grid{display:flex!important;flex-wrap:wrap!important;gap:6px!important;grid-template-columns:none!important}
+.pick-row .cat-chip,#cageGrid .cage-tile{flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:0!important;height:auto!important;padding:4px 10px 4px 4px!important;gap:6px!important;border-radius:999px!important;font-size:13px!important;border-width:1.5px!important}
+.pick-row .cat-chip .cat-ava{width:24px!important;height:24px!important;flex:0 0 24px}
+#cageGrid .cage-tile img{width:24px!important;height:24px!important;flex:0 0 24px!important;border-radius:50%!important}
+#cageGrid .cage-tile .ph{font-size:16px!important}
+#cageGrid .cage-tile .cap{font-size:13px!important;white-space:nowrap}
+#cageGrid .cage-tile .cap br{display:none}
+#cageGrid .cage-tile .cap .kg{font-size:11px;margin-left:4px}
+#cageGrid .cage-tile .chk{display:none!important}
+/* collapsed appt card: no empty space */
+.appt-tg .appt-hd{margin-bottom:0!important;padding-bottom:0!important;border-bottom:none!important}
+.appt-global{padding-top:10px!important;padding-bottom:10px!important}
+/* Same selected look for cat & cage pills (v69) */
+.pick-row .cat-chip,#cageGrid .cage-tile{background:var(--card2,#f3e3c8)!important;border:1.5px solid var(--line,#e2c9a0)!important;color:var(--txt)!important;box-shadow:none!important;outline:none!important}
+.pick-row .cat-chip.on,#cageGrid .cage-tile.on{background:color-mix(in srgb,var(--accent) 14%,var(--card))!important;border-color:var(--accent)!important;color:var(--accent)!important;font-weight:700}
+#cageGrid .cage-tile .chk,.pick-row .cat-chip .chk{display:none!important}
+#cageGrid .cage-tile.on .cap,#cageGrid .cage-tile.on .kg{color:var(--accent)!important}
