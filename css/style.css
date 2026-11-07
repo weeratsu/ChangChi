@@ -419,3 +419,8 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .pick-row .cat-chip.on,#cageGrid .cage-tile.on{background:color-mix(in srgb,var(--accent) 14%,var(--card))!important;border-color:var(--accent)!important;color:var(--accent)!important;font-weight:700}
 #cageGrid .cage-tile .chk,.pick-row .cat-chip .chk{display:none!important}
 #cageGrid .cage-tile.on .cap,#cageGrid .cage-tile.on .kg{color:var(--accent)!important}
+/* Theme-safe text in pills (v70) */
+#cageGrid .cage-tile .cap .kg{color:var(--muted,#8a6d4a)!important;opacity:.85;font-weight:600}
+#cageGrid .cage-tile.on .cap .kg{color:var(--accent)!important;opacity:.8}
+.pick-row .cat-chip,#cageGrid .cage-tile,#cageGrid .cage-tile .cap{color:var(--txt)!important}
+.pick-row .cat-chip.on,#cageGrid .cage-tile.on,#cageGrid .cage-tile.on .cap{color:var(--accent)!important}
