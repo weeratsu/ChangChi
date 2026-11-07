@@ -443,3 +443,52 @@ input::placeholder,textarea::placeholder{color:var(--subtx);opacity:.7}
 #imgZoom img{max-width:92vw;max-height:78vh;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.5);object-fit:contain;background:var(--card)}
 #imgZoom .iz-cap{color:#fff;font-weight:700;font-size:16px}
 #imgZoom .iz-x{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.18);color:#fff;font-size:22px;cursor:pointer}
+/* Weight trend chart (v77) */
+.wt-card{background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.wt-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 6px}
+.wt-ctl label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--subtx);margin:0}
+.wt-ctl input[type=date]{width:auto;padding:6px 8px;font-size:13px;min-height:0}
+.wt-pre{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.wt-pre .btn{width:auto!important;margin:0!important;padding:4px 10px!important;font-size:12px;border-radius:999px}
+.wt-avg{cursor:pointer;font-weight:700}
+.wt-avg input{width:auto;margin:0;accent-color:var(--accent)}
+.wt-svg{width:100%;height:auto;display:block}
+.wt-grid{stroke:var(--line);stroke-width:1}
+.wt-ax{fill:var(--subtx);font-size:11px}
+.wt-legs{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;font-size:13px;color:var(--txt)}
+.wt-leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.wt-leg small{color:var(--subtx)}
+/* Sparkline: theme color, even stroke (v79) */
+.spark-line{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.spark-fill{fill:var(--accent);opacity:.12;stroke:none}
+/* Vet-cost bars: avg line (v82) */
+.cost-chart{height:130px}
+.cbar-area{position:relative;flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.cbar-area .cbar-val{position:absolute;left:0;right:0;text-align:center;margin:0}
+.cbar-avg{position:absolute;left:-3px;right:-3px;height:0;border-top:2px dashed var(--acctx);opacity:.75;pointer-events:none}
+.cavg-lg{font-weight:400;margin-left:8px;color:var(--subtx)}
+.cavg-lg i{display:inline-block;width:16px;border-top:2px dashed var(--acctx);vertical-align:middle;margin-right:4px}
+.wt-pre .btn.on{background:color-mix(in srgb,var(--accent) 16%,var(--card))!important;border-color:var(--accent)!important;color:var(--acctx)!important}
+.wt-gl{font-size:12px;color:var(--subtx);margin-right:2px}
+/* v84: cost chart polish */
+.cst-date{width:auto!important;padding:6px 10px!important;font-size:13px;min-height:0;background-image:none!important;border:1px solid var(--line);border-radius:10px;background-color:var(--card)}
+.cbar-avg{border-top-width:1px!important;opacity:.6}
+.cavg-v{position:absolute;right:0;bottom:2px;font-size:10px;font-weight:700;color:var(--acctx);background:var(--card2);padding:0 4px;border-radius:6px;white-space:nowrap;line-height:1.3}
+.cost-chart{justify-content:safe center}
+/* v85: grouped cost filters */
+.cf-box{border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--card) 55%,transparent);padding:4px 10px;margin:10px 0 6px}
+.cf-row{display:flex;align-items:center;gap:10px;padding:7px 0}
+.cf-row+.cf-row{border-top:1px dashed var(--line)}
+.cf-lbl{flex:0 0 78px;font-size:12px;font-weight:700;color:var(--subtx);white-space:nowrap}
+.cf-opts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex:1}
+.cf-opts .btn{width:auto!important;margin:0!important;padding:4px 11px!important;font-size:12px;border-radius:999px}
+.cf-opts .btn.on{background:color-mix(in srgb,var(--accent) 16%,var(--card))!important;border-color:var(--accent)!important;color:var(--acctx)!important}
+.cf-dates{display:inline-flex;align-items:center;gap:4px;color:var(--subtx);font-size:12px}
+.cst-date{background-color:var(--card2)!important;color:var(--txt)!important;border:1px solid var(--line)!important;border-radius:999px!important;padding:4px 10px!important;font-size:12px!important;color-scheme:light dark}
+.cst-date:focus{border-color:var(--accent)!important;outline:none}
+@media(max-width:520px){.cf-row{flex-direction:column;align-items:flex-start;gap:6px}.cf-lbl{flex:none}}
+.cost-none{text-align:center;padding:18px 0}
+/* v87: avg toggle as pill aligned with other buttons */
+.cf-opts .wt-avg{display:inline-flex!important;align-items:center;gap:5px;margin:0!important;padding:4px 11px;font-size:12px;font-weight:700;line-height:1.4;border:1px solid var(--line);border-radius:999px;background:var(--card2);color:var(--txt);cursor:pointer}
+.cf-opts .wt-avg.on{background:color-mix(in srgb,var(--accent) 16%,var(--card));border-color:var(--accent);color:var(--acctx)}
+.cf-opts .wt-avg input{width:13px;height:13px;margin:0!important;padding:0;accent-color:var(--accent)}

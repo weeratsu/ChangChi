@@ -39,7 +39,14 @@ function getHosp(id){for(var i=0;i<hosps.length;i++)if(hosps[i].id===id)return h
 var histFilter="";
 var editingId=null;
 function pad(n){return (n<10?"0":"")+n;}
-function fmtDateTime(iso){var d=new Date(iso);return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());}
+// Year display format, app-wide: "ce" (ค.ศ., default) or "be" (พ.ศ.) - Nov 7 2026
+function yearFmt(){ return localStorage.getItem("cc_year_fmt")==="be"?"be":"ce"; }
+function dispYear(y){ y=+y; return yearFmt()==="be"?y+543:y; }
+function dispYear2(y){ return String(dispYear(y)).slice(-2); }
+function setYearFmt(v){ localStorage.setItem("cc_year_fmt",v==="be"?"be":"ce"); location.reload(); }
+window.yearFmt=yearFmt; window.dispYear=dispYear; window.dispYear2=dispYear2; window.setYearFmt=setYearFmt;
+function fmtDateTimeCE(iso){var d=new Date(iso);return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes());}
+function fmtDateTime(iso){var d=new Date(iso);return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+dispYear(d.getFullYear())+" "+pad(d.getHours())+":"+pad(d.getMinutes());}
 function fmtKg(n){var v=Math.round(n*100)/100;return (v%1===0)?v.toFixed(1):(""+v);}
 function catAge(dob){
  if(!dob)return "";

@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v75">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v88">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v75">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v75">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v75">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v75">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v75">
-<link rel="manifest" href="manifest.webmanifest?v75">
-<link rel="stylesheet" href="css/style.css?v75">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v88">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v88">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v88">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v88">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v88">
+<link rel="manifest" href="manifest.webmanifest?v88">
+<link rel="stylesheet" href="css/style.css?v88">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -83,7 +83,7 @@
 </section>
 <section class="view" id="view-summary">
   <div class="card appt-card" id="apptBoxSum" style="display:none"></div>
-  <div class="card"><h2>📈 สรุปน้ำหนักล่าสุดต่อตัว</h2><div id="summaryBox"></div></div>
+  <div class="card"><h2>📊 สรุปแมว ๆ</h2><div id="summaryBox"></div></div>
 </section>
 <section class="view" id="view-report">
   <div class="card">
@@ -103,6 +103,7 @@
   <div class="card"><h2>🐱 จัดการแมว</h2><div id="catMgr"></div><button class="addbtn" id="addCat" style="margin-top:10px">+ เพิ่มแมว</button><p class="hint">แตะรูปเพื่อใส่รูปโปรไฟล์แมว · ใส่วันเกิดเพื่อแสดงอายุ · ติ๊ก “ทำหมันแล้ว” ถ้าทำหมันแล้ว</p></div>
   <div class="card"><h2>⚙️ จัดการกรง (น้ำหนักกรงเปล่า)</h2><div id="cageMgr"></div><button class="addbtn" id="addCage" style="margin-top:10px">+ เพิ่มกรง</button><p class="hint">น้ำหนักกรงเปล่า (tare) หน่วยกิโลกรัม — แก้ไขได้ บันทึกอัตโนมัติ</p></div>
   <div class="card"><h2>🏥 จัดการโรงพยาบาล/คลินิก</h2><div id="hospMgr"></div><button class="addbtn" id="addHosp" style="margin-top:10px">+ เพิ่มโรงพยาบาล</button><p class="hint">ติ๊กช่อง “ตั้งเป็นค่าเริ่มต้น” เพื่อ (จะถูกเลือกอัตโนมัติตอนชั่ง)</p></div>
+  <div class="card"><h2>📆 รูปแบบปี</h2><select id="yearFmtSel" class="sel" onchange="setYearFmt(this.value)"><option value="ce">ค.ศ. (เช่น 2026)</option><option value="be">พ.ศ. (เช่น 2569)</option></select><p class="hint">ใช้ทั้งแอป: วันที่ ปฏิทิน กราฟ รายงาน (ไฟล์ CSV ที่ส่งออกยังเป็น ค.ศ. เพื่อให้นำเข้ากลับได้ถูกต้อง)</p></div>
   <div class="card"><h2>🎨 ธีมสี</h2><div id="themePicker" class="theme-row"></div><p class="hint">เลือกธีมที่ชอบ สลับได้ทุกเมื่อ</p></div>
   <div class="card"><h2>↕️ จัดลำดับหน้าชั่ง</h2><div id="orderMgr"></div><p class="hint">กดลูกศรขึ้น/ลงเพื่อสลับลำดับการ์ดในหน้าชั่ง (ปุ่มบันทึกอยู่ล่างสุดเสมอ)</p></div>
   <div class="card"><h2>💾 สำรอง / กู้คืนข้อมูลทั้งหมด</h2><p class="hint" style="margin-top:0">ส่งออกข้อมูลทั้งหมด (แมว รูป กรง โรงพยาบาล ประวัติ ค่าตั้งต้น) เป็นไฟล์เดียว เอาไปเปิดเครื่องอื่นได้</p><button class="btn sec" id="exportAllBtn" style="margin-top:10px">⬆️ สำรองข้อมูล (ดาวน์โหลด .json)</button><button class="btn ghost" id="importAllBtn" style="margin-top:8px">⬇️ กู้คืนจากไฟล์สำรอง</button></div>
@@ -137,23 +138,24 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v75"></script>
-<script src="js/config-sheet.js?v75"></script>
-<script src="data/cages.js?v75"></script>
-<script src="js/storage.js?v75"></script>
-<script src="js/crop.js?v75"></script>
-<script src="js/weigh.js?v75"></script>
-<script src="js/history.js?v75"></script>
-<script src="js/summary.js?v75"></script>
-<script src="js/report.js?v75"></script>
-<script src="js/settings.js?v75"></script>
-<script src="js/backup.js?v75"></script>
-<script src="js/order.js?v75"></script>
-<script src="js/pullrefresh.js?v75"></script>
-<script src="js/table-fit.js?v75"></script>
-<script src="js/install.js?v75"></script>
-<script src="js/birthday.js?v75"></script>
-<script src="js/sheet-sync.js?v75"></script>
-<script src="js/app.js?v75"></script>
+<script src="js/theme.js?v88"></script>
+<script src="js/config-sheet.js?v88"></script>
+<script src="data/cages.js?v88"></script>
+<script src="js/storage.js?v88"></script>
+<script src="js/crop.js?v88"></script>
+<script src="js/weigh.js?v88"></script>
+<script src="js/history.js?v88"></script>
+<script src="js/summary.js?v88"></script>
+<script src="js/report.js?v88"></script>
+<script src="js/settings.js?v88"></script>
+<script src="js/backup.js?v88"></script>
+<script src="js/order.js?v88"></script>
+<script src="js/pullrefresh.js?v88"></script>
+<script src="js/table-fit.js?v88"></script>
+<script src="js/install.js?v88"></script>
+<script src="js/birthday.js?v88"></script>
+<script src="js/sheet-sync.js?v88"></script>
+<script src="js/app.js?v88"></script>
+<script>(function(){var s=document.getElementById("yearFmtSel");if(s)s.value=(localStorage.getItem("cc_year_fmt")==="be")?"be":"ce";})();</script>
 </body>
 </html>

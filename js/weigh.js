@@ -102,7 +102,7 @@ function renderSelSummary(){
 
 // ===== Header selected-context panel =====
 function _hdrFmtDateTime(d){
- var dd=pad(d.getDate()), mo=pad(d.getMonth()+1), yy=d.getFullYear();
+ var dd=pad(d.getDate()), mo=pad(d.getMonth()+1), yy=dispYear(d.getFullYear());
  var hh=pad(d.getHours()), mi=pad(d.getMinutes());
  return dd+"/"+mo+"/"+yy+" "+hh+":"+mi;
 }
@@ -136,7 +136,7 @@ function _prefillLast(){
  catI.value=fmtKg(w); totI.value=fmtKg(Math.round((w+(cage.tare||0))*100)/100);
  totI.dataset.auto="1"; catI.dataset.auto="1"; calc();
 }
-function _fmtYMD(s){ if(!s) return ""; var a=String(s).split("T"), p=a[0].split("-"); var d=p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):a[0]; return (a[1]&&a[1].slice(0,5)!=="00:00")?(d+" "+a[1].slice(0,5)):d; }
+function _fmtYMD(s){ if(!s) return ""; var a=String(s).split("T"), p=a[0].split("-"); var d=p.length===3?(p[2]+"/"+p[1]+"/"+dispYear(p[0])):a[0]; return (a[1]&&a[1].slice(0,5)!=="00:00")?(d+" "+a[1].slice(0,5)):d; }
 function _apptDate(v){ if(!v) return null; v=String(v); var t=v.indexOf("T")>0?v.split("T")[1].slice(0,5):""; var d=new Date((t&&t!=="00:00")?v:(v.split("T")[0]+"T23:59")); return isNaN(d)?null:d; }
 function renderAppts(){
  var now=new Date(), today=new Date(); today.setHours(0,0,0,0);
@@ -223,7 +223,7 @@ function _apptCalHtml(){
   var n=(typeof recCatName==="function")?recCatName(h):h.catName; (byDay[k]=byDay[k]||[]).push({id:h.id,n:n,t:(t&&t.slice(0,5)!=="00:00")?t.slice(0,5):""}); });
  var t0=new Date(); var todayK=t0.getFullYear()+"-"+_apptPad(t0.getMonth()+1)+"-"+_apptPad(t0.getDate());
  var first=new Date(y,mo,1).getDay(), days=new Date(y,mo+1,0).getDate();
- var h='<div class="acal"><div class="acal-hd"><button class="btn ghost acal-nv" onclick="apptCalNav(-1)">\u2039</button><b>'+MO[mo]+' '+y+'</b><span class="acal-r">'+'<button class="btn ghost acal-td" onclick="apptCalToday()">\u0e27\u0e31\u0e19\u0e19\u0e35\u0e49</button>'+'<button class="btn ghost acal-nv" onclick="apptCalNav(1)">\u203a</button></span></div><div class="acal-g">';
+ var h='<div class="acal"><div class="acal-hd"><button class="btn ghost acal-nv" onclick="apptCalNav(-1)">\u2039</button><b>'+MO[mo]+' '+dispYear(y)+'</b><span class="acal-r">'+'<button class="btn ghost acal-td" onclick="apptCalToday()">\u0e27\u0e31\u0e19\u0e19\u0e35\u0e49</button>'+'<button class="btn ghost acal-nv" onclick="apptCalNav(1)">\u203a</button></span></div><div class="acal-g">';
  TH.forEach(function(x){ h+='<div class="acal-w">'+x+'</div>'; });
  for(var i=0;i<first;i++) h+='<div class="acal-c acal-x"></div>';
  for(var d=1;d<=days;d++){ var k=y+"-"+_apptPad(mo+1)+"-"+_apptPad(d), L=byDay[k]||[];
