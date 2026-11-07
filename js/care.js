@@ -3,10 +3,11 @@
 var LS_CARE="cc_care_tags";
 var CARE_DEF=[{id:"vac",name:"\u0e27\u0e31\u0e04\u0e0b\u0e35\u0e19\u0e23\u0e27\u0e21",icon:"\uD83D\uDC89",every:365},{id:"rab",name:"\u0e1e\u0e34\u0e29\u0e2a\u0e38\u0e19\u0e31\u0e02\u0e1a\u0e49\u0e32",icon:"\uD83D\uDC89",every:365},
  {id:"flea",name:"\u0e2b\u0e22\u0e14\u0e2b\u0e25\u0e31\u0e07\u0e04\u0e2d",icon:"\uD83D\uDCA7",every:30},{id:"worm",name:"\u0e16\u0e48\u0e32\u0e22\u0e1e\u0e22\u0e32\u0e18\u0e34",icon:"\uD83D\uDC8A",every:90},
- {id:"nail",name:"\u0e15\u0e31\u0e14\u0e40\u0e25\u0e47\u0e1a",icon:"\u2702\uFE0F",every:0},{id:"neuter",name:"\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19",icon:"\uD83E\uDE79",every:0},{id:"bath",name:"\u0e2d\u0e32\u0e1a\u0e19\u0e49\u0e33",icon:"\uD83D\uDEC1",every:0}];
+ {id:"nail",name:"\u0e15\u0e31\u0e14\u0e40\u0e25\u0e47\u0e1a",icon:"\u2702\uFE0F",every:0},{id:"neuter",name:"\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19",icon:"\uD83E\uDE79",every:0},{id:"checkup",name:"\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e38\u0e02\u0e20\u0e32\u0e1e",icon:"\uD83E\uDE7A",every:0},{id:"bath",name:"\u0e2d\u0e32\u0e1a\u0e19\u0e49\u0e33",icon:"\uD83D\uDEC1",every:0}];
 function careTags(){ var t; try{t=JSON.parse(localStorage.getItem(LS_CARE));}catch(e){t=null;} return (Array.isArray(t)&&t.length)?t:CARE_DEF.slice(); }
 // one-time: add neuter tag to existing saved lists (v106)
 (function(){ try{ if(localStorage.getItem("cc_care_mig_neuter")) return; var t=JSON.parse(localStorage.getItem(LS_CARE)); if(Array.isArray(t)&&t.length&&!t.some(function(x){return x.id==="neuter";})){ t.push({id:"neuter",name:"\u0e17\u0e33\u0e2b\u0e21\u0e31\u0e19",icon:"\uD83E\uDE79",every:0}); localStorage.setItem(LS_CARE,JSON.stringify(t)); } localStorage.setItem("cc_care_mig_neuter","1"); }catch(e){} })();
+(function(){ try{ if(localStorage.getItem("cc_care_mig_checkup")) return; var t=JSON.parse(localStorage.getItem(LS_CARE)); if(Array.isArray(t)&&t.length&&!t.some(function(x){return x.id==="checkup";})){ t.push({id:"checkup",name:"\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e38\u0e02\u0e20\u0e32\u0e1e",icon:"\uD83E\uDE7A",every:0}); localStorage.setItem(LS_CARE,JSON.stringify(t)); } localStorage.setItem("cc_care_mig_checkup","1"); }catch(e){} })();
 function careSave(t){ localStorage.setItem(LS_CARE,JSON.stringify(t)); careRenderAll(); }
 function careTag(id){ var t=careTags(); for(var i=0;i<t.length;i++) if(t[i].id===id) return t[i]; return null; }
 function _careGet(elId){ var el=document.getElementById(elId); if(!el) return []; return [].map.call(el.querySelectorAll(".care-chip.on"),function(b){return b.getAttribute("data-id");}); }
