@@ -243,3 +243,14 @@ function _moreWSync(){ var d=document.getElementById("moreW"); if(!d) return;
  if(has) d.open=true; }
 document.addEventListener("input",function(e){ if(e.target&&/^(noteW|costW|apptW)$/.test(e.target.id)) _moreWSync(); });
 setTimeout(_moreWSync,300);
+// Tap small photo in cat/cage picker -> big photo popup (Nov 7 2026)
+function showImgZoom(src,cap){ var z=document.getElementById("imgZoom");
+ if(!z){ z=document.createElement("div"); z.id="imgZoom"; document.body.appendChild(z);
+  z.onclick=function(e){ if(e.target===z||e.target.classList.contains("iz-x")) z.classList.remove("show"); };
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") z.classList.remove("show"); }); }
+ z.innerHTML='<button class="iz-x">\u00d7</button><img src="'+src+'" alt=""><div class="iz-cap">'+esc(cap||"")+'</div>';
+ z.classList.add("show"); }
+window.showImgZoom=showImgZoom;
+document.addEventListener("click",function(e){ var t=e.target; if(!t||t.tagName!=="IMG"||!t.closest(".pick-row")) return;
+ var chip=t.closest(".cat-chip,.cage-tile"); e.stopPropagation(); e.preventDefault();
+ var cap=chip?(chip.textContent||"").trim():""; showImgZoom(t.src,cap); },true);
