@@ -161,10 +161,11 @@ function renderAppts(){
  html='<div class="appt-tg" onclick="apptToggle(event)">'+html.slice(0,_ix2).replace('<div class="appt-hd"><h2>','<div class="appt-hd"><h2><span class="appt-chev">'+(_op?'\u25BC':'\u25B6')+'</span> ')
   +(rows.length?' <span class="appt-cnt">'+rows.length+'</span>':'')+html.slice(_ix2).replace('</div>','</div></div><div class="appt-body"'+(_op?'':' style="display:none"')+'>')+'</div>';
  if(!rows.length) html=html.replace('<div class="appt-body"','<p class="empty-note appt-none">\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e19\u0e31\u0e14</p><div class="appt-body"');
+ if(html.slice(-6)==="</div>") html=html.slice(0,-6)+_apptCalHtml()+"</div>";
  ["apptBox","apptBoxSum"].forEach(function(id){ var el=document.getElementById(id); if(!el) return;
   if(id==="apptBoxSum"){ el.innerHTML=""; el.style.display="none"; return; }
   el.innerHTML=html; el.style.display=""; el.classList.toggle("appt-empty",!rows.length); });
- var cb=document.getElementById("apptCalBox"); if(cb){ cb.innerHTML='<h2>\uD83D\uDCC6 \u0e1b\u0e0f\u0e34\u0e17\u0e34\u0e19\u0e19\u0e31\u0e14\u0e41\u0e21\u0e27</h2>'+_apptCalHtml(); }
+ var cb=document.getElementById("apptCalBox"); if(cb){ cb.style.display="none"; cb.innerHTML="";} if(0){ cb.innerHTML='<h2>\uD83D\uDCC6 \u0e1b\u0e0f\u0e34\u0e17\u0e34\u0e19\u0e19\u0e31\u0e14\u0e41\u0e21\u0e27</h2>'+_apptCalHtml(); }
 }
 function delAppt(id){
  for(var i=0;i<hist.length;i++){ if(hist[i].id===id){
