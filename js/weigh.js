@@ -82,7 +82,8 @@ function saveWeighing(){
  var apptEl=document.getElementById("apptW"); var appt=apptEl?(apptEl.value||""):"";
  var costEl=document.getElementById("costW"); var _cr=costEl?(costEl.value||"").replace(",",".").trim():""; var cost=_cr===""?null:(isNaN(parseFloat(_cr))?null:Math.round(parseFloat(_cr)*100)/100);
  var hospObj=getHosp(selHosp);
- hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catId:catObj?catObj.id:"",cageId:cage.id,hospId:hospObj?hospObj.id:"",catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",cost:cost,nextAppt:appt,neutered:(catObj&&catObj.neutered)?true:false});
+ hist.unshift({id:"h"+Date.now(),ts:new Date().toISOString(),catId:catObj?catObj.id:"",cageId:cage.id,hospId:hospObj?hospObj.id:"",catName:catObj?catObj.name:"",cageName:cage.name,tare:cage.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",cost:cost,nextAppt:appt,care:(window._careGet?_careGet("careW"):[]),neutered:(catObj&&catObj.neutered)?true:false});
+ try{_careSet("careW",[]);}catch(e){}
  hist.sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});
  save(LS_HIST,hist);
  if(totI)totI.value=""; if(catI)catI.value=""; if(noteEl)noteEl.value=""; if(costEl)costEl.value=""; if(apptEl)apptEl.value=""; if(totI){totI.dataset.auto="";} if(catI){catI.dataset.auto="";}
@@ -144,6 +145,7 @@ function renderAppts(){
  hist.forEach(function(h){ if(!h.nextAppt) return; var d=_apptDate(h.nextAppt); if(!d||d<now) return;
   var k=(typeof recCatName==="function")?recCatName(h):h.catName;
   var dd=new Date(d); dd.setHours(0,0,0,0); rows.push({k:k,h:h,d:d,days:Math.round((dd-today)/86400000)}); });
+ try{ if(window._careDueRows) _careDueRows().forEach(function(r){rows.push(r);}); }catch(e){}
  rows.sort(function(a,b){return a.d-b.d;});
  var html='<div class="appt-hd"><h2>\uD83D\uDCC5 '+(rows.length?'<s class="strike-old">\u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22</s> <span class="cute-new">\u0e19\u0e31\u0e14\u0e41\u0e21\u0e27</span>\u0e17\u0e35\u0e48\u0e08\u0e30\u0e16\u0e36\u0e07':'\u0e19\u0e31\u0e14\u0e2b\u0e21\u0e32\u0e22')+'</h2><button class="btn sec appt-add" onclick="openApptModal()">+ \u0e40\u0e1e\u0e34\u0e48\u0e21\u0e19\u0e31\u0e14</button></div>';
  rows.forEach(function(r){
@@ -168,12 +170,14 @@ function renderAppts(){
  var cb=document.getElementById("apptCalBox"); if(cb){ cb.style.display="none"; cb.innerHTML="";} if(0){ cb.innerHTML='<h2>\uD83D\uDCC6 \u0e1b\u0e0f\u0e34\u0e17\u0e34\u0e19\u0e19\u0e31\u0e14\u0e41\u0e21\u0e27</h2>'+_apptCalHtml(); }
 }
 function delAppt(id){
+ if(String(id).indexOf("care_")===0){ toast("\u0e04\u0e23\u0e1a\u0e23\u0e2d\u0e1a\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34 \u2014 \u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e27\u0e48\u0e32\u0e17\u0e33\u0e41\u0e25\u0e49\u0e27\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e40\u0e25\u0e37\u0e48\u0e2d\u0e19\u0e23\u0e2d\u0e1a"); return; }
  for(var i=0;i<hist.length;i++){ if(hist[i].id===id){
   var _ix=i; askConfirm("\u0e25\u0e1a\u0e19\u0e31\u0e14\u0e19\u0e35\u0e49?",function(){
    if(hist[_ix].kind==="appt") hist.splice(_ix,1); else hist[_ix].nextAppt="";
    save(LS_HIST,hist); renderAppts(); try{renderHist();}catch(e){} },{danger:true}); return; } }
 }
 function openApptModal(iso,eid){
+ if(eid&&String(eid).indexOf("care_")===0) eid="";
  var ed=null; if(eid){ for(var q=0;q<hist.length;q++){ if(hist[q].id===eid){ ed=hist[q]; break; } } }
  var isAppt=!ed||ed.kind==="appt";
  var m=document.getElementById("apptModal");

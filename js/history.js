@@ -123,6 +123,7 @@ function openManual(id){
  document.getElementById("mNote").value=rec?(rec.note||""):"";
  var _ma=document.getElementById("mAppt"); if(_ma){ var _nv=(rec&&rec.nextAppt)?String(rec.nextAppt):""; if(_nv&&_nv.indexOf("T")<0)_nv+="T00:00"; _ma.value=_nv.slice(0,16); }
  var _mc=document.getElementById("mCost"); if(_mc)_mc.value=(rec&&rec.cost!=null)?rec.cost:"";
+ try{_careSet("careM",(rec&&rec.care)?rec.care:[]);}catch(e){}
  // Bidirectional auto-calc between cat weight and total weight using the selected cage tare.
  var mCageEl=document.getElementById("mCage");
  function _curTare(){var cg=getCage(mCageEl.value);return cg?(cg.tare||0):0;}
@@ -174,11 +175,11 @@ function saveManual(){
  var ts=new Date(dtv.replace("T"," ").replace(/-/g,"/")).toISOString();
  if(editingId){
   for(var i=0;i<hist.length;i++){if(hist[i].id===editingId){
-  hist[i].ts=ts;hist[i].catId=catObj?catObj.id:"";hist[i].cageId=cageObj.id;hist[i].hospId=hospObj?hospObj.id:"";hist[i].catName=catObj?catObj.name:"";hist[i].cageName=cageObj.name;hist[i].tare=cageObj.tare;hist[i].total=tot;hist[i].cat=cat;hist[i].note=note;hist[i].hosp=hospObj?hospObj.name:"";hist[i].cost=cost;hist[i].nextAppt=appt;break;
+  hist[i].ts=ts;hist[i].catId=catObj?catObj.id:"";hist[i].cageId=cageObj.id;hist[i].hospId=hospObj?hospObj.id:"";hist[i].catName=catObj?catObj.name:"";hist[i].cageName=cageObj.name;hist[i].tare=cageObj.tare;hist[i].total=tot;hist[i].cat=cat;hist[i].note=note;hist[i].hosp=hospObj?hospObj.name:"";hist[i].cost=cost;hist[i].nextAppt=appt;hist[i].care=(window._careGet?_careGet("careM"):(hist[i].care||[]));break;
   }}
   toast("\u0e41\u0e01\u0e49\u0e44\u0e02\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e41\u0e25\u0e49\u0e27");
  } else {
-  hist.push({id:"h"+Date.now()+"_"+Math.floor(Math.random()*1000),ts:ts,catId:catObj?catObj.id:"",cageId:cageObj.id,hospId:hospObj?hospObj.id:"",catName:catObj?catObj.name:"",cageName:cageObj.name,tare:cageObj.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",cost:cost,nextAppt:appt,neutered:(catObj&&catObj.neutered)?true:false});
+  hist.push({id:"h"+Date.now()+"_"+Math.floor(Math.random()*1000),ts:ts,catId:catObj?catObj.id:"",cageId:cageObj.id,hospId:hospObj?hospObj.id:"",catName:catObj?catObj.name:"",cageName:cageObj.name,tare:cageObj.tare,total:tot,cat:cat,note:note,hosp:hospObj?hospObj.name:"",cost:cost,nextAppt:appt,care:(window._careGet?_careGet("careM"):[]),neutered:(catObj&&catObj.neutered)?true:false});
   toast("\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e41\u0e25\u0e49\u0e27 \u2022 "+fmtKg(cat)+" \u0e01\u0e01.");
  }
  hist.sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});

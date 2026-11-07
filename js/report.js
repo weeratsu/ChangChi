@@ -36,7 +36,9 @@ function renderReport(){
    if(fromT!=null && t<fromT) return false;
    if(toT!=null && t>toT) return false;
    var hasCost=(h.cost!=null&&h.cost!=="");
-   if(!(_repHospName(h)||hasCost||h.note)) return false;
+   var hasCare=!!(h.care&&h.care.length);
+   if(!(_repHospName(h)||hasCost||h.note||hasCare)) return false;
+   if(window.__repCare&&!(h.care&&h.care.indexOf(window.__repCare)>=0)) return false;
    var q=(repSearch||"").trim().toLowerCase();
    if(q){ var hay=((_repCatName(h)||"")+" "+(_repHospName(h)||"")+" "+(h.note||"")+" "+fmtDateTime(h.ts)).toLowerCase();
      var ws=q.split(/\s+/); for(var qi=0;qi<ws.length;qi++){ if(hay.indexOf(ws[qi])<0) return false; } }
@@ -71,7 +73,7 @@ function renderReport(){
   var wTxt=(h.cat!=null&&h.cat!=="")?fmtKg(h.cat):'\u2014';
   var costTxt=(h.cost!=null&&h.cost!=="")?_repMoney(parseFloat(h.cost)):'';
   body+='<tr class="rep-row" onclick="openManual(\''+h.id+'\')" title="\u0e41\u0e15\u0e30\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e41\u0e01\u0e49\u0e44\u0e02">'
-    +'<td>'+d+'</td><td>'+esc(_repCatName(h)||"-")+'</td><td>'+esc(_repHospName(h)||"-")+'</td>'
+    +'<td>'+d+(window.careIcons?careIcons(h):'')+'</td><td>'+esc(_repCatName(h)||"-")+'</td><td>'+esc(_repHospName(h)||"-")+'</td>'
     +'<td class="num">'+wTxt+'</td><td class="num">'+costTxt+'</td></tr>';
   if(h.note){ body+='<tr class="rep-noterow" onclick="openManual(\''+h.id+'\')"><td colspan="5"><span class="rep-note">\uD83D\uDCDD '+esc(h.note)+'</span></td></tr>'; }
  });

@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v91">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v93">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v91">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v91">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v91">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v91">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v91">
-<link rel="manifest" href="manifest.webmanifest?v91">
-<link rel="stylesheet" href="css/style.css?v91">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v93">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v93">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v93">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v93">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v93">
+<link rel="manifest" href="manifest.webmanifest?v93">
+<link rel="stylesheet" href="css/style.css?v93">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -60,6 +60,7 @@
     <button class="btn big-save weigh-save-top" id="saveBtnTop">💾 บันทึกผล</button>
   </div>
   <div class="card" data-wkey="hosp"><details class="more-w" id="moreW"><summary><h2>▸ เพิ่มเติม <small>(รพ. / หมายเหตุ / ค่าใช้จ่าย / นัด)</small></h2></summary>
+    <label>🩺 ทำอะไรบ้าง (กดเลือกได้หลายอัน)</label><div class="care-pick" id="careW"></div>
     <label>🏥 โรงพยาบาล / คลินิก</label>
     <select id="hospSelect" class="sel"></select>
     <label style="margin-top:12px">หมายเหตุ (ไม่บังคับ)</label>
@@ -89,6 +90,7 @@
   <div class="card">
     <h2>🩺 รายงานการหาหมอ</h2>
     <div class="fchip-row" id="repFilter"></div>
+    <div class="fchip-row" id="repCare"></div>
     <input id="repSearch" class="rep-search" placeholder="🔍 ค้นหา (เช่น หยดหลังคอ, วัคซีน)" autocomplete="off">
     <div class="rep-daterow">
       <label>ตั้งแต่ <input type="date" id="repFrom" class="sel"></label>
@@ -103,6 +105,7 @@
   <div class="card"><h2>🐱 จัดการแมว</h2><div id="catMgr"></div><button class="addbtn" id="addCat" style="margin-top:10px">+ เพิ่มแมว</button><p class="hint">แตะรูปเพื่อใส่รูปโปรไฟล์แมว · ใส่วันเกิดเพื่อแสดงอายุ · ติ๊ก “ทำหมันแล้ว” ถ้าทำหมันแล้ว</p></div>
   <div class="card"><h2>⚙️ จัดการกรง (น้ำหนักกรงเปล่า)</h2><div id="cageMgr"></div><button class="addbtn" id="addCage" style="margin-top:10px">+ เพิ่มกรง</button><p class="hint">น้ำหนักกรงเปล่า (tare) หน่วยกิโลกรัม — แก้ไขได้ บันทึกอัตโนมัติ</p></div>
   <div class="card"><h2>🏥 จัดการโรงพยาบาล/คลินิก</h2><div id="hospMgr"></div><button class="addbtn" id="addHosp" style="margin-top:10px">+ เพิ่มโรงพยาบาล</button><p class="hint">ติ๊กช่อง “ตั้งเป็นค่าเริ่มต้น” เพื่อ (จะถูกเลือกอัตโนมัติตอนชั่ง)</p></div>
+  <div class="card"><h2>🩺 รายการดูแลสุขภาพ</h2><div id="careMgr"></div><button class="addbtn" onclick="careAdd()" style="margin-top:10px">+ เพิ่มรายการ</button><p class="hint">ใส่ “ทุก … วัน” เพื่อให้แอปนับรอบและเตือนในนัดแมวเมื่อใกล้ครบ (เว้นว่าง = ไม่นับรอบ)</p></div>
   <div class="card"><h2>📆 รูปแบบปี</h2><select id="yearFmtSel" class="sel" onchange="setYearFmt(this.value)"><option value="ce">ค.ศ. (เช่น 2026)</option><option value="be">พ.ศ. (เช่น 2569)</option></select><p class="hint">ใช้ทั้งแอป: วันที่ ปฏิทิน กราฟ รายงาน (ไฟล์ CSV ที่ส่งออกยังเป็น ค.ศ. เพื่อให้นำเข้ากลับได้ถูกต้อง)</p></div>
   <div class="card"><h2>🎨 ธีมสี</h2><div id="themePicker" class="theme-row"></div><p class="hint">เลือกธีมที่ชอบ สลับได้ทุกเมื่อ</p></div>
   <div class="card"><h2>↕️ จัดลำดับหน้าชั่ง</h2><div id="orderMgr"></div><p class="hint">กดลูกศรขึ้น/ลงเพื่อสลับลำดับการ์ดในหน้าชั่ง (ปุ่มบันทึกอยู่ล่างสุดเสมอ)</p></div>
@@ -130,6 +133,7 @@
     <p class="field-hint">ใส่ช่องใดช่องหนึ่งก็ได้ — อีกช่องจะคำนวณให้อัตโนมัติจากน้ำหนักกรงที่เลือก</p>
     <label>ค่าใช้จ่ายหาหมอ (บาท, ไม่บังคับ)</label><input id="mCost" inputmode="decimal" placeholder="เช่น 850" autocomplete="off">
     <label>📅 นัดครั้งถัดไป (ไม่บังคับ)</label><input type="datetime-local" id="mAppt" class="sel">
+    <label>🩺 ทำอะไรบ้าง</label><div class="care-pick" id="careM"></div>
     <label>หมายเหตุ (ไม่บังคับ)</label><textarea id="mNote" class="note-ta" rows="4" placeholder="เช่น ชั่งที่บ้าน — พิมพ์ได้หลายบรรทัด"></textarea>
     <div class="modal-btns">
       <button class="btn ghost" id="mCancel">ยกเลิก</button>
@@ -138,24 +142,25 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v91"></script>
-<script src="js/config-sheet.js?v91"></script>
-<script src="data/cages.js?v91"></script>
-<script src="js/storage.js?v91"></script>
-<script src="js/crop.js?v91"></script>
-<script src="js/weigh.js?v91"></script>
-<script src="js/history.js?v91"></script>
-<script src="js/summary.js?v91"></script>
-<script src="js/report.js?v91"></script>
-<script src="js/settings.js?v91"></script>
-<script src="js/backup.js?v91"></script>
-<script src="js/order.js?v91"></script>
-<script src="js/pullrefresh.js?v91"></script>
-<script src="js/table-fit.js?v91"></script>
-<script src="js/install.js?v91"></script>
-<script src="js/birthday.js?v91"></script>
-<script src="js/sheet-sync.js?v91"></script>
-<script src="js/app.js?v91"></script>
+<script src="js/theme.js?v93"></script>
+<script src="js/config-sheet.js?v93"></script>
+<script src="data/cages.js?v93"></script>
+<script src="js/storage.js?v93"></script>
+<script src="js/crop.js?v93"></script>
+<script src="js/weigh.js?v93"></script>
+<script src="js/history.js?v93"></script>
+<script src="js/summary.js?v93"></script>
+<script src="js/report.js?v93"></script>
+<script src="js/care.js?v93"></script>
+<script src="js/settings.js?v93"></script>
+<script src="js/backup.js?v93"></script>
+<script src="js/order.js?v93"></script>
+<script src="js/pullrefresh.js?v93"></script>
+<script src="js/table-fit.js?v93"></script>
+<script src="js/install.js?v93"></script>
+<script src="js/birthday.js?v93"></script>
+<script src="js/sheet-sync.js?v93"></script>
+<script src="js/app.js?v93"></script>
 <script>(function(){var s=document.getElementById("yearFmtSel");if(s)s.value=(localStorage.getItem("cc_year_fmt")==="be")?"be":"ce";})();</script>
 </body>
 </html>

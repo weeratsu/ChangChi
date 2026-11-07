@@ -492,3 +492,39 @@ input::placeholder,textarea::placeholder{color:var(--subtx);opacity:.7}
 .cf-opts .wt-avg{display:inline-flex!important;align-items:center;gap:5px;margin:0!important;padding:4px 11px;font-size:12px;font-weight:700;line-height:1.4;border:1px solid var(--line);border-radius:999px;background:var(--card2);color:var(--txt);cursor:pointer}
 .cf-opts .wt-avg.on{background:color-mix(in srgb,var(--accent) 16%,var(--card));border-color:var(--accent);color:var(--acctx)}
 .cf-opts .wt-avg input{width:13px;height:13px;margin:0!important;padding:0;accent-color:var(--accent)}
+/* Care log (v92) */
+.care-pick{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.care-chip{border:1.5px solid var(--line);background:var(--card2);color:var(--txt);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.care-chip.on{background:color-mix(in srgb,var(--accent) 16%,var(--card));border-color:var(--accent);color:var(--acctx)}
+.care-ic{margin-left:6px;font-size:13px;letter-spacing:1px}
+.care-book .cb-cat{margin-top:8px}
+.care-book .cb-h{font-weight:700;color:var(--txt);margin:6px 0 2px}
+.cb-row{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:6px 0;border-top:1px dashed var(--line);cursor:pointer;font-size:13px}
+.cb-n{flex:0 0 130px;font-weight:600;color:var(--txt)}
+.cb-l{color:var(--subtx)}
+.cb-next{color:var(--acctx)}
+.cb-late{color:var(--danger);font-weight:700}
+.care-mrow{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.care-mrow .cm-ic{flex:0 0 46px;text-align:center}
+.care-mrow .cm-nm{flex:1;min-width:0}
+.cm-ev{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--subtx);margin:0;white-space:nowrap}
+.cm-ev input{width:54px;text-align:center}
+/* ===== v93: ONE pill style app-wide (same as vet-cost filters) ===== */
+.care-chip,.fchip,.cf-opts .btn,.wt-pre .btn,.pick-row .cat-chip,#cageGrid .cage-tile{
+ background:var(--card2)!important;border:1px solid var(--line)!important;color:var(--txt)!important;
+ border-radius:999px!important;font-size:12px!important;font-weight:700!important;box-shadow:none!important;outline:none!important}
+.care-chip,.fchip{padding:4px 11px!important;line-height:1.4;font-family:inherit;cursor:pointer}
+.care-chip.on,.fchip.on,.cf-opts .btn.on,.wt-pre .btn.on,.pick-row .cat-chip.on,#cageGrid .cage-tile.on,
+#cageGrid .cage-tile.on .cap,#cageGrid .cage-tile.on .kg{
+ background:color-mix(in srgb,var(--accent) 16%,var(--card))!important;border-color:var(--accent)!important;color:var(--acctx)!important}
+#cageGrid .cage-tile.on .cap,#cageGrid .cage-tile.on .kg{background:none!important}
+
+/* ===== v93: Manage page - uniform text size ===== */
+#view-manage input,#view-manage select,#view-manage textarea,#view-manage .btn,#view-manage button{font-size:14px!important}
+#view-manage input,#view-manage select{height:38px!important;min-height:0!important;padding:0 10px!important;box-sizing:border-box}
+#view-manage textarea{padding:8px 10px!important}
+#view-manage label,#view-manage .hint,#view-manage p{font-size:13px!important}
+#view-manage h2{font-size:15px!important}
+#view-manage .care-mrow .cm-ic{flex:0 0 42px;padding:0!important;text-align:center}
+#view-manage .cm-ev input{width:56px!important;padding:0 4px!important;text-align:center}
+#view-manage .del,#view-manage .care-mrow .del{flex:0 0 38px;width:38px!important;height:38px!important;padding:0!important;border-radius:10px;font-size:16px!important;border:1px solid var(--line);background:var(--card2);color:var(--danger);cursor:pointer}
