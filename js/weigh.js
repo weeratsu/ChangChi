@@ -8,7 +8,7 @@ function renderCats(){
   var ph=catPhoto(c);
   var av=ph?'<img class="cat-ava" src="'+ph+'">':'<span class="cat-ava cat-ava-i">'+esc((c.name||"?").charAt(0))+'</span>';
   d.innerHTML=av+'<span>'+esc(c.name)+'</span>';
-  d.onclick=function(){selCat=c.id;persistSel();renderCats();try{_prefillLast();}catch(e){}renderSelSummary();};
+  d.onclick=function(){selCat=c.id;try{var _lc=_lastCageOf(c.id);if(_lc&&getCage(_lc)){selCage=_lc;renderCages();}}catch(e){}persistSel();renderCats();try{_prefillLast();}catch(e){}try{calc();}catch(e){}renderSelSummary();};
   el.appendChild(d);
  });
 }
@@ -232,3 +232,14 @@ function _apptCalHtml(){
   h+='</div>'; }
  return h+'</div></div>';
 }
+// Remember cage per cat: last record of this cat that used a cage (Nov 7 2026)
+function _lastCageOf(catId){ var best=null;
+ hist.forEach(function(h){ if(h.kind==="appt"||!h.cageId) return; if(h.catId!==catId) return;
+  if(!best||new Date(h.ts)>new Date(best.ts)) best=h; });
+ return best?best.cageId:null; }
+// Auto-open "more" section when any extra field has a value
+function _moreWSync(){ var d=document.getElementById("moreW"); if(!d) return;
+ var has=["noteW","costW","apptW"].some(function(id){ var e=document.getElementById(id); return e&&String(e.value||"").trim(); });
+ if(has) d.open=true; }
+document.addEventListener("input",function(e){ if(e.target&&/^(noteW|costW|apptW)$/.test(e.target.id)) _moreWSync(); });
+setTimeout(_moreWSync,300);

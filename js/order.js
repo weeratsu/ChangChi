@@ -1,7 +1,7 @@
 // ===== Weigh-screen step ordering (user-customizable) =====
 var LS_ORDER="woc_order_v1";
-var STEP_LABELS={weigh:"\u2696\ufe0f \u0e0a\u0e48\u0e2d\u0e07\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01 + \u0e1c\u0e25\u0e25\u0e31\u0e1e\u0e18\u0e4c", cat:"\ud83d\udc31 \u0e40\u0e25\u0e37\u0e2d\u0e01\u0e41\u0e21\u0e27", cage:"\ud83c\udfe0 \u0e40\u0e25\u0e37\u0e2d\u0e01\u0e01\u0e23\u0e07", hosp:"\ud83c\udfe5 \u0e42\u0e23\u0e07\u0e1e\u0e22\u0e32\u0e1a\u0e32\u0e25 + \u0e2b\u0e21\u0e32\u0e22\u0e40\u0e2b\u0e15\u0e38"};
-var DEFAULT_ORDER=["weigh","cat","cage","hosp"];
+var STEP_LABELS={weigh:"\u2696\ufe0f \u0e0a\u0e48\u0e2d\u0e07\u0e04\u0e35\u0e22\u0e4c\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01 + \u0e1c\u0e25\u0e25\u0e31\u0e1e\u0e18\u0e4c", hosp:"\ud83c\udfe5 \u0e42\u0e23\u0e07\u0e1e\u0e22\u0e32\u0e1a\u0e32\u0e25 + \u0e2b\u0e21\u0e32\u0e22\u0e40\u0e2b\u0e15\u0e38"};
+var DEFAULT_ORDER=["weigh","hosp"];
 function loadOrder(){
  var o; try{o=JSON.parse(localStorage.getItem(LS_ORDER));}catch(e){o=null;}
  if(!o||!o.length)o=DEFAULT_ORDER.slice();

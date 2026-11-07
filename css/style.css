@@ -384,3 +384,18 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .appt-cnt{display:inline-block;min-width:22px;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;font-size:12px;margin-left:6px;vertical-align:middle}
 .appt-none{margin:6px 0 0}
 #apptCalBox .acal{margin-top:4px;border-top:none;padding-top:0}
+/* Compact weigh card */
+.pick-row{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+.pick-lbl{flex:0 0 34px;font-weight:700;font-size:14px;color:var(--muted,#9a7b55)}
+.pick-row .cat-row,.pick-row .cage-grid{flex:1;margin:0!important}
+.pick-row .cat-chip{padding:8px 10px!important;min-height:0!important}
+#cageGrid .cage-tile{flex:1 1 130px;padding:6px 10px!important;gap:8px}
+#cageGrid .cage-tile img{width:34px!important;height:34px!important;flex-basis:34px}
+#cageGrid .cage-tile .cap{font-size:13px}
+.tw-lbl{margin-top:4px}
+.more-w>summary{list-style:none;cursor:pointer}
+.more-w>summary::-webkit-details-marker{display:none}
+.more-w>summary h2{margin:0}
+.more-w>summary small{font-weight:400;font-size:12px;color:var(--muted,#9a7b55)}
+.more-w[open]>summary h2{margin-bottom:10px}
+.more-w[open]>summary h2{}

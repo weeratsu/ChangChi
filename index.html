@@ -9,19 +9,19 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ChangChi · ชั่งจิ">
 <meta property="og:description" content="แอปชั่งน้ำหนักแมว — ชั่งทั้งกรงแล้วหักน้ำหนักกรงให้เอง">
-<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v66">
+<meta property="og:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v67">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://weeratsu.github.io/ChangChi/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ChangChi · ชั่งจิ">
-<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v66">
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v66">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v66">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v66">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v66">
-<link rel="manifest" href="manifest.webmanifest?v66">
-<link rel="stylesheet" href="css/style.css?v66">
+<meta name="twitter:image" content="https://weeratsu.github.io/ChangChi/assets/icon-512.png?v67">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v67">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v67">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v67">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v67">
+<link rel="manifest" href="manifest.webmanifest?v67">
+<link rel="stylesheet" href="css/style.css?v67">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -42,7 +42,10 @@
   <div class="tip-card" id="tipCard"><button class="tip-x" id="tipClose" title="ปิด">×</button><div class="tip-h">💡 วิธีชั่งง่าย ๆ</div><div class="tip-b">เวลาพาแมวไปหาหมอ ไม่ต้องจับแมวออกมาชั่ง — <b>ชั่งทั้งกรงไปเลย</b> (แมว+กรง) แล้วคีย์น้ำหนักรวมลงไป แอปจะหักน้ำหนักกรงออกให้เอง ได้น้ำหนักแมวทันที</div></div>
   
   <div class="card weigh-card" data-wkey="weigh">
-    <h2>⚖️ คีย์น้ำหนักรวม (แมว + กรง)</h2>
+    <h2>⚖️ ชั่งน้ำหนัก</h2>
+    <div class="pick-row"><span class="pick-lbl">แมว</span><div class="cat-row" id="catRow"></div></div>
+    <div class="pick-row"><span class="pick-lbl">กรง</span><div class="cage-grid" id="cageGrid"></div></div>
+    <label class="tw-lbl">น้ำหนักรวม (แมว + กรง)</label>
     <input id="totalW" class="big-input" inputmode="decimal" placeholder="0.0" autocomplete="off">
     <div class="result empty" id="result">
       <div class="lbl" id="resLbl">น้ำหนักแมว</div>
@@ -56,10 +59,8 @@
     <div class="sel-summary" id="selSummary"></div>
     <button class="btn big-save weigh-save-top" id="saveBtnTop">💾 บันทึกผล</button>
   </div>
-  <div class="card" data-wkey="cat"><h2>🐱 เลือกแมว</h2><div class="cat-row" id="catRow"></div></div>
-  <div class="card" data-wkey="cage"><h2>🏠 เลือกกรง (แตะรูปเพื่อเลือก)</h2><div class="cage-grid" id="cageGrid"></div></div>
-  <div class="card" data-wkey="hosp">
-    <h2>🏥 โรงพยาบาล / คลินิก & หมายเหตุ</h2>
+  <div class="card" data-wkey="hosp"><details class="more-w" id="moreW"><summary><h2>▸ เพิ่มเติม <small>(รพ. / หมายเหตุ / ค่าใช้จ่าย / นัด)</small></h2></summary>
+    <label>🏥 โรงพยาบาล / คลินิก</label>
     <select id="hospSelect" class="sel"></select>
     <label style="margin-top:12px">หมายเหตุ (ไม่บังคับ)</label>
     <textarea id="noteW" class="note-ta" rows="4" placeholder="เช่น หลังฉีดวัคซีน, ก่อนอาหาร — พิมพ์ได้หลายบรรทัด"></textarea>
@@ -67,7 +68,7 @@
     <input id="costW" inputmode="decimal" placeholder="เช่น 850" autocomplete="off">
     <label style="margin-top:12px">📅 นัดครั้งถัดไป (ไม่บังคับ)</label>
     <input type="datetime-local" id="apptW" class="sel">
-  </div>
+  </details></div>
   
 </section>
 <section class="view" id="view-hist">
@@ -136,23 +137,23 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="js/theme.js?v66"></script>
-<script src="js/config-sheet.js?v66"></script>
-<script src="data/cages.js?v66"></script>
-<script src="js/storage.js?v66"></script>
-<script src="js/crop.js?v66"></script>
-<script src="js/weigh.js?v66"></script>
-<script src="js/history.js?v66"></script>
-<script src="js/summary.js?v66"></script>
-<script src="js/report.js?v66"></script>
-<script src="js/settings.js?v66"></script>
-<script src="js/backup.js?v66"></script>
-<script src="js/order.js?v66"></script>
-<script src="js/pullrefresh.js?v66"></script>
-<script src="js/table-fit.js?v66"></script>
-<script src="js/install.js?v66"></script>
-<script src="js/birthday.js?v66"></script>
-<script src="js/sheet-sync.js?v66"></script>
-<script src="js/app.js?v66"></script>
+<script src="js/theme.js?v67"></script>
+<script src="js/config-sheet.js?v67"></script>
+<script src="data/cages.js?v67"></script>
+<script src="js/storage.js?v67"></script>
+<script src="js/crop.js?v67"></script>
+<script src="js/weigh.js?v67"></script>
+<script src="js/history.js?v67"></script>
+<script src="js/summary.js?v67"></script>
+<script src="js/report.js?v67"></script>
+<script src="js/settings.js?v67"></script>
+<script src="js/backup.js?v67"></script>
+<script src="js/order.js?v67"></script>
+<script src="js/pullrefresh.js?v67"></script>
+<script src="js/table-fit.js?v67"></script>
+<script src="js/install.js?v67"></script>
+<script src="js/birthday.js?v67"></script>
+<script src="js/sheet-sync.js?v67"></script>
+<script src="js/app.js?v67"></script>
 </body>
 </html>
